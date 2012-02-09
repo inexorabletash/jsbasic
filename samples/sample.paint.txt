@@ -1,0 +1,23 @@
+0 REM *** Drawing program using mixed 280x160 mode ***
+10 LX = 0 : LY = 0 : PEN = 3 : GOSUB 100
+20 GOSUB 300
+30 VTAB 21 : HTAB 70 : PRINT "("X","Y")  "
+40 IF X <> LX OR Y <> LY THEN HPLOT TO X, Y : LX = X : LY = Y
+50 A = PEEK(49152)-128 : IF A > 0 THEN A$ = CHR$(A) : POKE 49168,0
+60   IF A$ >= "1" AND A$ <= "6" THEN PEN = ASC(A$) - ASC("0") : GOSUB 200
+70   IF A$ = " " THEN GOSUB 100
+80   IF A$ = CHR$(27) THEN END
+90 A$ = CHR$(0) : GOTO 20
+100 REM ** Show Menu **
+110 PR#3 : HOME : HGR : HCOLOR= 3 : FOR Y = 150 TO 160 : HPLOT 0,Y TO 279,Y : NEXT Y
+120 FOR HC = 1 TO 6 : HCOLOR= HC
+130   FOR Y = 152 TO 159 : HPLOT 10+14*HC,Y TO 23+14*HC,Y : NEXT Y
+140 NEXT HC
+150 VTAB 21 : PRINT "COLOR:  1   2   3   4   5   6";
+160 HTAB 60 : PRINT "POSITION:" : FOR N = 1 TO 8 : PRINT "=========="; : NEXT N 
+170 PRINT "Instructions:  Joystick draws.  1-6 chooses colors.  Space clears.  Esc quits.";
+200 HCOLOR= PEN : FOR Y = 154 TO 157 : HPLOT 5,Y TO 15,Y : NEXT Y
+210 GOSUB 300 : HPLOT X, Y : RETURN
+
+300 X = INT(PDL(0)/255*279) : Y = INT(PDL(1)/255*191) : IF Y > 149 THEN Y = 149
+310 RETURN

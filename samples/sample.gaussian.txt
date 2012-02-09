@@ -1,0 +1,47 @@
+5 rem Plot Gaussian distribution in two dimensions
+10 text: home: PRINT "Std. Dev. = ";: input s1
+20 hgr: hcolor = 3
+30 w = 279: h = 159
+40 w0 = w - 100: w1 = w0/10
+45 h1 = h - 100: h2 = h - 60
+50 k = 0.5: m = 1 / (2 * 3.14159265 * s1 * s1)
+60 for i = 0 to 10 step k
+70 x = 10 * i + 1: y = 10 * i + h1
+75 hplot x,y
+80 for j = 0 to w0 step 1
+85 j1 = 10 * j / w0
+90 d1 = abs(5 - i)
+100 d2 = abs(5 - j1)
+110 r2 = (d1*d1+d2*d2)/(2*s1*s1)
+120 g = exp(-r2)/(2*3.14159*s1*s1)
+130 a = int((h2 * g)/ m)
+140 x = 10 * i + w1 * j1 + 1
+150 y = 10 * i + h1 - a
+160 hplot to x,y
+170 if (i = 0) goto 265
+175 if (j = w0) goto 190
+180 j2 = int(j/10): if ((j/10) <> j2) goto 290
+190 d1 = abs(5 - i + k)
+200 d2 = abs(5 - j1)
+210 r2 = (d1*d1+d2*d2)/(2*s1*s1)
+220 u = exp(-r2)/(2*3.14159*s1*s1)
+225 a1 = int((h2 * u)/ m)
+230 x1 = 10 * (i - k) + w1 * j1 + 1
+240 y1 = 10 * (i - k) + h1 - a1
+245 rem if (y <= y1) goto 290
+250 hplot to x1,y1
+260 hplot x,y
+265 if (j = 0) goto 310
+270 if (i < 10) goto 290
+275 if (j = w0) goto 295
+280 j2 = int(j/10): if ((j/10) = j2) goto 295
+290 hcolor = 0
+295 hplot to x,10 * i + h1
+300 hcolor = 3
+305 hplot x,y
+310 next j
+320 next i
+330 hplot w+1,h: hplot to 100+1,h: hplot to 0+1,h1
+340 vtab 21: print "Gaussian (standard deviation = ";s1;")"
+350 print "Plot from -5.0 to + 5.0"
+360 print "Peak value = "m

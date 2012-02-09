@@ -1,0 +1,107 @@
+0 REM 5090 Added VTAB 2 to correct display
+0 REM Added 5005 to correct display
+0 REM 7020 Added PRINT to break lines
+0 REM 4892 IF expression will never be true (condition checked earlier)
+
+100 TEXT : HOME : PRINT "Zhodani Relay Station Placement."
+110 PRINT " This program examines an existing sector file and determines the need for, and locations of, Zhodani relay stations (which must be placed between Zhodani naval bases more than four hexes distant)."
+120 PRINT " This program originally appeared in Challenge Magazine No. 26." : PRINT
+
+500 DIM PO(32,40),PP(32,40),OD(13,13)
+510 DIM F2(169),F3(169),F4(169),F5(169)
+520 DIM F1(169)
+
+531 NA$(1) = "WORLD "
+532 NA$(2) = "ZHO WORLD "
+533 NA$(3) = "NAVAL BASE"
+534 NA$(4) = "DEPOT "
+535 NA$(5) = "RELAY "
+
+2000 INPUT "Filename? > ";FI$
+2010 PRINT CHR$(4);"OPEN ";FI$;",L50"
+2020 PRINT CHR$(4);"READ ";FI$;",R0"
+2030 INPUT R
+2031 DIM HX$(R)
+2040 FOR A = 1 TO R
+2050 PRINT CHR$(4);"READ ";FI$;",R";A
+2060 INPUT A$
+
+3000 X = VAL(LEFT$(A$,2)):Y = VAL(MID$(A$,3,2))
+3001 HX$(A) = LEFT$(A$,4)
+3005 Z = 1
+3010 IF MID$(A$,33,1) = "Z" THEN Z = 2
+3020 IF MID$(A$,16,1) = "Z" THEN Z = 3
+3040 IF MID$(A$,16,1) = "Y" THEN Z = 4
+3050 IF MID$(A$,16,1) = "X" THEN Z = 5
+3060 PO(X,Y) = Z : PP(X,Y) = A
+3070 NEXT A
+
+
+4000 HOME : FOR X = 1 TO 32
+4005 FOR Y = 1 TO 40 : VTAB 1
+4010 IF PO(X,Y) < 1 THEN 6000
+4012 PRINT "World Hex ";RIGHT$("0"+STR$(X),2);RIGHT$("0"+STR$(Y),2);" ";NA$(PO(X,Y))
+4020 REM
+4025 F1 = 0 : F2 = 0 : F3 = 0 : F4 = 0 : F5 = 0
+4027 PRINT "Worlds within jump-4: ";
+4028 PRINT : PRINT
+4029 FOR N = Y-5 TO Y+5 : FOR M = X-5 to X+5
+4040 IF M < 1 OR M > 32 THEN 4900
+4055 IF N < 1 OR N > 40 THEN 4894
+4056 IF X = M AND N = Y THEN FLASH : PRINT PO(X,Y); : NORMAL : GOTO 4894
+4057 IF X = M AND N <> Y THEN Z1 = ABS(Y-N) : GOTO 4080
+4060 IF Y = N AND X <> M THEN Z1 = ABS(X-M) : GOTO 4080
+4063 EV = 0 : OD = 0 : IF (X/2 = INT(X/2)) AND (M/2 = INT (M/2)) THEN EV=1
+4064 IF (X/2 <> INT(X/2)) AND (M/2 <> INT(M/2)) THEN EV = 1
+4065 IF EV <> 1 THEN OD = 1
+4070 X1 = X - M : Y1 = Y - N : Z1 = SQR((X1*X1)+((.857)*Y1*Y1))
+4071 IF OD = 1 THEN Z1 = Z1 + .5
+4080 IF Z1 > 4 THEN 4890
+4089 IF PO(M,N) = 1 THEN F1 = F1 + 1 : F1(F1) = PP(M,N)
+4090 IF PO(M,N) = 2 THEN F2 = F2 + 1 : F2(F2) = PP(M,N)
+4100 IF PO(M,N) = 3 THEN F3 = F3 + 1 : F3(F3) = PP(M,N)
+4110 IF PO(M,N) = 4 THEN F4 = F4 + 1 : F4(F4) = PP(M,N)
+4120 IF PO(M,N) = 5 THEN F5 = F5 + 1 : F5(F5) = PP(M,N)
+4180 REM
+
+4890 IF PO(M,N) = 0 THEN PRINT "."; : GOTO 4894
+4891 PRINT PO(M,N);
+4892 IF X = M AND N = Y THEN PRINT "*";
+4894 REM
+
+4900 NEXT M : PRINT
+4902 NEXT N : PRINT
+
+5000 REM
+
+5005 VTAB 16 : PRINT : PRINT : PRINT : PRINT : PRINT : PRINT : VTAB 16
+ 
+5010 REM
+5011 IF F1 > 0 THEN PRINT NA$(1);": ";F1;"; "; : FOR J = 1 TO F1 : PRINT HX$(F1(J));" "; : NEXT : PRINT
+5012 IF F2 > 0 THEN PRINT NA$(2);": ";F2;"; "; : FOR J = 1 TO F2 : PRINT HX$(F2(J));" "; : NEXT : PRINT
+5013 IF F3 > 0 THEN PRINT NA$(3);": ";F3;"; "; : FOR J = 1 TO F3 : PRINT HX$(F3(J));" "; : NEXT : PRINT
+5014 IF F4 > 0 THEN PRINT NA$(4);": ";F4;"; "; : FOR J = 1 TO F4 : PRINT HX$(F4(J));" "; : NEXT : PRINT
+5015 IF F5 > 0 THEN PRINT NA$(5);": ";F5;"; "; : FOR J = 1 TO F5 : PRINT HX$(F5(J));" "; : NEXT : PRINT
+5016 IF F2 = 0 THEN 6010
+5017 IF (F3+F4+F5)<>0 THEN 6010
+5018 PRINT "Relay station needed."
+
+5019 R1 = F2(INT(RND(90)*F2+1))
+5020 PRINT CHR$(4);"OPEN ";FI$;",L50"
+5030 PRINT CHR$(4);"READ ";FI$;",R";R1
+5040 INPUT A$
+5050 A$ = LEFT$(A$,15) + "X" + MID$(A$+" ",17,31)
+5060 PRINT CHR$(4);"WRITE ";FI$;",R";R1
+5070 PRINT A$
+5080 PRINT CHR$(4);"CLOSE ";FI$
+5090 PO(VAL(LEFT$(A$,2)),VAL(MID$(A$,3,2))) = 5 : VTAB 2 : GOTO 4020
+
+6000 REM
+6010 NEXT Y
+6020 NEXT X
+
+7000 FOR Y = 1 TO 40 : FOR X = 1 TO 32
+7010 IF PO(X,Y) = 0 THEN PRINT "."; : GOTO 7020
+7015 PRINT PO(X,Y);
+7020 NEXT X : PRINT : NEXT Y
+7030 END

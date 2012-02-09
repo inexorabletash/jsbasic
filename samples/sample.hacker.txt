@@ -1,0 +1,48 @@
+ 5 REM http://www.geocities.com/mmphosis/apple2/contest/2007/old-computer-challenge.html
+ 10  GR 
+ 20 POKE 49234,0 : rem fullscreen
+ 30  COLOR= 15
+ 40  FOR I = 0 TO 39
+ 50  VLIN 0,47 AT I
+ 60  NEXT 
+ 100  COLOR= 5
+ 110 S = 21
+ 120 W = S
+ 130 H = 27
+ 140 X =  INT ((40 - W) / 2)
+ 150 Y =  INT ((48 - H) / 2)
+ 160 D =  INT (W / 3)
+ 161 DX = D
+ 170 Y2 = Y + H
+ 180 X2 = X + W
+ 200  FOR I = 0 TO 3
+ 210  VLIN Y,Y2 AT X + I * D
+ 220  NEXT 
+ 240 D =  INT (H / 3)
+ 250  FOR I = 0 TO 3
+ 260  HLIN X,X2 AT Y + I * D
+ 270  NEXT 
+ 280 YH =  INT (D / 2)
+ 281 YM = Y + H - YH
+ 290 XH =  INT (DX / 2)
+ 300  COLOR= 0
+ 310  FOR I = 0 TO 2
+ 320 YY = YM
+ 330 XX = X + XH + I * DX
+ 340  GOSUB 500
+ 350  NEXT 
+ 400 YY = YY - D
+ 410  GOSUB 500
+ 420 YY = YY - D
+ 430 XX = XX - DX
+ 440  GOSUB 500
+ 450 K =  PEEK ( - 16384)
+ 460  IF K < 128 THEN 450
+ 470 K =  PEEK ( - 16368)
+ 480  TEXT : HOME 
+ 490  END 
+ 500  VLIN YY + 1,YY - 2 AT XX
+ 510  VLIN YY + 1,YY - 2 AT XX + 1
+ 520  VLIN YY,YY - 1 AT XX - 1
+ 530  VLIN YY,YY - 1 AT XX + 2
+ 540  RETURN

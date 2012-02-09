@@ -1,0 +1,24 @@
+10 TEXT : HOME
+20 PRINT "Sierpinski triangle using random number generation"
+30 PRINT "Press any key to continue"
+40 GET A$
+100 HGR : HCOLOR=3 : HOME
+110 REM set up three points to form a triangle
+120 DIM x(3), y(3)
+130 x(0) = 0 : y(0) = 160
+140 x(1) = 90 : y(1) = 0
+150 x(2) = 180 : y(2) = 160
+160 REM plot the vertices of the triangle
+170 FOR i= 0 to 2
+180 HPLOT x(i), y(i)
+190 NEXT i
+200 REM pick a random starting point
+210 x = int(RND(1)*180) : y = int(RND(1)*150)
+220 hplot x,y
+230 FOR i = 1 to 2000
+240 REM randomly pick one of the triangle vertices
+250 v = int(rnd(1)*3)
+260 REM move the point half way to the triangle vertex
+270 x = (x + x(v)) / 2 : y = (y + y(v)) / 2
+280 HPLOT x,y
+290 NEXT

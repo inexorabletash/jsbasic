@@ -1,0 +1,11 @@
+10 HGR
+20 hcolor=1
+30 y=191
+40 for x=1 to 191 step 5
+50 c=c+1
+60 if c=>6 then c=1
+70 hcolor=c
+80 hplot x,1 to 1,y
+90 y=y-5
+100 next x
+110 goto 30

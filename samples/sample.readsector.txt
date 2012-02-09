@@ -1,0 +1,11 @@
+10 PR#0 : TEXT : HOME
+20 INPUT "Sector filename: "; FI$
+30 HOME
+
+100 PRINT CHR$(4);"OPEN ";FI$;",L50"
+110 PRINT CHR$(4);"READ ";FI$;",R0"
+120 INPUT R : REM Number of records
+130 FOR A = 1 TO R
+140 PRINT CHR$(4);"READ ";FI$;",R";A
+150 INPUT A$ : PRINT A$
+160 NEXT

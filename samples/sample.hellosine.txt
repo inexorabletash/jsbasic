@@ -1,0 +1,6 @@
+0 PR#3
+5 x = 0
+7 sp = int(30 + (30* sin(x* 3.14159 / 180 ) ))
+10 PRINT spc(sp);"Hello World"
+20 x = x + 15
+30 goto 7

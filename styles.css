@@ -1,0 +1,968 @@
+
+body { background-color: #EEEACD; }
+h1, h2, h3, p { margin-bottom: 6pt; margin-top: 6pt; }
+td { vertical-align: top; }
+
+
+/* Apple II Screen */
+.frame   {width: 560px; height: 384px; border-style: ridge; border-width: 10px; border-color: gray; padding: 10px; background-color: #202020; }
+.wrapper { width: 560px; height: 384px; overflow: hidden; padding: 0; margin: 0;  position: relative; }
+.lores   {position: absolute; z-index: 2; left: 0; top: 0; width: 560px; height: 384px; overflow: hidden; visibility: hidden; }
+.hires   {position: absolute; z-index: 2; left: 0; top: 0; width: 560px; height: 384px; overflow: hidden; visibility: hidden; background-color: #000000; }
+.tty     {position: absolute; z-index: 3; left: 0; top: 0; width: 560px; height: 384px; overflow: hidden;  }
+
+/* Character cells */
+.normal  { background-color: #000000; color: #80ff80; }
+.inverse { background-color: #80ff80; color: #000000; }
+.row     { background-color: #000000; } /* Background leaks through on safari even with margin/padding/border of 0 */
+
+.a2c { height: 16px; line-height: 0; border: 0; padding: 0; margin: 0; background-repeat:no-repeat; }
+.a2c-cursor { position: relative; display: inline-block; }
+.tty_tr { height: 16px; }
+.tty_table { table-layout: fixed; border-collapse: collapse; }
+
+/*
+    function pos(code, sw) {
+        var x = Math.floor(code / 16);
+        var y = code % 16;
+        x = -( sw > 40 ? 1 : 2 )* (3 + 13 * x);
+        y = -2 * (4 + 13 * y);
+        return String(x) + 'px ' + String(y) + 'px';
+    }
+    function gen(cc, sc, sw, styles) {
+        console.log('.tty_'+sw+'col'+styles+' .a2c'+cc+' { background-position: '+ pos(sc,sw)+' }');
+    }
+    for( sw = 40; sw <= 80; sw += 40) {
+        // 0x00-0x1F = INVERSE @ABC…XYZ[\]^_
+        // 0x20-0x3F = INVERSE  !"#$…<=>?
+
+        for (i = 0x00; i < 0x20; i++) { gen(i+0x00, i+0xC0, sw, ''); }
+        for (i = 0x00; i < 0x20; i++) { gen(i+0x20, i+0xA0, sw, ''); }
+
+        // 80-column firmware inactive
+        // 0x40-0x5F = FLASH @ABC…XYZ[\]^_
+        // 0x60-0x7F = FLASH  !"#$…<=>?
+
+        for (i = 0x00; i < 0x20; i++) { gen(i+0x40, i+0x40, sw, ''); }
+        for (i = 0x00; i < 0x20; i++) { gen(i+0x40, i+0xC0, sw, '.flash'); }
+        for (i = 0x00; i < 0x20; i++) { gen(i+0x60, i+0x20, sw, ''); }
+        for (i = 0x00; i < 0x20; i++) { gen(i+0x60, i+0xA0, sw, '.flash'); }
+
+        // 80-column firmware active
+        // 0x40-0x5F = MOUSETEXT
+        // 0x60-0x7F = INVERSE  `abc…{|}~
+
+        for (i = 0x00; i < 0x20; i++) { gen(i+0x40, i+0x80, sw, '.active'); }
+        for (i = 0x00; i < 0x20; i++) { gen(i+0x60, i+0xE0, sw, '.active'); }
+
+        // 0x80-0x9F = NORMAL @ABC…XYZ[\]^_
+        // 0xA0-0xBF = NORMAL  !"#$…<=>?
+        // 0xC0-0xDF = NORMAL @ABC…XYZ[\]^_
+        // 0xE0-0xFF = NORMAL `abc…{|}~
+
+        for (i = 0x00; i < 0x20; i++) { gen(i+0x80, i+0x40, sw, ''); }
+        for (i = 0x00; i < 0x20; i++) { gen(i+0xA0, i+0x20, sw, ''); }
+        for (i = 0x00; i < 0x20; i++) { gen(i+0xC0, i+0x40, sw, ''); }
+        for (i = 0x00; i < 0x20; i++) { gen(i+0xE0, i+0x60, sw, ''); }
+
+        // Extension symbols
+        for (i = 0x00; i < 0x20; i++) { gen(i+0x100, i+0x100, sw, ''); }
+    }
+*/
+
+/* 40 Column Text */
+.tty_40col .a2c { background-image: url(font-40col.png); width: 14px; }
+
+/* 80 Column Text */
+.tty_80col .a2c { background-image: url(font-80col.png); width: 7px; }
+
+.tty_40col .a2c0 { background-position: -318px -8px }
+.tty_40col .a2c1 { background-position: -318px -34px }
+.tty_40col .a2c2 { background-position: -318px -60px }
+.tty_40col .a2c3 { background-position: -318px -86px }
+.tty_40col .a2c4 { background-position: -318px -112px }
+.tty_40col .a2c5 { background-position: -318px -138px }
+.tty_40col .a2c6 { background-position: -318px -164px }
+.tty_40col .a2c7 { background-position: -318px -190px }
+.tty_40col .a2c8 { background-position: -318px -216px }
+.tty_40col .a2c9 { background-position: -318px -242px }
+.tty_40col .a2c10 { background-position: -318px -268px }
+.tty_40col .a2c11 { background-position: -318px -294px }
+.tty_40col .a2c12 { background-position: -318px -320px }
+.tty_40col .a2c13 { background-position: -318px -346px }
+.tty_40col .a2c14 { background-position: -318px -372px }
+.tty_40col .a2c15 { background-position: -318px -398px }
+.tty_40col .a2c16 { background-position: -344px -8px }
+.tty_40col .a2c17 { background-position: -344px -34px }
+.tty_40col .a2c18 { background-position: -344px -60px }
+.tty_40col .a2c19 { background-position: -344px -86px }
+.tty_40col .a2c20 { background-position: -344px -112px }
+.tty_40col .a2c21 { background-position: -344px -138px }
+.tty_40col .a2c22 { background-position: -344px -164px }
+.tty_40col .a2c23 { background-position: -344px -190px }
+.tty_40col .a2c24 { background-position: -344px -216px }
+.tty_40col .a2c25 { background-position: -344px -242px }
+.tty_40col .a2c26 { background-position: -344px -268px }
+.tty_40col .a2c27 { background-position: -344px -294px }
+.tty_40col .a2c28 { background-position: -344px -320px }
+.tty_40col .a2c29 { background-position: -344px -346px }
+.tty_40col .a2c30 { background-position: -344px -372px }
+.tty_40col .a2c31 { background-position: -344px -398px }
+.tty_40col .a2c32 { background-position: -266px -8px }
+.tty_40col .a2c33 { background-position: -266px -34px }
+.tty_40col .a2c34 { background-position: -266px -60px }
+.tty_40col .a2c35 { background-position: -266px -86px }
+.tty_40col .a2c36 { background-position: -266px -112px }
+.tty_40col .a2c37 { background-position: -266px -138px }
+.tty_40col .a2c38 { background-position: -266px -164px }
+.tty_40col .a2c39 { background-position: -266px -190px }
+.tty_40col .a2c40 { background-position: -266px -216px }
+.tty_40col .a2c41 { background-position: -266px -242px }
+.tty_40col .a2c42 { background-position: -266px -268px }
+.tty_40col .a2c43 { background-position: -266px -294px }
+.tty_40col .a2c44 { background-position: -266px -320px }
+.tty_40col .a2c45 { background-position: -266px -346px }
+.tty_40col .a2c46 { background-position: -266px -372px }
+.tty_40col .a2c47 { background-position: -266px -398px }
+.tty_40col .a2c48 { background-position: -292px -8px }
+.tty_40col .a2c49 { background-position: -292px -34px }
+.tty_40col .a2c50 { background-position: -292px -60px }
+.tty_40col .a2c51 { background-position: -292px -86px }
+.tty_40col .a2c52 { background-position: -292px -112px }
+.tty_40col .a2c53 { background-position: -292px -138px }
+.tty_40col .a2c54 { background-position: -292px -164px }
+.tty_40col .a2c55 { background-position: -292px -190px }
+.tty_40col .a2c56 { background-position: -292px -216px }
+.tty_40col .a2c57 { background-position: -292px -242px }
+.tty_40col .a2c58 { background-position: -292px -268px }
+.tty_40col .a2c59 { background-position: -292px -294px }
+.tty_40col .a2c60 { background-position: -292px -320px }
+.tty_40col .a2c61 { background-position: -292px -346px }
+.tty_40col .a2c62 { background-position: -292px -372px }
+.tty_40col .a2c63 { background-position: -292px -398px }
+.tty_40col .a2c64 { background-position: -110px -8px }
+.tty_40col .a2c65 { background-position: -110px -34px }
+.tty_40col .a2c66 { background-position: -110px -60px }
+.tty_40col .a2c67 { background-position: -110px -86px }
+.tty_40col .a2c68 { background-position: -110px -112px }
+.tty_40col .a2c69 { background-position: -110px -138px }
+.tty_40col .a2c70 { background-position: -110px -164px }
+.tty_40col .a2c71 { background-position: -110px -190px }
+.tty_40col .a2c72 { background-position: -110px -216px }
+.tty_40col .a2c73 { background-position: -110px -242px }
+.tty_40col .a2c74 { background-position: -110px -268px }
+.tty_40col .a2c75 { background-position: -110px -294px }
+.tty_40col .a2c76 { background-position: -110px -320px }
+.tty_40col .a2c77 { background-position: -110px -346px }
+.tty_40col .a2c78 { background-position: -110px -372px }
+.tty_40col .a2c79 { background-position: -110px -398px }
+.tty_40col .a2c80 { background-position: -136px -8px }
+.tty_40col .a2c81 { background-position: -136px -34px }
+.tty_40col .a2c82 { background-position: -136px -60px }
+.tty_40col .a2c83 { background-position: -136px -86px }
+.tty_40col .a2c84 { background-position: -136px -112px }
+.tty_40col .a2c85 { background-position: -136px -138px }
+.tty_40col .a2c86 { background-position: -136px -164px }
+.tty_40col .a2c87 { background-position: -136px -190px }
+.tty_40col .a2c88 { background-position: -136px -216px }
+.tty_40col .a2c89 { background-position: -136px -242px }
+.tty_40col .a2c90 { background-position: -136px -268px }
+.tty_40col .a2c91 { background-position: -136px -294px }
+.tty_40col .a2c92 { background-position: -136px -320px }
+.tty_40col .a2c93 { background-position: -136px -346px }
+.tty_40col .a2c94 { background-position: -136px -372px }
+.tty_40col .a2c95 { background-position: -136px -398px }
+.tty_40col.flash .a2c64 { background-position: -318px -8px }
+.tty_40col.flash .a2c65 { background-position: -318px -34px }
+.tty_40col.flash .a2c66 { background-position: -318px -60px }
+.tty_40col.flash .a2c67 { background-position: -318px -86px }
+.tty_40col.flash .a2c68 { background-position: -318px -112px }
+.tty_40col.flash .a2c69 { background-position: -318px -138px }
+.tty_40col.flash .a2c70 { background-position: -318px -164px }
+.tty_40col.flash .a2c71 { background-position: -318px -190px }
+.tty_40col.flash .a2c72 { background-position: -318px -216px }
+.tty_40col.flash .a2c73 { background-position: -318px -242px }
+.tty_40col.flash .a2c74 { background-position: -318px -268px }
+.tty_40col.flash .a2c75 { background-position: -318px -294px }
+.tty_40col.flash .a2c76 { background-position: -318px -320px }
+.tty_40col.flash .a2c77 { background-position: -318px -346px }
+.tty_40col.flash .a2c78 { background-position: -318px -372px }
+.tty_40col.flash .a2c79 { background-position: -318px -398px }
+.tty_40col.flash .a2c80 { background-position: -344px -8px }
+.tty_40col.flash .a2c81 { background-position: -344px -34px }
+.tty_40col.flash .a2c82 { background-position: -344px -60px }
+.tty_40col.flash .a2c83 { background-position: -344px -86px }
+.tty_40col.flash .a2c84 { background-position: -344px -112px }
+.tty_40col.flash .a2c85 { background-position: -344px -138px }
+.tty_40col.flash .a2c86 { background-position: -344px -164px }
+.tty_40col.flash .a2c87 { background-position: -344px -190px }
+.tty_40col.flash .a2c88 { background-position: -344px -216px }
+.tty_40col.flash .a2c89 { background-position: -344px -242px }
+.tty_40col.flash .a2c90 { background-position: -344px -268px }
+.tty_40col.flash .a2c91 { background-position: -344px -294px }
+.tty_40col.flash .a2c92 { background-position: -344px -320px }
+.tty_40col.flash .a2c93 { background-position: -344px -346px }
+.tty_40col.flash .a2c94 { background-position: -344px -372px }
+.tty_40col.flash .a2c95 { background-position: -344px -398px }
+.tty_40col .a2c96 { background-position: -58px -8px }
+.tty_40col .a2c97 { background-position: -58px -34px }
+.tty_40col .a2c98 { background-position: -58px -60px }
+.tty_40col .a2c99 { background-position: -58px -86px }
+.tty_40col .a2c100 { background-position: -58px -112px }
+.tty_40col .a2c101 { background-position: -58px -138px }
+.tty_40col .a2c102 { background-position: -58px -164px }
+.tty_40col .a2c103 { background-position: -58px -190px }
+.tty_40col .a2c104 { background-position: -58px -216px }
+.tty_40col .a2c105 { background-position: -58px -242px }
+.tty_40col .a2c106 { background-position: -58px -268px }
+.tty_40col .a2c107 { background-position: -58px -294px }
+.tty_40col .a2c108 { background-position: -58px -320px }
+.tty_40col .a2c109 { background-position: -58px -346px }
+.tty_40col .a2c110 { background-position: -58px -372px }
+.tty_40col .a2c111 { background-position: -58px -398px }
+.tty_40col .a2c112 { background-position: -84px -8px }
+.tty_40col .a2c113 { background-position: -84px -34px }
+.tty_40col .a2c114 { background-position: -84px -60px }
+.tty_40col .a2c115 { background-position: -84px -86px }
+.tty_40col .a2c116 { background-position: -84px -112px }
+.tty_40col .a2c117 { background-position: -84px -138px }
+.tty_40col .a2c118 { background-position: -84px -164px }
+.tty_40col .a2c119 { background-position: -84px -190px }
+.tty_40col .a2c120 { background-position: -84px -216px }
+.tty_40col .a2c121 { background-position: -84px -242px }
+.tty_40col .a2c122 { background-position: -84px -268px }
+.tty_40col .a2c123 { background-position: -84px -294px }
+.tty_40col .a2c124 { background-position: -84px -320px }
+.tty_40col .a2c125 { background-position: -84px -346px }
+.tty_40col .a2c126 { background-position: -84px -372px }
+.tty_40col .a2c127 { background-position: -84px -398px }
+.tty_40col.flash .a2c96 { background-position: -266px -8px }
+.tty_40col.flash .a2c97 { background-position: -266px -34px }
+.tty_40col.flash .a2c98 { background-position: -266px -60px }
+.tty_40col.flash .a2c99 { background-position: -266px -86px }
+.tty_40col.flash .a2c100 { background-position: -266px -112px }
+.tty_40col.flash .a2c101 { background-position: -266px -138px }
+.tty_40col.flash .a2c102 { background-position: -266px -164px }
+.tty_40col.flash .a2c103 { background-position: -266px -190px }
+.tty_40col.flash .a2c104 { background-position: -266px -216px }
+.tty_40col.flash .a2c105 { background-position: -266px -242px }
+.tty_40col.flash .a2c106 { background-position: -266px -268px }
+.tty_40col.flash .a2c107 { background-position: -266px -294px }
+.tty_40col.flash .a2c108 { background-position: -266px -320px }
+.tty_40col.flash .a2c109 { background-position: -266px -346px }
+.tty_40col.flash .a2c110 { background-position: -266px -372px }
+.tty_40col.flash .a2c111 { background-position: -266px -398px }
+.tty_40col.flash .a2c112 { background-position: -292px -8px }
+.tty_40col.flash .a2c113 { background-position: -292px -34px }
+.tty_40col.flash .a2c114 { background-position: -292px -60px }
+.tty_40col.flash .a2c115 { background-position: -292px -86px }
+.tty_40col.flash .a2c116 { background-position: -292px -112px }
+.tty_40col.flash .a2c117 { background-position: -292px -138px }
+.tty_40col.flash .a2c118 { background-position: -292px -164px }
+.tty_40col.flash .a2c119 { background-position: -292px -190px }
+.tty_40col.flash .a2c120 { background-position: -292px -216px }
+.tty_40col.flash .a2c121 { background-position: -292px -242px }
+.tty_40col.flash .a2c122 { background-position: -292px -268px }
+.tty_40col.flash .a2c123 { background-position: -292px -294px }
+.tty_40col.flash .a2c124 { background-position: -292px -320px }
+.tty_40col.flash .a2c125 { background-position: -292px -346px }
+.tty_40col.flash .a2c126 { background-position: -292px -372px }
+.tty_40col.flash .a2c127 { background-position: -292px -398px }
+.tty_40col.active .a2c64 { background-position: -214px -8px }
+.tty_40col.active .a2c65 { background-position: -214px -34px }
+.tty_40col.active .a2c66 { background-position: -214px -60px }
+.tty_40col.active .a2c67 { background-position: -214px -86px }
+.tty_40col.active .a2c68 { background-position: -214px -112px }
+.tty_40col.active .a2c69 { background-position: -214px -138px }
+.tty_40col.active .a2c70 { background-position: -214px -164px }
+.tty_40col.active .a2c71 { background-position: -214px -190px }
+.tty_40col.active .a2c72 { background-position: -214px -216px }
+.tty_40col.active .a2c73 { background-position: -214px -242px }
+.tty_40col.active .a2c74 { background-position: -214px -268px }
+.tty_40col.active .a2c75 { background-position: -214px -294px }
+.tty_40col.active .a2c76 { background-position: -214px -320px }
+.tty_40col.active .a2c77 { background-position: -214px -346px }
+.tty_40col.active .a2c78 { background-position: -214px -372px }
+.tty_40col.active .a2c79 { background-position: -214px -398px }
+.tty_40col.active .a2c80 { background-position: -240px -8px }
+.tty_40col.active .a2c81 { background-position: -240px -34px }
+.tty_40col.active .a2c82 { background-position: -240px -60px }
+.tty_40col.active .a2c83 { background-position: -240px -86px }
+.tty_40col.active .a2c84 { background-position: -240px -112px }
+.tty_40col.active .a2c85 { background-position: -240px -138px }
+.tty_40col.active .a2c86 { background-position: -240px -164px }
+.tty_40col.active .a2c87 { background-position: -240px -190px }
+.tty_40col.active .a2c88 { background-position: -240px -216px }
+.tty_40col.active .a2c89 { background-position: -240px -242px }
+.tty_40col.active .a2c90 { background-position: -240px -268px }
+.tty_40col.active .a2c91 { background-position: -240px -294px }
+.tty_40col.active .a2c92 { background-position: -240px -320px }
+.tty_40col.active .a2c93 { background-position: -240px -346px }
+.tty_40col.active .a2c94 { background-position: -240px -372px }
+.tty_40col.active .a2c95 { background-position: -240px -398px }
+.tty_40col.active .a2c96 { background-position: -370px -8px }
+.tty_40col.active .a2c97 { background-position: -370px -34px }
+.tty_40col.active .a2c98 { background-position: -370px -60px }
+.tty_40col.active .a2c99 { background-position: -370px -86px }
+.tty_40col.active .a2c100 { background-position: -370px -112px }
+.tty_40col.active .a2c101 { background-position: -370px -138px }
+.tty_40col.active .a2c102 { background-position: -370px -164px }
+.tty_40col.active .a2c103 { background-position: -370px -190px }
+.tty_40col.active .a2c104 { background-position: -370px -216px }
+.tty_40col.active .a2c105 { background-position: -370px -242px }
+.tty_40col.active .a2c106 { background-position: -370px -268px }
+.tty_40col.active .a2c107 { background-position: -370px -294px }
+.tty_40col.active .a2c108 { background-position: -370px -320px }
+.tty_40col.active .a2c109 { background-position: -370px -346px }
+.tty_40col.active .a2c110 { background-position: -370px -372px }
+.tty_40col.active .a2c111 { background-position: -370px -398px }
+.tty_40col.active .a2c112 { background-position: -396px -8px }
+.tty_40col.active .a2c113 { background-position: -396px -34px }
+.tty_40col.active .a2c114 { background-position: -396px -60px }
+.tty_40col.active .a2c115 { background-position: -396px -86px }
+.tty_40col.active .a2c116 { background-position: -396px -112px }
+.tty_40col.active .a2c117 { background-position: -396px -138px }
+.tty_40col.active .a2c118 { background-position: -396px -164px }
+.tty_40col.active .a2c119 { background-position: -396px -190px }
+.tty_40col.active .a2c120 { background-position: -396px -216px }
+.tty_40col.active .a2c121 { background-position: -396px -242px }
+.tty_40col.active .a2c122 { background-position: -396px -268px }
+.tty_40col.active .a2c123 { background-position: -396px -294px }
+.tty_40col.active .a2c124 { background-position: -396px -320px }
+.tty_40col.active .a2c125 { background-position: -396px -346px }
+.tty_40col.active .a2c126 { background-position: -396px -372px }
+.tty_40col.active .a2c127 { background-position: -396px -398px }
+.tty_40col .a2c128 { background-position: -110px -8px }
+.tty_40col .a2c129 { background-position: -110px -34px }
+.tty_40col .a2c130 { background-position: -110px -60px }
+.tty_40col .a2c131 { background-position: -110px -86px }
+.tty_40col .a2c132 { background-position: -110px -112px }
+.tty_40col .a2c133 { background-position: -110px -138px }
+.tty_40col .a2c134 { background-position: -110px -164px }
+.tty_40col .a2c135 { background-position: -110px -190px }
+.tty_40col .a2c136 { background-position: -110px -216px }
+.tty_40col .a2c137 { background-position: -110px -242px }
+.tty_40col .a2c138 { background-position: -110px -268px }
+.tty_40col .a2c139 { background-position: -110px -294px }
+.tty_40col .a2c140 { background-position: -110px -320px }
+.tty_40col .a2c141 { background-position: -110px -346px }
+.tty_40col .a2c142 { background-position: -110px -372px }
+.tty_40col .a2c143 { background-position: -110px -398px }
+.tty_40col .a2c144 { background-position: -136px -8px }
+.tty_40col .a2c145 { background-position: -136px -34px }
+.tty_40col .a2c146 { background-position: -136px -60px }
+.tty_40col .a2c147 { background-position: -136px -86px }
+.tty_40col .a2c148 { background-position: -136px -112px }
+.tty_40col .a2c149 { background-position: -136px -138px }
+.tty_40col .a2c150 { background-position: -136px -164px }
+.tty_40col .a2c151 { background-position: -136px -190px }
+.tty_40col .a2c152 { background-position: -136px -216px }
+.tty_40col .a2c153 { background-position: -136px -242px }
+.tty_40col .a2c154 { background-position: -136px -268px }
+.tty_40col .a2c155 { background-position: -136px -294px }
+.tty_40col .a2c156 { background-position: -136px -320px }
+.tty_40col .a2c157 { background-position: -136px -346px }
+.tty_40col .a2c158 { background-position: -136px -372px }
+.tty_40col .a2c159 { background-position: -136px -398px }
+.tty_40col .a2c160 { background-position: -58px -8px }
+.tty_40col .a2c161 { background-position: -58px -34px }
+.tty_40col .a2c162 { background-position: -58px -60px }
+.tty_40col .a2c163 { background-position: -58px -86px }
+.tty_40col .a2c164 { background-position: -58px -112px }
+.tty_40col .a2c165 { background-position: -58px -138px }
+.tty_40col .a2c166 { background-position: -58px -164px }
+.tty_40col .a2c167 { background-position: -58px -190px }
+.tty_40col .a2c168 { background-position: -58px -216px }
+.tty_40col .a2c169 { background-position: -58px -242px }
+.tty_40col .a2c170 { background-position: -58px -268px }
+.tty_40col .a2c171 { background-position: -58px -294px }
+.tty_40col .a2c172 { background-position: -58px -320px }
+.tty_40col .a2c173 { background-position: -58px -346px }
+.tty_40col .a2c174 { background-position: -58px -372px }
+.tty_40col .a2c175 { background-position: -58px -398px }
+.tty_40col .a2c176 { background-position: -84px -8px }
+.tty_40col .a2c177 { background-position: -84px -34px }
+.tty_40col .a2c178 { background-position: -84px -60px }
+.tty_40col .a2c179 { background-position: -84px -86px }
+.tty_40col .a2c180 { background-position: -84px -112px }
+.tty_40col .a2c181 { background-position: -84px -138px }
+.tty_40col .a2c182 { background-position: -84px -164px }
+.tty_40col .a2c183 { background-position: -84px -190px }
+.tty_40col .a2c184 { background-position: -84px -216px }
+.tty_40col .a2c185 { background-position: -84px -242px }
+.tty_40col .a2c186 { background-position: -84px -268px }
+.tty_40col .a2c187 { background-position: -84px -294px }
+.tty_40col .a2c188 { background-position: -84px -320px }
+.tty_40col .a2c189 { background-position: -84px -346px }
+.tty_40col .a2c190 { background-position: -84px -372px }
+.tty_40col .a2c191 { background-position: -84px -398px }
+.tty_40col .a2c192 { background-position: -110px -8px }
+.tty_40col .a2c193 { background-position: -110px -34px }
+.tty_40col .a2c194 { background-position: -110px -60px }
+.tty_40col .a2c195 { background-position: -110px -86px }
+.tty_40col .a2c196 { background-position: -110px -112px }
+.tty_40col .a2c197 { background-position: -110px -138px }
+.tty_40col .a2c198 { background-position: -110px -164px }
+.tty_40col .a2c199 { background-position: -110px -190px }
+.tty_40col .a2c200 { background-position: -110px -216px }
+.tty_40col .a2c201 { background-position: -110px -242px }
+.tty_40col .a2c202 { background-position: -110px -268px }
+.tty_40col .a2c203 { background-position: -110px -294px }
+.tty_40col .a2c204 { background-position: -110px -320px }
+.tty_40col .a2c205 { background-position: -110px -346px }
+.tty_40col .a2c206 { background-position: -110px -372px }
+.tty_40col .a2c207 { background-position: -110px -398px }
+.tty_40col .a2c208 { background-position: -136px -8px }
+.tty_40col .a2c209 { background-position: -136px -34px }
+.tty_40col .a2c210 { background-position: -136px -60px }
+.tty_40col .a2c211 { background-position: -136px -86px }
+.tty_40col .a2c212 { background-position: -136px -112px }
+.tty_40col .a2c213 { background-position: -136px -138px }
+.tty_40col .a2c214 { background-position: -136px -164px }
+.tty_40col .a2c215 { background-position: -136px -190px }
+.tty_40col .a2c216 { background-position: -136px -216px }
+.tty_40col .a2c217 { background-position: -136px -242px }
+.tty_40col .a2c218 { background-position: -136px -268px }
+.tty_40col .a2c219 { background-position: -136px -294px }
+.tty_40col .a2c220 { background-position: -136px -320px }
+.tty_40col .a2c221 { background-position: -136px -346px }
+.tty_40col .a2c222 { background-position: -136px -372px }
+.tty_40col .a2c223 { background-position: -136px -398px }
+.tty_40col .a2c224 { background-position: -162px -8px }
+.tty_40col .a2c225 { background-position: -162px -34px }
+.tty_40col .a2c226 { background-position: -162px -60px }
+.tty_40col .a2c227 { background-position: -162px -86px }
+.tty_40col .a2c228 { background-position: -162px -112px }
+.tty_40col .a2c229 { background-position: -162px -138px }
+.tty_40col .a2c230 { background-position: -162px -164px }
+.tty_40col .a2c231 { background-position: -162px -190px }
+.tty_40col .a2c232 { background-position: -162px -216px }
+.tty_40col .a2c233 { background-position: -162px -242px }
+.tty_40col .a2c234 { background-position: -162px -268px }
+.tty_40col .a2c235 { background-position: -162px -294px }
+.tty_40col .a2c236 { background-position: -162px -320px }
+.tty_40col .a2c237 { background-position: -162px -346px }
+.tty_40col .a2c238 { background-position: -162px -372px }
+.tty_40col .a2c239 { background-position: -162px -398px }
+.tty_40col .a2c240 { background-position: -188px -8px }
+.tty_40col .a2c241 { background-position: -188px -34px }
+.tty_40col .a2c242 { background-position: -188px -60px }
+.tty_40col .a2c243 { background-position: -188px -86px }
+.tty_40col .a2c244 { background-position: -188px -112px }
+.tty_40col .a2c245 { background-position: -188px -138px }
+.tty_40col .a2c246 { background-position: -188px -164px }
+.tty_40col .a2c247 { background-position: -188px -190px }
+.tty_40col .a2c248 { background-position: -188px -216px }
+.tty_40col .a2c249 { background-position: -188px -242px }
+.tty_40col .a2c250 { background-position: -188px -268px }
+.tty_40col .a2c251 { background-position: -188px -294px }
+.tty_40col .a2c252 { background-position: -188px -320px }
+.tty_40col .a2c253 { background-position: -188px -346px }
+.tty_40col .a2c254 { background-position: -188px -372px }
+.tty_40col .a2c255 { background-position: -188px -398px }
+
+.tty_40col .a2c256 { background-position: -422px -8px }
+.tty_40col .a2c257 { background-position: -422px -34px }
+.tty_40col .a2c258 { background-position: -422px -60px }
+.tty_40col .a2c259 { background-position: -422px -86px }
+.tty_40col .a2c260 { background-position: -422px -112px }
+.tty_40col .a2c261 { background-position: -422px -138px }
+.tty_40col .a2c262 { background-position: -422px -164px }
+.tty_40col .a2c263 { background-position: -422px -190px }
+.tty_40col .a2c264 { background-position: -422px -216px }
+.tty_40col .a2c265 { background-position: -422px -242px }
+.tty_40col .a2c266 { background-position: -422px -268px }
+.tty_40col .a2c267 { background-position: -422px -294px }
+.tty_40col .a2c268 { background-position: -422px -320px }
+.tty_40col .a2c269 { background-position: -422px -346px }
+.tty_40col .a2c270 { background-position: -422px -372px }
+.tty_40col .a2c271 { background-position: -422px -398px }
+.tty_40col .a2c272 { background-position: -448px -8px }
+.tty_40col .a2c273 { background-position: -448px -34px }
+.tty_40col .a2c274 { background-position: -448px -60px }
+.tty_40col .a2c275 { background-position: -448px -86px }
+.tty_40col .a2c276 { background-position: -448px -112px }
+.tty_40col .a2c277 { background-position: -448px -138px }
+.tty_40col .a2c278 { background-position: -448px -164px }
+.tty_40col .a2c279 { background-position: -448px -190px }
+.tty_40col .a2c280 { background-position: -448px -216px }
+.tty_40col .a2c281 { background-position: -448px -242px }
+.tty_40col .a2c282 { background-position: -448px -268px }
+.tty_40col .a2c283 { background-position: -448px -294px }
+.tty_40col .a2c284 { background-position: -448px -320px }
+.tty_40col .a2c285 { background-position: -448px -346px }
+.tty_40col .a2c286 { background-position: -448px -372px }
+.tty_40col .a2c287 { background-position: -448px -398px }
+
+.tty_80col .a2c0 { background-position: -159px -8px }
+.tty_80col .a2c1 { background-position: -159px -34px }
+.tty_80col .a2c2 { background-position: -159px -60px }
+.tty_80col .a2c3 { background-position: -159px -86px }
+.tty_80col .a2c4 { background-position: -159px -112px }
+.tty_80col .a2c5 { background-position: -159px -138px }
+.tty_80col .a2c6 { background-position: -159px -164px }
+.tty_80col .a2c7 { background-position: -159px -190px }
+.tty_80col .a2c8 { background-position: -159px -216px }
+.tty_80col .a2c9 { background-position: -159px -242px }
+.tty_80col .a2c10 { background-position: -159px -268px }
+.tty_80col .a2c11 { background-position: -159px -294px }
+.tty_80col .a2c12 { background-position: -159px -320px }
+.tty_80col .a2c13 { background-position: -159px -346px }
+.tty_80col .a2c14 { background-position: -159px -372px }
+.tty_80col .a2c15 { background-position: -159px -398px }
+.tty_80col .a2c16 { background-position: -172px -8px }
+.tty_80col .a2c17 { background-position: -172px -34px }
+.tty_80col .a2c18 { background-position: -172px -60px }
+.tty_80col .a2c19 { background-position: -172px -86px }
+.tty_80col .a2c20 { background-position: -172px -112px }
+.tty_80col .a2c21 { background-position: -172px -138px }
+.tty_80col .a2c22 { background-position: -172px -164px }
+.tty_80col .a2c23 { background-position: -172px -190px }
+.tty_80col .a2c24 { background-position: -172px -216px }
+.tty_80col .a2c25 { background-position: -172px -242px }
+.tty_80col .a2c26 { background-position: -172px -268px }
+.tty_80col .a2c27 { background-position: -172px -294px }
+.tty_80col .a2c28 { background-position: -172px -320px }
+.tty_80col .a2c29 { background-position: -172px -346px }
+.tty_80col .a2c30 { background-position: -172px -372px }
+.tty_80col .a2c31 { background-position: -172px -398px }
+.tty_80col .a2c32 { background-position: -133px -8px }
+.tty_80col .a2c33 { background-position: -133px -34px }
+.tty_80col .a2c34 { background-position: -133px -60px }
+.tty_80col .a2c35 { background-position: -133px -86px }
+.tty_80col .a2c36 { background-position: -133px -112px }
+.tty_80col .a2c37 { background-position: -133px -138px }
+.tty_80col .a2c38 { background-position: -133px -164px }
+.tty_80col .a2c39 { background-position: -133px -190px }
+.tty_80col .a2c40 { background-position: -133px -216px }
+.tty_80col .a2c41 { background-position: -133px -242px }
+.tty_80col .a2c42 { background-position: -133px -268px }
+.tty_80col .a2c43 { background-position: -133px -294px }
+.tty_80col .a2c44 { background-position: -133px -320px }
+.tty_80col .a2c45 { background-position: -133px -346px }
+.tty_80col .a2c46 { background-position: -133px -372px }
+.tty_80col .a2c47 { background-position: -133px -398px }
+.tty_80col .a2c48 { background-position: -146px -8px }
+.tty_80col .a2c49 { background-position: -146px -34px }
+.tty_80col .a2c50 { background-position: -146px -60px }
+.tty_80col .a2c51 { background-position: -146px -86px }
+.tty_80col .a2c52 { background-position: -146px -112px }
+.tty_80col .a2c53 { background-position: -146px -138px }
+.tty_80col .a2c54 { background-position: -146px -164px }
+.tty_80col .a2c55 { background-position: -146px -190px }
+.tty_80col .a2c56 { background-position: -146px -216px }
+.tty_80col .a2c57 { background-position: -146px -242px }
+.tty_80col .a2c58 { background-position: -146px -268px }
+.tty_80col .a2c59 { background-position: -146px -294px }
+.tty_80col .a2c60 { background-position: -146px -320px }
+.tty_80col .a2c61 { background-position: -146px -346px }
+.tty_80col .a2c62 { background-position: -146px -372px }
+.tty_80col .a2c63 { background-position: -146px -398px }
+.tty_80col .a2c64 { background-position: -55px -8px }
+.tty_80col .a2c65 { background-position: -55px -34px }
+.tty_80col .a2c66 { background-position: -55px -60px }
+.tty_80col .a2c67 { background-position: -55px -86px }
+.tty_80col .a2c68 { background-position: -55px -112px }
+.tty_80col .a2c69 { background-position: -55px -138px }
+.tty_80col .a2c70 { background-position: -55px -164px }
+.tty_80col .a2c71 { background-position: -55px -190px }
+.tty_80col .a2c72 { background-position: -55px -216px }
+.tty_80col .a2c73 { background-position: -55px -242px }
+.tty_80col .a2c74 { background-position: -55px -268px }
+.tty_80col .a2c75 { background-position: -55px -294px }
+.tty_80col .a2c76 { background-position: -55px -320px }
+.tty_80col .a2c77 { background-position: -55px -346px }
+.tty_80col .a2c78 { background-position: -55px -372px }
+.tty_80col .a2c79 { background-position: -55px -398px }
+.tty_80col .a2c80 { background-position: -68px -8px }
+.tty_80col .a2c81 { background-position: -68px -34px }
+.tty_80col .a2c82 { background-position: -68px -60px }
+.tty_80col .a2c83 { background-position: -68px -86px }
+.tty_80col .a2c84 { background-position: -68px -112px }
+.tty_80col .a2c85 { background-position: -68px -138px }
+.tty_80col .a2c86 { background-position: -68px -164px }
+.tty_80col .a2c87 { background-position: -68px -190px }
+.tty_80col .a2c88 { background-position: -68px -216px }
+.tty_80col .a2c89 { background-position: -68px -242px }
+.tty_80col .a2c90 { background-position: -68px -268px }
+.tty_80col .a2c91 { background-position: -68px -294px }
+.tty_80col .a2c92 { background-position: -68px -320px }
+.tty_80col .a2c93 { background-position: -68px -346px }
+.tty_80col .a2c94 { background-position: -68px -372px }
+.tty_80col .a2c95 { background-position: -68px -398px }
+.tty_80col.flash .a2c64 { background-position: -159px -8px }
+.tty_80col.flash .a2c65 { background-position: -159px -34px }
+.tty_80col.flash .a2c66 { background-position: -159px -60px }
+.tty_80col.flash .a2c67 { background-position: -159px -86px }
+.tty_80col.flash .a2c68 { background-position: -159px -112px }
+.tty_80col.flash .a2c69 { background-position: -159px -138px }
+.tty_80col.flash .a2c70 { background-position: -159px -164px }
+.tty_80col.flash .a2c71 { background-position: -159px -190px }
+.tty_80col.flash .a2c72 { background-position: -159px -216px }
+.tty_80col.flash .a2c73 { background-position: -159px -242px }
+.tty_80col.flash .a2c74 { background-position: -159px -268px }
+.tty_80col.flash .a2c75 { background-position: -159px -294px }
+.tty_80col.flash .a2c76 { background-position: -159px -320px }
+.tty_80col.flash .a2c77 { background-position: -159px -346px }
+.tty_80col.flash .a2c78 { background-position: -159px -372px }
+.tty_80col.flash .a2c79 { background-position: -159px -398px }
+.tty_80col.flash .a2c80 { background-position: -172px -8px }
+.tty_80col.flash .a2c81 { background-position: -172px -34px }
+.tty_80col.flash .a2c82 { background-position: -172px -60px }
+.tty_80col.flash .a2c83 { background-position: -172px -86px }
+.tty_80col.flash .a2c84 { background-position: -172px -112px }
+.tty_80col.flash .a2c85 { background-position: -172px -138px }
+.tty_80col.flash .a2c86 { background-position: -172px -164px }
+.tty_80col.flash .a2c87 { background-position: -172px -190px }
+.tty_80col.flash .a2c88 { background-position: -172px -216px }
+.tty_80col.flash .a2c89 { background-position: -172px -242px }
+.tty_80col.flash .a2c90 { background-position: -172px -268px }
+.tty_80col.flash .a2c91 { background-position: -172px -294px }
+.tty_80col.flash .a2c92 { background-position: -172px -320px }
+.tty_80col.flash .a2c93 { background-position: -172px -346px }
+.tty_80col.flash .a2c94 { background-position: -172px -372px }
+.tty_80col.flash .a2c95 { background-position: -172px -398px }
+.tty_80col .a2c96 { background-position: -29px -8px }
+.tty_80col .a2c97 { background-position: -29px -34px }
+.tty_80col .a2c98 { background-position: -29px -60px }
+.tty_80col .a2c99 { background-position: -29px -86px }
+.tty_80col .a2c100 { background-position: -29px -112px }
+.tty_80col .a2c101 { background-position: -29px -138px }
+.tty_80col .a2c102 { background-position: -29px -164px }
+.tty_80col .a2c103 { background-position: -29px -190px }
+.tty_80col .a2c104 { background-position: -29px -216px }
+.tty_80col .a2c105 { background-position: -29px -242px }
+.tty_80col .a2c106 { background-position: -29px -268px }
+.tty_80col .a2c107 { background-position: -29px -294px }
+.tty_80col .a2c108 { background-position: -29px -320px }
+.tty_80col .a2c109 { background-position: -29px -346px }
+.tty_80col .a2c110 { background-position: -29px -372px }
+.tty_80col .a2c111 { background-position: -29px -398px }
+.tty_80col .a2c112 { background-position: -42px -8px }
+.tty_80col .a2c113 { background-position: -42px -34px }
+.tty_80col .a2c114 { background-position: -42px -60px }
+.tty_80col .a2c115 { background-position: -42px -86px }
+.tty_80col .a2c116 { background-position: -42px -112px }
+.tty_80col .a2c117 { background-position: -42px -138px }
+.tty_80col .a2c118 { background-position: -42px -164px }
+.tty_80col .a2c119 { background-position: -42px -190px }
+.tty_80col .a2c120 { background-position: -42px -216px }
+.tty_80col .a2c121 { background-position: -42px -242px }
+.tty_80col .a2c122 { background-position: -42px -268px }
+.tty_80col .a2c123 { background-position: -42px -294px }
+.tty_80col .a2c124 { background-position: -42px -320px }
+.tty_80col .a2c125 { background-position: -42px -346px }
+.tty_80col .a2c126 { background-position: -42px -372px }
+.tty_80col .a2c127 { background-position: -42px -398px }
+.tty_80col.flash .a2c96 { background-position: -133px -8px }
+.tty_80col.flash .a2c97 { background-position: -133px -34px }
+.tty_80col.flash .a2c98 { background-position: -133px -60px }
+.tty_80col.flash .a2c99 { background-position: -133px -86px }
+.tty_80col.flash .a2c100 { background-position: -133px -112px }
+.tty_80col.flash .a2c101 { background-position: -133px -138px }
+.tty_80col.flash .a2c102 { background-position: -133px -164px }
+.tty_80col.flash .a2c103 { background-position: -133px -190px }
+.tty_80col.flash .a2c104 { background-position: -133px -216px }
+.tty_80col.flash .a2c105 { background-position: -133px -242px }
+.tty_80col.flash .a2c106 { background-position: -133px -268px }
+.tty_80col.flash .a2c107 { background-position: -133px -294px }
+.tty_80col.flash .a2c108 { background-position: -133px -320px }
+.tty_80col.flash .a2c109 { background-position: -133px -346px }
+.tty_80col.flash .a2c110 { background-position: -133px -372px }
+.tty_80col.flash .a2c111 { background-position: -133px -398px }
+.tty_80col.flash .a2c112 { background-position: -146px -8px }
+.tty_80col.flash .a2c113 { background-position: -146px -34px }
+.tty_80col.flash .a2c114 { background-position: -146px -60px }
+.tty_80col.flash .a2c115 { background-position: -146px -86px }
+.tty_80col.flash .a2c116 { background-position: -146px -112px }
+.tty_80col.flash .a2c117 { background-position: -146px -138px }
+.tty_80col.flash .a2c118 { background-position: -146px -164px }
+.tty_80col.flash .a2c119 { background-position: -146px -190px }
+.tty_80col.flash .a2c120 { background-position: -146px -216px }
+.tty_80col.flash .a2c121 { background-position: -146px -242px }
+.tty_80col.flash .a2c122 { background-position: -146px -268px }
+.tty_80col.flash .a2c123 { background-position: -146px -294px }
+.tty_80col.flash .a2c124 { background-position: -146px -320px }
+.tty_80col.flash .a2c125 { background-position: -146px -346px }
+.tty_80col.flash .a2c126 { background-position: -146px -372px }
+.tty_80col.flash .a2c127 { background-position: -146px -398px }
+.tty_80col.active .a2c64 { background-position: -107px -8px }
+.tty_80col.active .a2c65 { background-position: -107px -34px }
+.tty_80col.active .a2c66 { background-position: -107px -60px }
+.tty_80col.active .a2c67 { background-position: -107px -86px }
+.tty_80col.active .a2c68 { background-position: -107px -112px }
+.tty_80col.active .a2c69 { background-position: -107px -138px }
+.tty_80col.active .a2c70 { background-position: -107px -164px }
+.tty_80col.active .a2c71 { background-position: -107px -190px }
+.tty_80col.active .a2c72 { background-position: -107px -216px }
+.tty_80col.active .a2c73 { background-position: -107px -242px }
+.tty_80col.active .a2c74 { background-position: -107px -268px }
+.tty_80col.active .a2c75 { background-position: -107px -294px }
+.tty_80col.active .a2c76 { background-position: -107px -320px }
+.tty_80col.active .a2c77 { background-position: -107px -346px }
+.tty_80col.active .a2c78 { background-position: -107px -372px }
+.tty_80col.active .a2c79 { background-position: -107px -398px }
+.tty_80col.active .a2c80 { background-position: -120px -8px }
+.tty_80col.active .a2c81 { background-position: -120px -34px }
+.tty_80col.active .a2c82 { background-position: -120px -60px }
+.tty_80col.active .a2c83 { background-position: -120px -86px }
+.tty_80col.active .a2c84 { background-position: -120px -112px }
+.tty_80col.active .a2c85 { background-position: -120px -138px }
+.tty_80col.active .a2c86 { background-position: -120px -164px }
+.tty_80col.active .a2c87 { background-position: -120px -190px }
+.tty_80col.active .a2c88 { background-position: -120px -216px }
+.tty_80col.active .a2c89 { background-position: -120px -242px }
+.tty_80col.active .a2c90 { background-position: -120px -268px }
+.tty_80col.active .a2c91 { background-position: -120px -294px }
+.tty_80col.active .a2c92 { background-position: -120px -320px }
+.tty_80col.active .a2c93 { background-position: -120px -346px }
+.tty_80col.active .a2c94 { background-position: -120px -372px }
+.tty_80col.active .a2c95 { background-position: -120px -398px }
+.tty_80col.active .a2c96 { background-position: -185px -8px }
+.tty_80col.active .a2c97 { background-position: -185px -34px }
+.tty_80col.active .a2c98 { background-position: -185px -60px }
+.tty_80col.active .a2c99 { background-position: -185px -86px }
+.tty_80col.active .a2c100 { background-position: -185px -112px }
+.tty_80col.active .a2c101 { background-position: -185px -138px }
+.tty_80col.active .a2c102 { background-position: -185px -164px }
+.tty_80col.active .a2c103 { background-position: -185px -190px }
+.tty_80col.active .a2c104 { background-position: -185px -216px }
+.tty_80col.active .a2c105 { background-position: -185px -242px }
+.tty_80col.active .a2c106 { background-position: -185px -268px }
+.tty_80col.active .a2c107 { background-position: -185px -294px }
+.tty_80col.active .a2c108 { background-position: -185px -320px }
+.tty_80col.active .a2c109 { background-position: -185px -346px }
+.tty_80col.active .a2c110 { background-position: -185px -372px }
+.tty_80col.active .a2c111 { background-position: -185px -398px }
+.tty_80col.active .a2c112 { background-position: -198px -8px }
+.tty_80col.active .a2c113 { background-position: -198px -34px }
+.tty_80col.active .a2c114 { background-position: -198px -60px }
+.tty_80col.active .a2c115 { background-position: -198px -86px }
+.tty_80col.active .a2c116 { background-position: -198px -112px }
+.tty_80col.active .a2c117 { background-position: -198px -138px }
+.tty_80col.active .a2c118 { background-position: -198px -164px }
+.tty_80col.active .a2c119 { background-position: -198px -190px }
+.tty_80col.active .a2c120 { background-position: -198px -216px }
+.tty_80col.active .a2c121 { background-position: -198px -242px }
+.tty_80col.active .a2c122 { background-position: -198px -268px }
+.tty_80col.active .a2c123 { background-position: -198px -294px }
+.tty_80col.active .a2c124 { background-position: -198px -320px }
+.tty_80col.active .a2c125 { background-position: -198px -346px }
+.tty_80col.active .a2c126 { background-position: -198px -372px }
+.tty_80col.active .a2c127 { background-position: -198px -398px }
+.tty_80col .a2c128 { background-position: -55px -8px }
+.tty_80col .a2c129 { background-position: -55px -34px }
+.tty_80col .a2c130 { background-position: -55px -60px }
+.tty_80col .a2c131 { background-position: -55px -86px }
+.tty_80col .a2c132 { background-position: -55px -112px }
+.tty_80col .a2c133 { background-position: -55px -138px }
+.tty_80col .a2c134 { background-position: -55px -164px }
+.tty_80col .a2c135 { background-position: -55px -190px }
+.tty_80col .a2c136 { background-position: -55px -216px }
+.tty_80col .a2c137 { background-position: -55px -242px }
+.tty_80col .a2c138 { background-position: -55px -268px }
+.tty_80col .a2c139 { background-position: -55px -294px }
+.tty_80col .a2c140 { background-position: -55px -320px }
+.tty_80col .a2c141 { background-position: -55px -346px }
+.tty_80col .a2c142 { background-position: -55px -372px }
+.tty_80col .a2c143 { background-position: -55px -398px }
+.tty_80col .a2c144 { background-position: -68px -8px }
+.tty_80col .a2c145 { background-position: -68px -34px }
+.tty_80col .a2c146 { background-position: -68px -60px }
+.tty_80col .a2c147 { background-position: -68px -86px }
+.tty_80col .a2c148 { background-position: -68px -112px }
+.tty_80col .a2c149 { background-position: -68px -138px }
+.tty_80col .a2c150 { background-position: -68px -164px }
+.tty_80col .a2c151 { background-position: -68px -190px }
+.tty_80col .a2c152 { background-position: -68px -216px }
+.tty_80col .a2c153 { background-position: -68px -242px }
+.tty_80col .a2c154 { background-position: -68px -268px }
+.tty_80col .a2c155 { background-position: -68px -294px }
+.tty_80col .a2c156 { background-position: -68px -320px }
+.tty_80col .a2c157 { background-position: -68px -346px }
+.tty_80col .a2c158 { background-position: -68px -372px }
+.tty_80col .a2c159 { background-position: -68px -398px }
+.tty_80col .a2c160 { background-position: -29px -8px }
+.tty_80col .a2c161 { background-position: -29px -34px }
+.tty_80col .a2c162 { background-position: -29px -60px }
+.tty_80col .a2c163 { background-position: -29px -86px }
+.tty_80col .a2c164 { background-position: -29px -112px }
+.tty_80col .a2c165 { background-position: -29px -138px }
+.tty_80col .a2c166 { background-position: -29px -164px }
+.tty_80col .a2c167 { background-position: -29px -190px }
+.tty_80col .a2c168 { background-position: -29px -216px }
+.tty_80col .a2c169 { background-position: -29px -242px }
+.tty_80col .a2c170 { background-position: -29px -268px }
+.tty_80col .a2c171 { background-position: -29px -294px }
+.tty_80col .a2c172 { background-position: -29px -320px }
+.tty_80col .a2c173 { background-position: -29px -346px }
+.tty_80col .a2c174 { background-position: -29px -372px }
+.tty_80col .a2c175 { background-position: -29px -398px }
+.tty_80col .a2c176 { background-position: -42px -8px }
+.tty_80col .a2c177 { background-position: -42px -34px }
+.tty_80col .a2c178 { background-position: -42px -60px }
+.tty_80col .a2c179 { background-position: -42px -86px }
+.tty_80col .a2c180 { background-position: -42px -112px }
+.tty_80col .a2c181 { background-position: -42px -138px }
+.tty_80col .a2c182 { background-position: -42px -164px }
+.tty_80col .a2c183 { background-position: -42px -190px }
+.tty_80col .a2c184 { background-position: -42px -216px }
+.tty_80col .a2c185 { background-position: -42px -242px }
+.tty_80col .a2c186 { background-position: -42px -268px }
+.tty_80col .a2c187 { background-position: -42px -294px }
+.tty_80col .a2c188 { background-position: -42px -320px }
+.tty_80col .a2c189 { background-position: -42px -346px }
+.tty_80col .a2c190 { background-position: -42px -372px }
+.tty_80col .a2c191 { background-position: -42px -398px }
+.tty_80col .a2c192 { background-position: -55px -8px }
+.tty_80col .a2c193 { background-position: -55px -34px }
+.tty_80col .a2c194 { background-position: -55px -60px }
+.tty_80col .a2c195 { background-position: -55px -86px }
+.tty_80col .a2c196 { background-position: -55px -112px }
+.tty_80col .a2c197 { background-position: -55px -138px }
+.tty_80col .a2c198 { background-position: -55px -164px }
+.tty_80col .a2c199 { background-position: -55px -190px }
+.tty_80col .a2c200 { background-position: -55px -216px }
+.tty_80col .a2c201 { background-position: -55px -242px }
+.tty_80col .a2c202 { background-position: -55px -268px }
+.tty_80col .a2c203 { background-position: -55px -294px }
+.tty_80col .a2c204 { background-position: -55px -320px }
+.tty_80col .a2c205 { background-position: -55px -346px }
+.tty_80col .a2c206 { background-position: -55px -372px }
+.tty_80col .a2c207 { background-position: -55px -398px }
+.tty_80col .a2c208 { background-position: -68px -8px }
+.tty_80col .a2c209 { background-position: -68px -34px }
+.tty_80col .a2c210 { background-position: -68px -60px }
+.tty_80col .a2c211 { background-position: -68px -86px }
+.tty_80col .a2c212 { background-position: -68px -112px }
+.tty_80col .a2c213 { background-position: -68px -138px }
+.tty_80col .a2c214 { background-position: -68px -164px }
+.tty_80col .a2c215 { background-position: -68px -190px }
+.tty_80col .a2c216 { background-position: -68px -216px }
+.tty_80col .a2c217 { background-position: -68px -242px }
+.tty_80col .a2c218 { background-position: -68px -268px }
+.tty_80col .a2c219 { background-position: -68px -294px }
+.tty_80col .a2c220 { background-position: -68px -320px }
+.tty_80col .a2c221 { background-position: -68px -346px }
+.tty_80col .a2c222 { background-position: -68px -372px }
+.tty_80col .a2c223 { background-position: -68px -398px }
+.tty_80col .a2c224 { background-position: -81px -8px }
+.tty_80col .a2c225 { background-position: -81px -34px }
+.tty_80col .a2c226 { background-position: -81px -60px }
+.tty_80col .a2c227 { background-position: -81px -86px }
+.tty_80col .a2c228 { background-position: -81px -112px }
+.tty_80col .a2c229 { background-position: -81px -138px }
+.tty_80col .a2c230 { background-position: -81px -164px }
+.tty_80col .a2c231 { background-position: -81px -190px }
+.tty_80col .a2c232 { background-position: -81px -216px }
+.tty_80col .a2c233 { background-position: -81px -242px }
+.tty_80col .a2c234 { background-position: -81px -268px }
+.tty_80col .a2c235 { background-position: -81px -294px }
+.tty_80col .a2c236 { background-position: -81px -320px }
+.tty_80col .a2c237 { background-position: -81px -346px }
+.tty_80col .a2c238 { background-position: -81px -372px }
+.tty_80col .a2c239 { background-position: -81px -398px }
+.tty_80col .a2c240 { background-position: -94px -8px }
+.tty_80col .a2c241 { background-position: -94px -34px }
+.tty_80col .a2c242 { background-position: -94px -60px }
+.tty_80col .a2c243 { background-position: -94px -86px }
+.tty_80col .a2c244 { background-position: -94px -112px }
+.tty_80col .a2c245 { background-position: -94px -138px }
+.tty_80col .a2c246 { background-position: -94px -164px }
+.tty_80col .a2c247 { background-position: -94px -190px }
+.tty_80col .a2c248 { background-position: -94px -216px }
+.tty_80col .a2c249 { background-position: -94px -242px }
+.tty_80col .a2c250 { background-position: -94px -268px }
+.tty_80col .a2c251 { background-position: -94px -294px }
+.tty_80col .a2c252 { background-position: -94px -320px }
+.tty_80col .a2c253 { background-position: -94px -346px }
+.tty_80col .a2c254 { background-position: -94px -372px }
+.tty_80col .a2c255 { background-position: -94px -398px }
+
+.tty_80col .a2c256 { background-position: -211px -8px }
+.tty_80col .a2c257 { background-position: -211px -34px }
+.tty_80col .a2c258 { background-position: -211px -60px }
+.tty_80col .a2c259 { background-position: -211px -86px }
+.tty_80col .a2c260 { background-position: -211px -112px }
+.tty_80col .a2c261 { background-position: -211px -138px }
+.tty_80col .a2c262 { background-position: -211px -164px }
+.tty_80col .a2c263 { background-position: -211px -190px }
+.tty_80col .a2c264 { background-position: -211px -216px }
+.tty_80col .a2c265 { background-position: -211px -242px }
+.tty_80col .a2c266 { background-position: -211px -268px }
+.tty_80col .a2c267 { background-position: -211px -294px }
+.tty_80col .a2c268 { background-position: -211px -320px }
+.tty_80col .a2c269 { background-position: -211px -346px }
+.tty_80col .a2c270 { background-position: -211px -372px }
+.tty_80col .a2c271 { background-position: -211px -398px }
+.tty_80col .a2c272 { background-position: -224px -8px }
+.tty_80col .a2c273 { background-position: -224px -34px }
+.tty_80col .a2c274 { background-position: -224px -60px }
+.tty_80col .a2c275 { background-position: -224px -86px }
+.tty_80col .a2c276 { background-position: -224px -112px }
+.tty_80col .a2c277 { background-position: -224px -138px }
+.tty_80col .a2c278 { background-position: -224px -164px }
+.tty_80col .a2c279 { background-position: -224px -190px }
+.tty_80col .a2c280 { background-position: -224px -216px }
+.tty_80col .a2c281 { background-position: -224px -242px }
+.tty_80col .a2c282 { background-position: -224px -268px }
+.tty_80col .a2c283 { background-position: -224px -294px }
+.tty_80col .a2c284 { background-position: -224px -320px }
+.tty_80col .a2c285 { background-position: -224px -346px }
+.tty_80col .a2c286 { background-position: -224px -372px }
+.tty_80col .a2c287 { background-position: -224px -398px }
+
+/* For non-canvas based hires implementations */
+.hiresPixel { width: 4px; height: 2px; background-color: black; }
+
+.loresPixel { width: 14px; height: 8px; margin: 0; padding: 0; }
+.loresRow { height: 8px; margin: 0; padding: 0; }
+.loresDisplay { table-layout: fixed; border-collapse: collapse; }
+
+
+
+/* Input Devices */
+.keyboard { width: 1px; height: 1px; border: none; position: absolute; left: -100px; top: -100px; }
+td.controlbox { vertical-align: middle; padding-left: 12px; padding-right: 12px; }
+
+#paddle0, #paddle1
+{
+    border-style: inset;
+    border-width: 2px;
+    border-color: gray;
+    background-color: #c0c0c0;
+    height: 20px;
+    width: 245px;
+    text-align: center;
+}
+#knob0, #knob1
+{
+    border-style: outset;
+    border-width: 2px;
+    border-color: gray;
+    background-color: #404040;
+    height: 16px;
+    width: 10px;
+}
+
+#joystick
+{
+    border-style: inset;
+    border-width: 2px;
+    border-color: gray;
+    background-color: #c0c0c0;
+    width: 100px;
+    height: 100px;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 100px;
+}
+#stick
+{
+    border-style: outset;
+    border-width: 2px;
+    border-color: gray;
+    background-color: #404040;
+    height: 16px;
+    width: 16px;
+}

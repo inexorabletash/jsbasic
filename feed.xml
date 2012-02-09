@@ -1,0 +1,789 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+    <id>http://www.calormen.com/Applesoft/</id>
+    <title>Applesoft BASIC in Javascript - Change Log</title>
+    <updated>2011-12-06T23:00:00Z</updated>
+
+    <author>
+        <name>Joshua Bell</name>
+        <email>inexorabletash@hotmail.com</email>
+        <uri>http://www.calormen.com/</uri>
+    </author>
+
+    <link rel="self" href="http://www.calormen.com/Applesoft/feed.xml"/>
+
+    <entry>
+        <title>2011-12-06</title>
+        <id>http://www.calormen.com/Applesoft/20111206</id>
+        <updated>2011-12-06T23:00:00Z</updated>
+        <content type="html">
+            &lt;p&gt;
+            Added &lt;code&gt;PEEK&lt;/code&gt; and &lt;code&gt;POKE&lt;/code&gt; shim for 230 (Hi-Res plotting page), to 
+            enable drawing on the back buffer for animations.
+        </content>
+    </entry>
+    <entry>
+        <title>2011-04-20</title>
+        <id>http://www.calormen.com/Applesoft/20110420</id>
+        <updated>2011-04-20T21:00:00Z</updated>
+        <content type="html">
+            &lt;p&gt;
+            Re-added support for running under
+            &lt;a href="http://en.wikipedia.org/wiki/Windows_Script_Host"&gt;Windows Scripting Host&lt;/a&gt; and added
+            &lt;a href="http://www.mozilla.org/rhino/"&gt;Mozilla Rhino&lt;/a&gt; support too.
+        </content>
+    </entry>
+    <entry>
+        <title>2011-04-16</title>
+        <id>http://www.calormen.com/Applesoft/20110416</id>
+        <updated>2011-04-16T23:00:00Z</updated>
+        <content type="html">
+            &lt;p&gt;
+            Total internal revamp: Now a compiler rather than interpreter. Source errors are reported
+            by BASIC line number as well as source line/column.
+            &lt;p&gt;
+            Display defaults to 40 columns, emulates 80-column firmware more accurately. Character output
+            (&lt;code&gt;CHR$()&lt;/code&gt;, &lt;code&gt;INVERSE&lt;/code&gt;, etc) tweaked to match Apple 
+            behavior.
+            &lt;p&gt;
+            Files written via DOS now persist in your browser via &lt;a href="http://dev.w3.org/html5/webstorage/"&gt;Web Storage&lt;/a&gt;.
+            &lt;p&gt;
+            Floating point and integer overflows are caught rather than propagating infinities and NaNs.
+            &lt;p&gt;
+            &lt;code&gt;DATA&lt;/code&gt; statements and &lt;code&gt;INPUT&lt;/code&gt; entries parse 
+            more accurately as comma delimited, optionally-quoted strings. &lt;code&gt;RE-ENTER?&lt;/code&gt;
+            is shown on invalid &lt;code&gt;INPUT&lt;/code&gt; (and can be trapped via &lt;code&gt;ONERR&lt;/code&gt;)
+            &lt;p&gt;
+            Added &lt;code&gt;HGR2&lt;/code&gt; and page-flipping &lt;code&gt;POKE&lt;/code&gt; shims, plus a few &lt;code&gt;CALL&lt;/code&gt; shims
+            for graphics. Hires graphics are now to a 280x192 bitmap, rather than trying to be sneaky with a 140x192 bitmap.
+            &lt;p&gt;
+            Error codes can be distinguished in &lt;code&gt;ONERR&lt;/code&gt; via &lt;code&gt;PEEK(222)&lt;/code&gt;.
+            Out-of-memory and stack-overflow conditions reported where possible (this is 
+            &lt;a href="http://cautionsingularityahead.blogspot.com/2011/03/stack-overflow-and-out-of-memory-in.html"&gt;
+            non-standard across browsers&lt;/a&gt;).
+            &lt;p&gt;
+            Tweaked samples that were dependent on language/environment quirks.
+            &lt;p&gt;
+            Updated code editor to (the much improved) &lt;a href="http://codemirror.net/"&gt;CodeMirror 2.0&lt;/a&gt;. On parse errors,
+            the cursor is moved to the offending line/character.
+        </content>
+    </entry>
+    <entry>
+        <title>2011-01-29</title>
+        <id>http://www.calormen.com/Applesoft/20110129</id>
+        <updated>2011-01-29T23:30:00Z</updated>
+        <content type="html">
+            &lt;p&gt;
+            Fixed error handling issues, e.g. DOS errors w/ &lt;code&gt;ONERR&lt;/code&gt; and syntax
+            errors e.g. &lt;code&gt;10 INPUT PRINT&lt;/code&gt;
+            &lt;/p&gt;
+            &lt;p&gt;
+            Added &lt;code&gt;HSCRN(x,y)&lt;/code&gt; extension function.
+            &lt;/p&gt;
+            &lt;p&gt;
+            Fix mouse-as-joystick to hit full range of 0...255.
+            &lt;/p&gt;
+        </content>
+    </entry>
+    <entry>
+        <title>2011-01-26</title>
+        <id>http://www.calormen.com/Applesoft/20110126</id>
+        <updated>2011-01-26T23:00:00Z</updated>
+        <content type="html">
+            &lt;p&gt;
+            No longer show paddles/joysticks automatically; rely on mouse-as-joystick primarily.
+            &lt;/p&gt;
+            &lt;p&gt;
+            Use &lt;a href="http://flashcanvas.net/"&gt;FlashCanvas&lt;/a&gt; for older IE versions, instead of
+            &lt;a href="http://excanvas.sourceforge.net/"&gt;excanvas&lt;/a&gt;, and switch to plotting hires
+            pixels/lines directly rather than relying on canvas scaling and line drawing.
+            &lt;/p&gt;
+            &lt;p&gt;
+            Added Gaussian Distribution 2D plot sample, by John Russ
+            &lt;/p&gt;
+        </content>
+    </entry>
+    <entry>
+        <title>2011-01-25</title>
+        <id>http://www.calormen.com/Applesoft/20110125</id>
+        <updated>2011-01-25T21:00:00Z</updated>
+        <content type="html">
+            &lt;p&gt;
+            Added compatibility shims for &lt;code&gt;PEEK(78)&lt;/code&gt; and &lt;code&gt;PEEK(79)&lt;/code&gt;
+            for seeding the random number generator. On a real Apple these are incremented during the input
+            polling loop and are a good source of entropy for seeding a random number generator. In this
+            interpreter, they are simply generated by the JavaScript &lt;code&gt;Math.random()&lt;/code&gt; function.
+            &lt;/p&gt;
+        </content>
+    </entry>
+    <entry>
+        <title>2010-11-21</title>
+        <id>http://www.calormen.com/Applesoft/20101121</id>
+        <updated>2010-11-21T19:00:00Z</updated>
+        <content type="html">
+            &lt;p&gt;
+            Added lexical highlighting in code editor via &lt;a href="http://codemirror.net"&gt;CodeMirror&lt;/a&gt;. Note that this only highlights tokens, it does not check statement or expression syntax. It will highlight invalid tokens and unsupported statements.
+            &lt;p&gt;
+            Mousing over the screen now updates paddle position - try the lo-res painting demo for an example.
+            &lt;/p&gt;
+
+            &lt;p&gt;
+            Lots of internal code cleanup with hopefully no behavior changes.
+            &lt;/p&gt;
+        </content>
+    </entry>
+    <entry>
+        <title>2010-11-18</title>
+        <id>http://www.calormen.com/Applesoft/20101118</id>
+        <updated>2010-11-18T19:00:00Z</updated>
+        <content type="html">
+            &lt;p&gt;
+            Fix &lt;code&gt;RETURN&lt;/code&gt; and &lt;code&gt;POP&lt;/code&gt;
+            from inside a &lt;code&gt;FOR ... NEXT&lt;/code&gt; loop.
+            &lt;/p&gt;
+            &lt;p&gt;
+            Fix &lt;code&gt;TRACE&lt;/code&gt; and &lt;code&gt;NOTRACE&lt;/code&gt;
+            &lt;/p&gt;
+        </content>
+    </entry>
+    <entry>
+        <title>2010-11-13</title>
+        <id>http://www.calormen.com/Applesoft/20101113</id>
+        <updated>2010-11-13T19:00:00Z</updated>
+        <content type="html">
+            &lt;p&gt;
+            Added &lt;code&gt;SPEED=&lt;/code&gt; shim (does nothing)
+            &lt;/p&gt;
+            &lt;p&gt;
+            Fixed &lt;code&gt;SPC()&lt;/code&gt; and &lt;code&gt;TAB()&lt;/code&gt;
+            &lt;/p&gt;
+            &lt;p&gt;
+            Work around 
+            &lt;a href="http://code.google.com/p/chromium/issues/detail?id=58144"&gt;Chrome bug&lt;/a&gt;
+            to show full error alert text.
+            &lt;/p&gt;
+        </content>
+    </entry>
+    <entry>
+        <title>2010-08-29</title>
+        <id>http://www.calormen.com/Applesoft/20100829</id>
+        <updated>2010-08-29T11:22:00Z</updated>
+        <content type="html">
+            &lt;p&gt;
+            Added "Echo to Printer" option to allow copy/paste of output
+            &lt;/p&gt;
+            &lt;p&gt;
+            Big refactor of internals. Statement parsing and execution now separated. A library of statement functions are
+            used for execution. Hopefully nothing broke - all unit tests still pass.
+            &lt;/p&gt;
+        </content>
+    </entry>
+    <entry>
+        <title>2010-05-04</title>
+        <id>http://www.calormen.com/Applesoft/20100504</id>
+        <updated>2010-05-04T20:28:00-08:00</updated>
+        <content type="html">
+            &lt;p&gt;
+            When run under &lt;code&gt;cscript.exe&lt;/code&gt;, the program still blocks until the user
+            presses Enter when a &lt;code&gt;GET&lt;/code&gt; statement executes, but the entered 
+            characters are returned by subsequent &lt;code&gt;GET&lt;/code&gt; statements.
+            &lt;/p&gt;
+
+            &lt;p&gt;
+            Added Hello World Sine Wave sample by Jamie Beu.
+            &lt;/p&gt;
+        </content>
+    </entry>
+    <entry>
+        <title>2009-11-01</title>
+        <id>http://www.calormen.com/Applesoft/20091101</id>
+        <updated>2009-11-01T14:22:00-08:00</updated>
+        <content type="html">
+            &lt;p&gt;
+            Changes are now recorded in an &lt;a href="feed.xml"&gt;Atom Feed&lt;/a&gt;.
+            &lt;/p&gt;
+        </content>
+    </entry>
+    <entry>
+        <title>2009-10-24</title>
+        <id>http://www.calormen.com/Applesoft/20091024</id>
+        <updated>2009-10-24T12:00:00-08:00</updated>
+        <content type="html">
+            &lt;p&gt;
+            Now licensed under the &lt;a href="http://www.apache.org/licenses/LICENSE-2.0"&gt;Apache 2.0 license&lt;/a&gt;
+            &lt;/p&gt;
+        </content>
+    </entry>
+    <entry>
+        <title>2009-10-15</title>
+        <id>http://www.calormen.com/Applesoft/20091015</id>
+        <updated>2009-10-15T12:00:00-08:00</updated>
+        <content type="html">
+            &lt;p&gt;
+            Fixed bug with &lt;code&gt;POKE&lt;/code&gt; and negative addresses (introduced 2009-05-15, bleah)
+            &lt;/p&gt;
+        </content>
+    </entry>
+    <entry>
+        <title>2009-06-10</title>
+        <id>http://www.calormen.com/Applesoft/20090610</id>
+        <updated>2009-06-10T12:00:00-08:00</updated>
+        <content type="html">
+            &lt;p&gt;
+            Added &lt;a href="http://en.wikipedia.org/wiki/Boy%27s_surface"&gt;Boy's Surface&lt;/a&gt; sample by Lukas Innig
+            &lt;/p&gt;
+        </content>
+    </entry>
+    <entry>
+        <title>2009-05-08</title>
+        <id>http://www.calormen.com/Applesoft/20090508b</id>
+        <updated>2009-05-08T13:00:00-08:00</updated>
+        <content type="html">
+            &lt;p&gt;
+            Fixed running with &lt;code&gt;cscript&lt;/code&gt;
+            &lt;/p&gt;
+            &lt;p&gt;Slight performance tweaks for IE c/o explicit sizing&lt;/p&gt;
+        </content>
+    </entry>
+    <entry>
+        <title>2009-05-08</title>
+        <id>http://www.calormen.com/Applesoft/20090508</id>
+        <updated>2009-05-08T12:00:00-08:00</updated>
+        <content type="html">
+            &lt;p&gt;
+            Tracked down source of IE perf issues when drawing with paddles; when the thumb/stick moves,
+            IE does a relayout/repaint of any content above the paddle in the HTML flow. If I delete the
+            page header it's silky-smooth. Unfortunately, any text above the screen seems to make it fall
+            off the deep end - so no fix yet without gutting the page.
+            &lt;/p&gt;
+            &lt;p&gt;
+            Undid "Line breaks from &lt;code&gt;PRINT&lt;/code&gt; now clear to the right edge" - doesn't repro on Apple. &lt;em&gt;What was I thinking?&lt;/em&gt;
+            &lt;/p&gt;
+        </content>
+    </entry>
+    <entry>
+        <title>2009-05-06</title>
+        <id>http://www.calormen.com/Applesoft/20090506</id>
+        <updated>2009-05-06T12:00:00-08:00</updated>
+        <content type="html">
+            &lt;p&gt;
+            A bunch of performance tweaks based on IE8's JavaScript profiler. While they look good on paper,
+            they mean diddly-squat to perceived performance. Don't precalc default variable values, avoid DOM
+            changes that are no-ops, and (sigh) don't scan the whole screen looking for &lt;code&gt;FLASH&lt;/code&gt;-styled
+            cells - maintain a list instead so perf isn't impacted if there are none.
+            &lt;/p&gt;
+        </content>
+    </entry>
+    <entry>
+        <title>2009-05-01</title>
+        <id>http://www.calormen.com/Applesoft/20090501</id>
+        <updated>2009-05-01T12:00:00-08:00</updated>
+        <content type="html">
+            &lt;p&gt;
+            Expressions are now just-in-time compiled to JavaScript. Screen updates are the real bottleneck, though,
+            so this isn't a big performance boost. Performance comparison (on my 1.73GHz machine) of the lores Mandelbrot set demo:
+            &lt;ul&gt;
+            &lt;li&gt;Google Chrome (V8 JavaScript compiler): 25% faster (21s vs. 27s)&lt;/li&gt;
+            &lt;li&gt;Firefox 3: 14% faster (64s vs. 73s)&lt;/li&gt;
+            &lt;li&gt;Internet Explorer 8: &amp;lt;1% faster (249s vs. 251s)&lt;/li&gt;
+            &lt;/ul&gt;
+            So not a huge win except on faster execution engines. But this is just the first step...
+            &lt;/p&gt;
+            &lt;p&gt;
+            Fixed &lt;code&gt;POKE 216,x&lt;/code&gt; shim to disable &lt;code&gt;ONERR&lt;/code&gt; handler
+            &lt;/p&gt;
+        </content>
+    </entry>
+    <entry>
+        <title>2009-04-30</title>
+        <id>http://www.calormen.com/Applesoft/20090430</id>
+        <updated>2009-04-30T12:00:00-08:00</updated>
+        <content type="html">
+            &lt;p&gt;
+            Rejiggered internal value storage/passing system to use fundamental JavaScript types instead of &lt;code&gt;{number: value}&lt;/code&gt; or
+            &lt;code&gt;{string: value}&lt;/code&gt;. I didn't trust JavaScript's type system when I first wrote this code.
+            &lt;/p&gt;
+        </content>
+    </entry>
+    <entry>
+        <title>2009-04-26</title>
+        <id>http://www.calormen.com/Applesoft/20090426</id>
+        <updated>2009-04-26T12:00:00-08:00</updated>
+        <content type="html">
+            &lt;p&gt;
+            Performance - made &lt;code&gt;GOTO&lt;/code&gt;/&lt;code&gt;GOSUB&lt;/code&gt; not do a linear scan to find the line (d'oh). Significant perf boost for IE.
+            &lt;/p&gt;
+            &lt;p&gt;Added Unit Tests sample. Coverage is not complete but it's getting there.&lt;/p&gt;
+            &lt;p&gt;
+            &lt;code&gt;RND()&lt;/code&gt; with negative now consistently reseeds (added custom pseudoranom number generator)
+            &lt;/p&gt;
+            &lt;p&gt;
+            &lt;code&gt;FOR I = 10 TO 1 : PRINT I : NEXT&lt;/code&gt; now correctly prints &lt;samp&gt;10&lt;/samp&gt; then finishes (was previously incorrectly inferring &lt;code&gt;STEP -1&lt;/code&gt;)
+            &lt;/p&gt;
+        </content>
+    </entry>
+    <entry>
+        <title>2009-04-25</title>
+        <id>http://www.calormen.com/Applesoft/20090425</id>
+        <updated>2009-04-25T12:00:00-08:00</updated>
+        <content type="html">
+            &lt;p&gt;
+            Line breaks from &lt;code&gt;PRINT&lt;/code&gt; now clear to the right edge of the text window
+            &lt;/p&gt;
+            &lt;p&gt;
+            Automatically show input devices if &lt;code&gt;PDL()&lt;/code&gt; called
+            &lt;/p&gt;
+            &lt;p&gt;Added Zhodani Relay Station Placement example (run after generating a sector with Traveller Sector Generator)&lt;/p&gt;
+        </content>
+    </entry>
+    <entry>
+        <title>2009-04-24</title>
+        <id>http://www.calormen.com/Applesoft/20090424</id>
+        <updated>2009-04-24T12:00:00-08:00</updated>
+        <content type="html">
+            &lt;p&gt;
+            Fixed a bug where changing text mode (e.g. &lt;code&gt;PR#3&lt;/code&gt;) after calling &lt;code&gt;HGR&lt;/code&gt; would break split-screen mode.
+            &lt;/p&gt;
+        </content>
+    </entry>
+    <entry>
+        <title>2009-04-14</title>
+        <id>http://www.calormen.com/Applesoft/20090414</id>
+        <updated>2009-04-14T12:00:00-08:00</updated>
+        <content type="html">
+            &lt;p&gt;
+            Updated to an &lt;a href="http://explorercanvas.blogspot.com/2009/03/new-explorer-canvas-release.html"&gt;IE8-compatible&lt;/a&gt; version of &lt;a href="http://code.google.com/p/explorercanvas/"&gt;excanvas&lt;/a&gt;.
+            Updated &lt;a href="excanvas.patch"&gt;my excanvas patch to support scaling&lt;/a&gt;.
+            &lt;/p&gt;
+        </content>
+    </entry>
+    <entry>
+        <title>2009-04-05</title>
+        <id>http://www.calormen.com/Applesoft/20090405</id>
+        <updated>2009-04-05T12:00:00-08:00</updated>
+        <content type="html">
+            &lt;p&gt;
+            Allow &lt;code&gt;DEF FN&lt;/code&gt; to be invalid (errors occur in &lt;code&gt;FN&lt;/code&gt;, per Applesoft)
+            &lt;/p&gt;
+            &lt;p&gt;
+            Fixed &lt;code&gt;PR#0&lt;/code&gt; in Safari
+            &lt;/p&gt;
+            &lt;p&gt;
+            Added &lt;code&gt;
+            RENAME &lt;var&gt;old&lt;/var&gt;,&lt;var&gt;new&lt;/var&gt;
+            &lt;/code&gt;to DOS
+            &lt;/p&gt;
+            &lt;p&gt;
+            Fixed &lt;code&gt;LIST&lt;/code&gt; for assignment statements with no &lt;code&gt;LET&lt;/code&gt;
+            &lt;/p&gt;
+            &lt;p&gt;
+            Fixed operator spacing for &lt;code&gt;LIST&lt;/code&gt;
+            &lt;/p&gt;
+            &lt;p&gt;
+            Fixed parsing of empty &lt;code&gt;REM&lt;/code&gt; statements
+            &lt;/p&gt;
+            &lt;p&gt;Program would execute after a tokenization error was encountered - fixed.&lt;/p&gt;
+            &lt;p&gt;Added Traveller Sector Generator sample&lt;/p&gt;
+        </content>
+    </entry>
+    <entry>
+        <title>2009-03-07</title>
+        <id>http://www.calormen.com/Applesoft/20090307</id>
+        <updated>2009-03-07T12:00:00-08:00</updated>
+        <content type="html">
+            &lt;p&gt;Fixed cursor blinking&lt;/p&gt;
+            &lt;p&gt;Added Connections, Puzzler, and Squiggle by Gregg Buntin&lt;/p&gt;
+        </content>
+    </entry>
+    <entry>
+        <title>2009-03-06</title>
+        <id>http://www.calormen.com/Applesoft/20090306</id>
+        <updated>2009-03-06T12:00:00-08:00</updated>
+        <content type="html">
+            &lt;p&gt;
+            Addressed IE performance issues: sped up Text and LoRes screen initialization, don't use classes for characters (&lt;em&gt;sigh&lt;/em&gt;).
+            &lt;/p&gt;
+            &lt;p&gt;
+            Fixed &lt;code&gt;PRINT SPC()&lt;/code&gt;
+            &lt;/p&gt;
+        </content>
+    </entry>
+    <entry>
+        <title>2009-03-05</title>
+        <id>http://www.calormen.com/Applesoft/20090305</id>
+        <updated>2009-03-05T12:00:00-08:00</updated>
+        <content type="html">
+            &lt;p&gt;
+            &lt;code&gt;PRINT CHR$(7)&lt;/code&gt; now rings a &lt;code&gt;BELL&lt;/code&gt; (if your browser has an audio/wav WAV handler configured)
+            &lt;/p&gt;
+            &lt;p&gt;Reimplemented the text display (TTY) using bitmap font, to mimic the look of 40/80 column text (no more copy/paste, alas)&lt;/p&gt;
+            &lt;p&gt;
+            Added MouseText support. &lt;code&gt;INVERSE:PRINT CHR$(27);"XY";CHR$(24):NORMAL&lt;/code&gt;
+            &lt;/p&gt;
+            &lt;p&gt;
+            The ASCII Pac-Man sample was really &lt;em&gt;Unicode&lt;/em&gt; Pac-Man, which the bitmap font doesn't support, so it broke. So I cheated.
+            &lt;/p&gt;
+        </content>
+    </entry>
+    <entry>
+        <title>2009-03-01</title>
+        <id>http://www.calormen.com/Applesoft/20090301</id>
+        <updated>2009-03-01T12:00:00-08:00</updated>
+        <content type="html">
+            &lt;p&gt;Added Scribble sample, by William Simms&lt;/p&gt;
+        </content>
+    </entry>
+    <entry>
+        <title>2009-02-12</title>
+        <id>http://www.calormen.com/Applesoft/20090212</id>
+        <updated>2009-02-12T12:00:00-08:00</updated>
+        <content type="html">
+            &lt;p&gt;Added February Surprise sample by Antti Pirskanen&lt;/p&gt;
+        </content>
+    </entry>
+    <entry>
+        <title>2008-11-08</title>
+        <id>http://www.calormen.com/Applesoft/20081108</id>
+        <updated>2008-11-08T12:00:00-08:00</updated>
+        <content type="html">
+            &lt;p&gt;Ignore whitespace-only lines, as a convenience&lt;/p&gt;
+            &lt;p&gt;Added ASCII PAC-MAN(ish) sample by Michael Kemp&lt;/p&gt;
+        </content>
+    </entry>
+    <entry>
+        <title>2008-10-19</title>
+        <id>http://www.calormen.com/Applesoft/20081019</id>
+        <updated>2008-10-19T12:00:00-08:00</updated>
+        <content type="html">
+            &lt;p&gt;Added TEXT ADVENTURE sample by Floyd McWilliams.&lt;/p&gt;
+            &lt;p&gt;Allow string literals to be terminated by end-of-line (suggested by Mike Kienenberger for compatibility)&lt;/p&gt;
+        </content>
+    </entry>
+    <entry>
+        <title>2008-09-18</title>
+        <id>http://www.calormen.com/Applesoft/20080918</id>
+        <updated>2008-09-18T12:00:00-08:00</updated>
+        <content type="html">
+            &lt;p&gt;Fixed a case where syntax errors were ignored&lt;/p&gt;
+        </content>
+    </entry>
+    <entry>
+        <title>2008-09-17</title>
+        <id>http://www.calormen.com/Applesoft/20080917</id>
+        <updated>2008-09-17T12:00:00-08:00</updated>
+        <content type="html">
+            &lt;p&gt;Fixed input focus to work in Google Chrome&lt;/p&gt;
+            &lt;p&gt;
+            Fixed &lt;code&gt;READ&lt;/code&gt; to support multiple variables, e.g. &lt;code&gt;READ I,J,S$&lt;/code&gt;
+            &lt;/p&gt;
+        </content>
+    </entry>
+    <entry>
+        <title>2008-08-23</title>
+        <id>http://www.calormen.com/Applesoft/20080823</id>
+        <updated>2008-08-23T12:00:00-08:00</updated>
+        <content type="html">
+            &lt;p&gt;Added Save/Load buttons that let you save your work to a cookie&lt;/p&gt;
+            &lt;p&gt;Added DRAWING PROGRAM sample by Brian Broker&lt;/p&gt;
+            &lt;p&gt;Fixed power operator (^) which wasn't being parsed correctly&lt;/p&gt;
+            &lt;p&gt;Fixed subtle bug with string comparisons (result was double-typed as number and string)&lt;/p&gt;
+        </content>
+    </entry>
+    <entry>
+        <title>2008-05-01</title>
+        <id>http://www.calormen.com/Applesoft/20080501</id>
+        <updated>2008-05-01T12:00:00-08:00</updated>
+        <content type="html">
+            &lt;p&gt;
+            Fixed &lt;code&gt;NEXT I,J,...&lt;/code&gt; to terminate multiple loops - thanks to Scott Alfter for pointing this out
+            &lt;/p&gt;
+            &lt;p&gt;
+            Bowing to popular demand, it now supports &lt;code&gt;?&lt;/code&gt; as an alias for &lt;code&gt;PRINT&lt;/code&gt;
+            &lt;/p&gt;
+        </content>
+    </entry>
+    <entry>
+        <title>2008-03-15</title>
+        <id>http://www.calormen.com/Applesoft/20080315</id>
+        <updated>2008-03-15T12:00:00-08:00</updated>
+        <content type="html">
+            &lt;p&gt;
+            Implemented &lt;code&gt;ONERR GOTO line&lt;/code&gt; and &lt;code&gt;RESUME&lt;/code&gt;, including &lt;code&gt;POKE 216,0&lt;/code&gt;
+            &lt;/p&gt;
+            &lt;p&gt;Added demo for ONERR, added ONERR support to sequential file access demo&lt;/p&gt;
+            &lt;p&gt;Fix hires graphics on Safari - not sure when it broke&lt;/p&gt;
+        </content>
+    </entry>
+    <entry>
+        <title>2008-03-14</title>
+        <id>http://www.calormen.com/Applesoft/20080314</id>
+        <updated>2008-03-14T12:00:00-08:00</updated>
+        <content type="html">
+            &lt;p&gt;
+            Code cleanup c/o &lt;a href="http://www.jslint.com"&gt;jslint.com&lt;/a&gt;
+            &lt;/p&gt;
+            &lt;p&gt;
+            Bug fix: &lt;code&gt;INPUT A,B,C&lt;/code&gt; no longer worked. Probably mis-re-factored at some point.
+            &lt;/p&gt;
+        </content>
+    </entry>
+    <entry>
+        <title>2007-12-08</title>
+        <id>http://www.calormen.com/Applesoft/20071208</id>
+        <updated>2007-12-08T12:00:00-08:00</updated>
+        <content type="html">
+            &lt;p&gt;
+            Implement file writing (to client-side VFS only), including &lt;code&gt;APPEND&lt;/code&gt; operations
+            &lt;/p&gt;
+            &lt;p&gt;
+            Added DOS &lt;code&gt;DELETE&lt;/code&gt; command
+            &lt;/p&gt;
+            &lt;p&gt;
+            &lt;code&gt;GR&lt;/code&gt; does implicit &lt;code&gt;HTAB 1 : VTAB 24&lt;/code&gt;
+            &lt;/p&gt;
+            &lt;p&gt;
+            &lt;code&gt;PEEK(49168)&lt;/code&gt; has the same effect as &lt;code&gt;POKE 49168,N&lt;/code&gt;
+            &lt;/p&gt;
+            &lt;p&gt;
+            As a convenience, &lt;code&gt;PEEK&lt;/code&gt; and &lt;code&gt;POKE&lt;/code&gt; at 49200/-16336 (speaker toggle) now accepted, but a no-op
+            &lt;/p&gt;
+            &lt;p&gt;
+            As a convenience, spaces now accepted before &lt;code&gt;=&lt;/code&gt; for&lt;code&gt;COLOR=&lt;/code&gt; and &lt;code&gt;HCOLOR=&lt;/code&gt;
+            &lt;/p&gt;
+        </content>
+    </entry>
+    <entry>
+        <title>2007-11-22</title>
+        <id>http://www.calormen.com/Applesoft/20071122</id>
+        <updated>2007-11-22T12:00:00-08:00</updated>
+        <content type="html">
+            &lt;p&gt;Added button to submit your sample (via email) for inclusion&lt;/p&gt;
+            &lt;p&gt;Added SIMPLE.PONG sample c/o USENET post by mad.scientist.jr&lt;/p&gt;
+            &lt;p&gt;Improved comment handling (doesn't tokenize)&lt;/p&gt;
+        </content>
+    </entry>
+    <entry>
+        <title>2007-10-22</title>
+        <id>http://www.calormen.com/Applesoft/20071022</id>
+        <updated>2007-10-22T12:00:00-08:00</updated>
+        <content type="html">
+            &lt;p&gt;
+            Make &lt;code&gt;GET&lt;/code&gt; support keyboard flag, so &lt;code&gt;IF PEEK(-16384) > 127 THEN GET A$&lt;/code&gt; works
+            &lt;/p&gt;
+        </content>
+    </entry>
+    <entry>
+        <title>2007-10-20</title>
+        <id>http://www.calormen.com/Applesoft/20071020</id>
+        <updated>2007-10-20T12:00:00-08:00</updated>
+        <content type="html">
+            &lt;p&gt;Bug fix: User could type after hitting Stop. Now TTY state is reset.&lt;/p&gt;
+            &lt;p&gt;
+            Added missing statement: &lt;code&gt;ON expr GOSUB ...&lt;/code&gt;
+            &lt;/p&gt;
+            &lt;p&gt;
+            &lt;code&gt;RND(0)&lt;/code&gt; returns last, negative reseeds
+            &lt;/p&gt;
+        </content>
+    </entry>
+    <entry>
+        <title>2007-10-14</title>
+        <id>http://www.calormen.com/Applesoft/20071014</id>
+        <updated>2007-10-14T12:00:00-08:00</updated>
+        <content type="html">
+            &lt;p&gt;Fixed location of paddle button 3 (C060)&lt;/p&gt;
+        </content>
+    </entry>
+    <entry>
+        <title>2007-09-22</title>
+        <id>http://www.calormen.com/Applesoft/20070922</id>
+        <updated>2007-09-22T12:00:00-08:00</updated>
+        <content type="html">
+            &lt;p&gt;
+            Implemented scaling in &lt;a target="_blank" href="http://excanvas.sourceforge.net/"&gt;
+            ExplorerCanvas&lt;/a&gt; (&lt;a target="_blank" href="excanvas.js"&gt;source&lt;/a&gt;); hires now scaled somewhat correctly in IE
+            &lt;/p&gt;
+            &lt;p&gt;Bug fixes: HOME would force full-screen text; HPLOT can now plot a single pixel&lt;/p&gt;
+        </content>
+    </entry>
+    <entry>
+        <title>2007-09-20</title>
+        <id>http://www.calormen.com/Applesoft/20070920</id>
+        <updated>2007-09-20T12:00:00-08:00</updated>
+        <content type="html">
+            &lt;p&gt;
+            Added hires support via &lt;a target="_blank" href="http://www.whatwg.org/specs/web-apps/current-work/#canvas"&gt;canvas&lt;/a&gt; tag
+            &lt;/p&gt;
+            &lt;p&gt;Display switches (POKE 49232...49239, not counting page 2) supported.&lt;/p&gt;
+            &lt;p&gt;Added text window support: POKE 32,left : POKE 33,width : POKE 34,top : POKE 35,bottom&lt;/p&gt;
+        </content>
+    </entry>
+    <entry>
+        <title>2007-09-16</title>
+        <id>http://www.calormen.com/Applesoft/20070916</id>
+        <updated>2007-09-16T12:00:00-08:00</updated>
+        <content type="html">
+            &lt;p&gt;
+            Added full screen lores support via &lt;a target="_blank" href="reference.htm#Poke"&gt;POKE&lt;/a&gt; 29234,0
+            &lt;/p&gt;
+            &lt;p&gt;Fixed keyboard input on Safari - hacky, but logical&lt;/p&gt;
+        </content>
+    </entry>
+    <entry>
+        <title>2007-09-15</title>
+        <id>http://www.calormen.com/Applesoft/20070915</id>
+        <updated>2007-09-15T12:00:00-08:00</updated>
+        <content type="html">
+            &lt;p&gt;Added Mandelbrot set demo to DEMOS&lt;/p&gt;
+            &lt;p&gt;
+            Added &lt;a target="_blank" href="reference.htm#Peek"&gt;PEEK&lt;/a&gt; and &lt;a target="_blank" href="reference.htm#Poke"&gt;POKE&lt;/a&gt; shims
+            &lt;/p&gt;
+            &lt;p&gt;Added paddle buttons: Home = 0 = Open Apple, End = 1 = Solid Apple, Page Up = 2, Page Down = 3&lt;/p&gt;
+            &lt;p&gt;Added Caps Lock (defaults to on; real Caps Lock key toggles it; this means it usually ends up in an inverted state)&lt;/p&gt;
+            &lt;p&gt;Round numerical results to 8 decimal places (hacky)&lt;/p&gt;
+        </content>
+    </entry>
+    <entry>
+        <title>2007-09-10</title>
+        <id>http://www.calormen.com/Applesoft/20070910</id>
+        <updated>2007-09-10T12:00:00-08:00</updated>
+        <content type="html">
+            &lt;p&gt;Added demo file links, cleaned up UI a bit.&lt;/p&gt;
+            &lt;p&gt;Added hacky PR#0/PR#3 support (to set 40 columns)&lt;/p&gt;
+        </content>
+    </entry>
+    <entry>
+        <title>2007-09-09</title>
+        <id>http://www.calormen.com/Applesoft/20070909</id>
+        <updated>2007-09-09T12:00:00-08:00</updated>
+        <content type="html">
+            &lt;p&gt;Execute multiple steps before yielding. Increases perceived performance by about 10x.&lt;/p&gt;
+            &lt;p&gt;Adjust lores colors per Linards Ticmanis on comp.sys.apple2.&lt;/p&gt;
+            &lt;p&gt;Added Joystick, reorganized web pages&lt;/p&gt;
+        </content>
+    </entry>
+    <entry>
+        <title>2007-09-04</title>
+        <id>http://www.calormen.com/Applesoft/20070904</id>
+        <updated>2007-09-04T12:00:00-08:00</updated>
+        <content type="html">
+            &lt;p&gt;Added MON/NOMON support.&lt;/p&gt;
+            &lt;p&gt;Fixed bugs with: READ into arrays, two argument MID$, e-format number parsing, DOS null command&lt;/p&gt;
+        </content>
+    </entry>
+    <entry>
+        <title>2007-09-03</title>
+        <id>http://www.calormen.com/Applesoft/20070903</id>
+        <updated>2007-09-03T12:00:00-08:00</updated>
+        <content type="html">
+            &lt;p&gt;Bugfixes: SPC() and TAB() followed by ; in PRINT statements. DOS parameter lists can include spaces.&lt;/p&gt;
+        </content>
+    </entry>
+    <entry>
+        <title>2007-09-02</title>
+        <id>http://www.calormen.com/Applesoft/20070902</id>
+        <updated>2007-09-02T12:00:00-08:00</updated>
+        <content type="html">
+            &lt;p&gt;Oops - FRE is a function not a statement. Fixed!&lt;/p&gt;
+        </content>
+    </entry>
+    <entry>
+        <title>2007-09-01</title>
+        <id>http://www.calormen.com/Applesoft/20070901</id>
+        <updated>2007-09-01T12:00:00-08:00</updated>
+        <content type="html">
+            &lt;p&gt;Implemented DATA/READ/RESTORE&lt;/p&gt;
+        </content>
+    </entry>
+    <entry>
+        <title>2007-08-31</title>
+        <id>http://www.calormen.com/Applesoft/20070831</id>
+        <updated>2007-08-31T12:00:00-08:00</updated>
+        <content type="html">
+            &lt;p&gt;Implemented DEF FN&lt;/p&gt;
+        </content>
+    </entry>
+    <entry>
+        <title>2007-08-30</title>
+        <id>http://www.calormen.com/Applesoft/20070830</id>
+        <updated>2007-08-30T12:00:00-08:00</updated>
+        <content type="html">
+            &lt;p&gt;Implemented DIM. File reads complete.&lt;/p&gt;
+        </content>
+    </entry>
+    <entry>
+        <title>2007-08-27</title>
+        <id>http://www.calormen.com/Applesoft/20070827</id>
+        <updated>2007-08-27T12:00:00-08:00</updated>
+        <content type="html">
+            &lt;p&gt;
+            Added preliminary &lt;a target="_blank" href="reference.htm#DOSQuickReference"&gt;DOS implementation&lt;/a&gt;. Sequential access read only; there's a file called "JABBERWOCKY" to try.
+            &lt;/p&gt;
+        </content>
+    </entry>
+    <entry>
+        <title>2007-08-24</title>
+        <id>http://www.calormen.com/Applesoft/20070824</id>
+        <updated>2007-08-24T12:00:00-08:00</updated>
+        <content type="html">
+            &lt;p&gt;Fixed bugs with string variables, key presses in IE, and HTML tweaks for better layout and lo-res sizing&lt;/p&gt;
+        </content>
+    </entry>
+    <entry>
+        <title>2007-06-05</title>
+        <id>http://www.calormen.com/Applesoft/20070605</id>
+        <updated>2007-06-05T12:00:00-08:00</updated>
+        <content type="html">
+            &lt;p&gt;Added paddle support (PDL)&lt;/p&gt;
+        </content>
+    </entry>
+    <entry>
+        <title>2007-06-03</title>
+        <id>http://www.calormen.com/Applesoft/20070603</id>
+        <updated>2007-06-03T12:00:00-08:00</updated>
+        <content type="html">
+            &lt;p&gt;Added lores graphics support (GR, PLOT, HLIN, VLIN, COLOR=, SCRN)&lt;/p&gt;
+        </content>
+    </entry>
+    <entry>
+        <title>2007-05-01</title>
+        <id>http://www.calormen.com/Applesoft/20070501</id>
+        <updated>2007-05-01T12:00:00-08:00</updated>
+        <content type="html">
+            &lt;p&gt;Extracted step mechanism from interpreter, so web page can introduce delays; no longer case-sensitive to keywords&lt;/p&gt;
+        </content>
+    </entry>
+    <entry>
+        <title>2007-04-29</title>
+        <id>http://www.calormen.com/Applesoft/20070429</id>
+        <updated>2007-04-29T12:00:00-08:00</updated>
+        <content type="html">
+            &lt;p&gt;Fixed command-line mode again&lt;/p&gt;
+        </content>
+    </entry>
+    <entry>
+        <title>2007-04-27</title>
+        <id>http://www.calormen.com/Applesoft/20070427</id>
+        <updated>2007-04-27T12:00:00-08:00</updated>
+        <content type="html">
+            &lt;p&gt;Added screen emulation (e.g. HOME, HTAB, VTAB) and input (e.g. GET)&lt;/p&gt;
+        </content>
+    </entry>
+    <entry>
+        <title>2007-04-24</title>
+        <id>http://www.calormen.com/Applesoft/20070424</id>
+        <updated>2007-04-24T12:00:00-08:00</updated>
+        <content type="html">
+            &lt;p&gt;Integrated into browser (display and event model)&lt;/p&gt;
+        </content>
+    </entry>
+    <entry>
+        <title>2007-04-21</title>
+        <id>http://www.calormen.com/Applesoft/20070421</id>
+        <updated>2007-04-21T12:00:00-08:00</updated>
+        <content type="html">
+            &lt;p&gt;Project started; interpreter functional via WSH on Windows&lt;/p&gt;
+        </content>
+    </entry>
+</feed>

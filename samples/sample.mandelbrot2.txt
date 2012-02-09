@@ -1,0 +1,14 @@
+0 REM Mandelbrot Set - in color
+1 REM This picks random points to draw, so it will run forever
+2 REM and may never fill in the full plane, but it is fast!
+10 HGR : POKE 49234,0
+20 DIM co(10) : FOR c = 0 TO 10 : READ d : co(c) = d : NEXT
+30 DATA 1, 2, 3, 5, 6, 1, 2, 3, 5, 6, 0
+100 x = INT(RND(1) * 280) : y = INT(RND(1) * 96)
+110 x1 = x / 280 * 3 - 2 : y1 = y / 191 * 2 - 1
+120 i = 0:s = x1:t = y1
+130 s1 = s * s - t * t + x1
+140 t = 2 * s * t + y1:s = s1: i = i + 1
+150 IF s * s + t * t < 4 AND i < 20 THEN GOTO 130
+160 c = co(i/2) : IF c THEN HCOLOR= c : HPLOT x,y : HPLOT x,191 - y
+170 GOTO 100

@@ -1,0 +1,35 @@
+5   REM Squiggle by Gregg Buntin
+10  TEXT
+20  HOME
+30  INPUT "Enter a number from 1 to 8:";N
+40  IF N > 0 AND N < 8 THEN F = 128
+50  E = 0
+60  K = 4 ^ N
+70  FOR X = 1 TO N
+80  U = F
+90  F =  - E / 2
+100 E = U / 2
+110 NEXT 
+120 HGR 
+130 HCOLOR= 3
+140 X = 80
+150 Y = 70
+160 HPLOT X,Y
+170 FOR M = 1 TO K
+180 Z = M
+190 X = X + F
+200 Y = Y + E
+210 HPLOT  TO X,Y
+220 FOR A = 0 TO 1
+230 Z = Z / 2
+240 Q =  INT (Z)
+250 A = Z - Q
+260 NEXT 
+270 A = (Q / 2 =  INT (Q / 2)) * 2 - 1
+280 U = F
+290 F = A * E
+300 E =  - A * U
+310  NEXT
+320 GOTO 10
+
+

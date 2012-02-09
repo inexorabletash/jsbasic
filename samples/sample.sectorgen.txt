@@ -1,0 +1,423 @@
+0  REM From Challenge Magazine #26, by Marc Miller
+
+0  REM *** CORRECTIONS ***
+0  REM 1220 Missing "once" and spacing
+0  REM 1230 Missing INPUT
+0  REM 1253 Typo: "C" -> "CH" for Chirper
+0  REM 2050 DR$ initialized with " should be ""
+0  REM 2070 LO$(B( should be LO$(B)
+0  REM 2130 Unnecessary GOTO 2140
+0  REM 2740 REM / merged with subsequent line
+0  REM 3015 Typo: "O" -> "OR"
+0  REM 3020 Typo: "HY 9" --> "HY = 9"
+0  REM 3550 Typo: "AM 10" --> "AM = 10"
+0  REM 3820 Typo: <> " should be <> ""
+0  REM 4320 "(5-ST)" should be "(5-S1)"
+0  REM Typo: line 4460 printed as 460
+0  REM 4530 "ST = -3" should be "DM = -3"
+0  REM 4622 "DM = +1" unary plus unnecessary
+0  REM 4624 "D = 3" should be "DM = 3"
+0  REM 5030 "ST$="B" AND ST$="C"" should be "ST$="B" OR ST$="C""
+0  REM 6210 " " should be 15 spaces
+0  REM 6625 DR$ initialized with " should be ""
+0  REM 6650 goto target missing; split 6640 to ensure AL$ appended if DR$ set
+0  REM 2070 Missing ) at end of SQR
+0  REM 2070 Unnecessary GOTO 2080
+
+0  REM *** INVESTIGATE ***
+0  REM 6120 Rule seems bogus - verify?
+0  REM 4150/4160 inverted?
+0  REM 4120 Jump to 4150 leaves DM unset, must be incorrect; changed to 4120 (no bases if ST$ = "E" or "X")
+
+0 PR#0
+
+1000  TEXT : HOME : PRINT "Traveller Sector Generator"
+1010  PRINT " This program generates world UPP data"
+1020  PRINT " for Traveller. Copyright 1986 GDW, Inc."
+1100 HX$ = "0123456789ABCDFGHJKLMNPQRSTUVWXYZ"
+1105 SP$ = "AAAABBCCDEEX"
+1110 BA$ = "ABCDEFGHJKLMNPQRSTUVWXYZ"
+1140  DEF  FN A(X) =  INT ( RND (4) * 6) + 1
+1150  DEF  FN B(X) =  FN A(X) +  FN A(X) 
+
+1200  REM DETERMINE ALLEGIANCES
+1210  PRINT : PRINT "Allegiances."
+1220  PRINT " You may assign up to 10 allegiances    (with a base location and a radius for  each). The same allegiance may be used  more than once (to allow non-circular   regions).": PRINT 
+1230  INPUT "How many allegiances in the area? > ";A: IF A<1 OR A>10 THEN 1230
+1240  HOME : PRINT "Allegiances"
+1250  PRINT " Allegiances are two-letter codes. The  following use special procedures in this program:"
+1253  PRINT "A* CS CH DR HV IM KK NA SO V* Z*"
+1254  PRINT "(* = Wildcard)"
+1260  PRINT : PRINT " The first allegiance is the default   (automatic) allegiance for the sector.": PRINT 
+1270  FOR B = 1 TO A
+1280  PRINT "Allegiance ";B;
+1290  INPUT " is: ";AL$(B):AL$(B) =  LEFT$ (AL$(B) + "BB",2)
+1300  IF B = 1 THEN LO$(B) = "1620":RA(B) = 22: GOTO 1330
+1310  INPUT "Location (Hex) is: ";LO$(B):LO$(B) =  LEFT$ (LO$(B) + "0000",4)
+1320  INPUT "Radius (parsecs) is: ";RA(B)
+1325  IF RA(B)<1 THEN RA(B) = 1
+1330  NEXT B
+
+1400  REM DESIGNATE DENSITIES
+1410  HOME : PRINT "Densities"
+1420  PRINT " You may assign up to 10 densities (with a base location and a radius for each).": PRINT 
+1430  INPUT "How many densities in the area? > ";A1
+1435  IF A1<1 OR A1>10 THEN 1430
+1440  PRINT " Densities are decimal fractions.": PRINT 
+1450  PRINT " The first density is the default       (automatic) density for the sector.": PRINT 
+1460  FOR B = 1 TO A1
+1470  PRINT "Density ";B;
+1480  INPUT " is: ";DE(B): IF DE(B)>1 THEN 1480
+1490  IF B = 1 THEN L1$(B) = "1620":RD(B) = 22: GOTO 1520
+1500  INPUT "Location (hex) is: ";L1$(B):L1$(B) =  LEFT$ (L1$(B) + "0000",4)
+1510  INPUT "Radius (parsecs) is: ";RD(B)
+1515  IF RD(B)<1 THEN RD(B) = 1
+1520  NEXT B
+1530  HOME 
+
+2000  REM PRODUCE SECTOR
+2010  PRINT  CHR$ (4);"OPEN SECTOR, L50"
+2020  FOR X = 1 TO 32
+2030  FOR Y = 1 TO 40
+
+2040  REM FIND ALLEGIANCE
+2050 DR$ = "":AL$ = AL$(1):DR = 0
+2060  FOR B = A TO 2 STEP  - 1
+2070 D = SQR((VAL(LEFT$(LO$(B),2))-X)*(VAL(LEFT$(LO$(B),2))-X)+(VAL(MID$(LO$(B),3,2))-Y)*(VAL(MID$(LO$(B),3,2))-Y)): IF D<RA(B) THEN AL$=AL$(B): IF D>(0.9*RA(B)) AND FN B(4)>9 THEN AL$="NA": IF FN B(4)>6 THEN AL$="CS" : GOTO 2080
+2080  NEXT B
+
+2100  REM WORLD OCCURRENCE
+2110 DE = DE(1): IF A1<2 THEN 2150
+2120  FOR B = A1 TO 2 STEP  - 1
+2130 D =  SQR (( VAL ( LEFT$ (L1$(B),2)) - X) * ( VAL ( LEFT$ (L1$(B),2)) - X) - ( VAL ( MID$ (L1$(B),3,2)) - Y) * ( VAL ( MID$ (L1$(B),3,2)) - Y)): IF D<RD(B) THEN DE = DE(B) : GOTO 2140
+2140  NEXT B
+2150 RN =  RND (4): IF RN>DE THEN 7070
+
+2200  REM GENERATOR WORLD UPP
+2210 ST =  FN B(4):ST$ =  MID$ (SP$,ST,1)
+2220 SI =  FN B(4) - 2: IF AL$ = "DR" THEN SI =  FN A(6)
+2230 AM =  FN B(2) - 7 + SI:AM = AM * (AM>0): IF SI = 0 THEN AM = 0
+2240 HY =  FN B(2) - 7 + SI: IF SI<2 THEN HY = 0
+2250  IF AM<2 OR AM>9 THEN HY = HY - 4
+2260  IF HY<0 THEN HY = 0
+2270  IF HY>10 THEN HY = 10
+2300 PO =  FN B(3) - 2
+2310 GO =  FN B(3) - 7 + PO:GO = GO * (GO>0)
+2320 LA =  FN B(4) - 7 + GO:LA = LA * (LA>0)
+2330  IF PO<1 THEN 2600
+
+2400  REM FIND DROYNE PRESENCE
+2410 DM =  - 5: IF SI>0 THEN DM = 0: IF SI>1 THEN DM = 1: IF SI>2 THEN DM = 2: IF SI>3 THEN DM = 3: IF SI>4 THEN DM = 2: IF SI>5 THEN DM = 1: IF SI>6 THEN DM = 0: IF SI>7 THEN DM =  - 2: IF SI>8 THEN DM =  - 4: IF SI>9 THEN DM =  - 6
+2420 DN =  - 5: IF AM>0 THEN DN =  - 4: IF AM>1 THEN DN =  - 3: IF AM>2 THEN DN =  - 2: IF AM>3 THEN DN =  - 1: IF AM>4 THEN DN = 0: IF AM>5 THEN DN = 2: IF AM>6 THEN DN = 1: IF AM>7 THEN DN = 4: IF AM>8 THEN DN = 3: IF AM>9 THEN DN =  - 5
+2430  IF AM>10 THEN DN =  - 6: IF AM>11 THEN DN =  - 7: IF AM>12 THEN DN =  - 3
+2440 DO = 1: IF HY<3 THEN DO = 0: IF HY = 0 THEN DO =  - 1
+2450  IF HY>7 THEN DO = 0: IF HY>9 THEN DO =  - 3
+2460 DP =  - 5: IF PO>0 THEN DP =  - 4: IF PO>1 THEN DP =  - 3: IF PO>2 THEN DP =  - 2: IF PO>3 THEN DP =  - 1: IF PO>5 THEN DP = 1: IF PO>7 THEN DP = 0: IF PO>8 THEN DP =  - 2
+2470 RR =  FN B(5):RL =  FN B(5)
+2480 DM = DM + DN + DO + DP + RR
+2490  IF DM<( - 8) THEN 2600
+2500  IF (DM> - 9) AND (RL>11) THEN DR =  - 5:DR$ = "DR"
+2510  IF (DM>0) AND (RL>10) THEN DR =  - 4:DR$ = "DR"
+2520  IF (DM>9) AND (RL>9) THEN DR =  - 2:DR$ = "DR"
+2530  IF (DM>15) AND (RL>8) THEN DR = 0:DR$ = "DR"
+2540  IF DR$ = "" THEN 2600
+2550  IF  FN B(4)>5 THEN DR$ = "CH"
+2560 PP = ( FN B(3) - 2) + DR: IF PP<0 THEN PP = 0
+2570  IF PP>9 THEN PP = 9
+2580 DR$ =  LEFT$ (DR$,1) +  STR$ (PP)
+
+2600  REM FIND SPECIFIC ALLEGIANCE
+2610  IF  LEFT$ (AL$,1) = "A" THEN 2700
+2620  IF AL$ = "CH" THEN 2800
+2630  IF AL$ = "DR" THEN 2800
+2640  IF AL$ = "HV" THEN 2900
+2650  IF AL$ = "KK" THEN 3000
+2660  IF AL$ = "SO" THEN 3100
+2670  IF  LEFT$ (AL$,1) = "V" THEN 3200
+2680  IF  LEFT$ (AL$,1) = "Z" THEN 3300
+2690  GOTO 3400
+
+2700  REM ASLAN
+2705  IF  ASC ( MID$ (AL$,2,1))<48 OR  ASC ( MID$ (AL$,2,1))>57 THEN 2720
+2710 GO = 20: IF PO<4 AND  FN B(6)<11 THEN GO = 16
+2715  GOTO 2730
+2720 WD =  FN A(4):RD =  FN A(3) + (1 * (PO<4)) + (2 * (PO = 9)) + (3 * (PO = 10)): IF RD<0 THEN WD = 0
+2725 GO = 16 + WD: IF RD>6 THEN GO = 17
+2730 AR =  VAL ( MID$ (AL$,2,1)): IF GO = 20 AND AR = 0 AND  MID$ (AL$,2,1)<>"0" THEN AL$ = "A" +  STR$ ( INT ( RND (5) * 10))
+2735 LA =  FN B(5)
+2740  REM
+2745 DM = 3: IF ST>4 THEN DM = 2: IF ST>6 THEN DM = 0: IF ST>8 THEN DM =  - 1: IF ST>9 THEN DM =  - 2
+2750  IF PO<3 AND GO = 16 THEN DM = DM - 3: GOTO 2760
+2755  IF PO<8 THEN DM = DM - 1: IF PO<7 THEN DM = DM - 1
+2760 TL =  FN A(4) + 8 + DM: IF TL>14 THEN TL = 14
+2765  GOTO 3600
+
+2800  REM DROYNE
+2810  IF AL$ = "DR" OR AL$ = "CH" THEN PO =  FN A(4) + 2
+2820  IF AL$ = "DR" THEN A =  FN A(4):GO = 31: IF A<5 THEN GO = 7: IF A<3 THEN GO = 6
+2830 LA = ( FN B(4) - 6) + PO:TL = ( FN B(5) +  FN A(3)) - 2
+2835 ST = ( FN B(4) - 7) + TL
+2840 LA = LA * (LA>0):TL = TL * (TL>0):ST = ST * (ST>0)
+2850  IF ST>12 THEN ST = 12
+2860 ST$ =  MID$ ("XXXXEEDCCBBAAAA",ST + 1,1)
+2870  GOTO 3700
+
+2900  REM HIVERS
+2905  IF PO<1 THEN GO = 0:LA = 0:TL = 0: GOTO 3700
+2910 NH = 0: IF ((AM>0 AND AM<5) OR (AM>9 AND AM<13)) AND  FN B(5)>8 AND PO>0 THEN NH = 1
+2915 GO = PO -  FN A(6): IF GO<0 THEN GO = 0
+2920  IF GO = 4 OR GO = 5 THEN GO = 26
+2925  IF GO = 6 OR GO = 7 THEN GO = 27
+2930  IF GO = 8 THEN GO = 28
+2935  IF GO = 9 THEN GO = 29
+2940  IF GO = 3 THEN GO = 6
+2945  IF PO<7 AND NH = 1 THEN GO = 6
+2950 LA =  FN A(4): IF NH = 1 THEN LA =  FN B(5)
+2955 DM = 3: IF ST$>"A" THEN DM = 2: IF ST$>"B" THEN DM = 0: IF ST$>"C" THEN DM =  - 1: IF ST$>"D" THEN DM =  - 2
+2960  IF (PO<4 AND GO<>6) THEN DM = DM - 3
+2965  IF (PO>3 AND PO<7) THEN DM = DM - 2
+2970  IF PO = 7 THEN DM = DM - 2
+2975 TL =  FN B(4) + 8 + DM
+2980  IF TL>15 THEN TL = 15
+2985  GOTO 3700
+
+3000  REM KKREE
+3005 GO = 23: IF PO>2 THEN GO = 24: IF PO>5 THEN GO = 25
+3010 DM = (2 * (ST$ = "A")) + (ST$ = "B") + ( - 1 * (ST$ = "E")) + ( - 6 * (ST$ = "x"))
+3015 DM = DM + ( - 2 * (AM<3)) + ( - 1 * (AM = 3)) + (3 * (AM = 5 OR AM = 6 OR AM = 8)) + ( - 1 * (AM = 10)) + ( - 2 * (AM = 11 OR AM = 13 OR AM = 14 OR AM = 15)) + ( - 3 * (AM = 12))
+3020 DM = DM + ( - 2 * (HY = 0)) + (1 * (HY = 2 OR HY = 6)) + (2 * (HY = 3 OR HY = 4 OR HY = 5)) + ( - 1 * (HY = 8)) + ( - 2 * (HY = 9)) + ( - 3 * (HY = 10))
+3025 NK = 0:PO =  FN A(4) - 2 + DM: IF PO>11 THEN PO = 12:NK = 1:PO =  FN B(4) - 2:GO = ( FN B(4) - 7) + PO:GO = GO * (GO> - 0):LA = ( FN B(4) - 7) + GO:LA = LA * (LA>0): GOTO 3040
+3030 GO = 23: IF PO>2 THEN GO = 24: IF PO>5 THEN GO = 25
+3035 LA = 19
+3040  IF PO<1 THEN PO = 0:ST = 10:ST$ = "E":GO = 0:LA = 0
+3045  REM 
+3050 DM = 3: IF ST>4 THEN DM = 2: IF ST>6 THEN DM = 0: IF ST>8 THEN DM =  - 1: IF ST>9 THEN DM =  - 2: IF ST>11 THEN DM =  - 9
+3055  IF GO = 23 THEN DM = DM - 3
+3060  IF GO = 24 THEN DM = DM - 1
+3065  IF GO = 25 THEN DM = DM + 1
+3070 TL =  FN A(4) + 9 + DM
+3075  IF TL>15 THEN TL = 15
+3080  GOTO 3600
+
+3100  REM SOLOMANI
+3110  GOTO 3400
+
+3200  REM VARGR
+3210  IF ( FN B(5) + PO)>15 THEN GO = 7
+3220  GOTO 3400
+
+3300  REM ZHODANI
+3310  IF ST>11 THEN PO =  FN A(4) + 4
+3320  GOTO 3400
+
+3400  REM FIND TECH LEVEL
+3410 TL =  FN A(6)
+3420  IF ST$ = "A" THEN TL = TL + 6
+3430  IF ST$ = "B" THEN TL = TL + 4
+3440  IF ST$ = "C" THEN TL = TL + 2
+3450  IF ST$ = "X" THEN TL = TL - 4
+3460  IF SI<5 THEN TL = TL - 1: IF SI<2 THEN TL = TL - 1
+3470  IF AM<4 THEN TL = TL + 1
+3480  IF AM>9 THEN TL = TL + 1
+3490  IF HY>8 THEN TL = TL + 1: IF HY>9 THEN TL = TL + 1
+3500  IF PO>0 AND PO<6 THEN TL = TL + 1
+3510  IF PO>8 THEN TL = TL + 2: IF PO>9 THEN TL = TL + 2
+3520  IF GO = 0 OR GO = 5 THEN TL = TL + 1
+3550  IF  LEFT$ (AL$,1) = "Z" AND ((AM<3 AND TL<8) OR (AM = 3 AND TL<7) OR ((AM = 4 OR AM = 7 OR AM = 9) AND TL<6) OR ((AM = 10 OR AM = 11) AND TL<9) OR (AM = 12 AND TL<10)) THEN PO = 0:GO = 0:LA = 0:TL = 0
+3560  GOTO 3700
+
+3600  REM BASIC ALIEN TL LEVELLER
+3610  IF AM<3 AND TL>7 THEN TL = 7
+3620  IF AM = 3 AND TL<6 THEN TL = 6
+3630  IF (AM = 4 OR AM = 7 OR AM = 9) AND TL<5 THEN TL = 5
+3640  IF (AM = 10 OR AM = 11) AND TL<8 THEN TL = 8
+3650  IF AM = 12 AND TL<9 THEN TL = 9
+
+3700  REM GENERATE GAS GIANT
+3710 GG = 0: IF  FN B(4)<10 THEN GG = 1
+
+3800  REM GENERATE TRAVEL ZONES
+3810 TZ = 0
+3815  IF AL$<>"IM" THEN 3845
+3820  IF DR$<>"" AND TZ = 0 THEN  IF  FN B(5)>8 THEN TZ = 1
+3830  IF ST$ = "X" THEN TZ = 2
+3840  IF TZ = 0 AND  FN B(4)>10 THEN TZ = 1
+3845  IF  LEFT$ (AL$,1)<>"z" THEN 4000
+3850  IF  LEFT$ (AL$,1) = "Z" and (st$="C" or ST$="D" or ST$="E") and FNB(5)>10 then tz=4
+3860  IF ST$ = "x" AND  LEFT$ (AL$,1) = "z" THEN TZ = 3
+
+4000  REM GENERATE BASES
+4010 B1 = 0:B2 = 0:B$ = " "
+4020  IF  LEFT$ (AL$,1) = "A" THEN 4300
+4030  IF AL$ = "DR" THEN 4900
+4040  IF AL$ = "HV" THEN 5000
+4050  IF AL$ = "KK" THEN 4500
+4060  IF AL$ = "SO" THEN 4800
+4070  IF  LEFT$ (AL$,1) = "V" THEN 4600
+4080  IF  LEFT$ (AL$,1) = "Z" THEN 4700
+
+4100  REM IMPERIAL BASES
+4110  IF ST$<"C" AND  FN B(5)>7 THEN B1 = 1
+4120  IF ST$>"D" THEN 4210
+4130 DM =  - 3: IF ST>4 THEN DM =  - 2: IF ST>6 THEN DM =  - 1: IF ST>8 THEN DM = 0: IF ST>9 THEN 4150
+4140  IF ( FN B(5) + DM)>6 THEN B2 = 1
+4150  IF B1 = 1 AND B2 = 0 THEN B$ = "N"
+4160  IF ( FN B(4) + DM)>6 THEN B2 = 1
+4170  IF B1 = 0 AND B2 = 1 THEN B$ = "S"
+4180  IF B1 = 1 AND B2 = 1 THEN B$ = "A"
+4190  IF (AL$<>"IM" AND AL$<>"CS") AND B1<>0 THEN B$ = "J"
+4200  IF (AL$<>"IM" AND AL$<>"CS") AND B2<>0 THEN B$ = "M"
+4210  GOTO 6000
+
+4300  REM ASLAN BASES
+4310 B1 = 0:B2 = 0:T1 =  FN B(5):T2 =  FN B(4):S1 =  ASC (ST$) - 64:B$ = " "
+4320  IF GO = 16 AND S1<3 AND T1 + (5 - S1)>13 THEN B1 = 1
+4330  IF GO = 16 AND S1<3 AND T2 + (5 - S1)>12 THEN B2 = 1
+4340  IF GO = 17 AND S1<5 AND T1 + (5 - S1)>8 THEN B1 = 1
+4350  IF GO = 20 AND S1<5 AND T1 + (5 - S1)>6 THEN B1 = 1
+4360  IF GO = 20 AND S1>5 AND T1>7 THEN B1 = 1
+4370  IF GO = 22 AND S1<5 AND T1 + (5 - S1)>9 THEN B1 = 1
+4380  IF (GO = 17 OR GO = 18 OR GO = 21) AND S1<5 AND T2 + (5 - S1)>7 THEN B2 = 1
+4390  IF GO = 19 AND S1<5 AND T2 + (5 - S1)>6 THEN B2 = 1
+4400  IF GO = 22 AND S1<5 AND T2 + (5 - S1)>8 THEN B2 = 1
+4410  IF GO = 18 AND S1>5 AND T2>7 THEN B2 = 1
+4420  IF GO = 19 AND S1>5 AND T2>8 THEN B2 = 1
+4430  IF B1 = 1 THEN B$ = "T"
+4440  IF B2 = 1 THEN B$ = "R"
+4450  IF B1 = 1 AND B2 = 1 THEN B$ = "U"
+4460  IF GO = 16 AND B1 = 1 THEN B$ = "T"
+4470  GOTO 6000
+
+4500  REM KKREE BASES
+4510  IF  FN B(5)>6 THEN B1 = 1:B2 = 0:B$ = "K": GOTO 4550
+4520  IF ST$>"D" THEN 4550
+4530 DM = 0: IF ST<9 THEN DM =  - 1: IF ST<7 THEN DM =  - 2: IF ST<5 THEN DM =  - 3
+4540  IF  FN B(5) + DM>6 THEN B2 = 1:B$ = "O"
+4550  GOTO 6000
+
+4600  REM VARGR BASES
+4610  IF  FN B(5)>6 THEN B1 = 1:B$ = "G": GOTO 4650
+4620 DM =  - 2: IF ST>4 THEN DM =  - 1: IF ST>6 THEN DM = 2
+4622  IF ST>8 THEN DM =  + 1: IF ST>9 THEN DM = 2
+4624  IF ST>11 THEN DM = 3
+4630  IF  FN B(5) + DM>8 THEN B2 = 1:B$ = "C"
+4640  IF B1 = 1 AND B2 = 1 THEN B$ = "H"
+4650  GOTO 6000
+
+4700  REM ZHODANI BASES
+4710 DM = 2: IF ST>4 THEN DM = 1: IF ST>6 THEN DM = 0: IF ST>9 THEN 4740
+4720  IF  FN B(6) + DM>8 THEN B1 = 1:B$ = "Z"
+4730  IF ST<5 AND  FN B(4)>10 THEN B1 = 2:B$ = "Y"
+4740  REM 
+4750  GOTO 6000
+
+4800  REM SOLOMANI BASES
+4810 B2 = 0
+4820  IF ST$<"C" AND  FN B(5)>7 THEN B1 = 1
+4830  IF B1 = 1 THEN B$ = "J"
+4840  GOTO 6000
+
+4900  REM DROYNE BASES
+4910  IF ST$>"D" THEN 4950
+4920  IF  FN B(5) + (4 - ( ASC (ST$) - 64))>7 THEN B1 = 1:B$ = "P"
+4930  IF GO = 6 THEN B1 = 2:B$ = "N"
+4940  IF ( FN B(5) - 7) + TL>6 THEN B2 = 1:B$ = "Q"
+4950  GOTO 6000
+
+5000  REM HIVER BASES
+5010 B0 =  FN B(5):B1 = 0:B2 = 0
+5020  IF ST$ = "A" AND B0<6 THEN B1 = 6
+5030  IF ST$ = "A" AND B0>7 THEN B1 = 7: IF B0 = 12 THEN B1 = 8
+5040  IF (ST$ = "B" OR ST$ = "C") AND B0<3 THEN B2 = 8
+5050  IF ST$ = "B" AND (B0 = 10 OR B0 = 11) THEN B1 = 7
+5060  IF ST$ = "B" AND B0 = 12 THEN B2 = 9
+5070  IF ST$ = "C" AND (B0 = 10 OR B0 = 11) THEN B2 = 8
+5080  IF ST$ = "C" AND B0 = 12 THEN B2 = 9
+5090  IF ST$ = "D" AND (B0 = 2 OR B0 = 11) THEN B2 = 8
+5100  IF ST$ = "D" AND B0 = 12 THEN B2 = 9
+5110  IF ST$ = "E" AND B0 = 12 THEN B2 = 8
+5120  IF ST$ = "X" AND B0 = 12 THEN B2 = 8
+5130  IF B1 = 6 THEN B$ = "E"
+5140  IF B1 = 7 THEN B$ = "L"
+5150  IF B2 = 8 THEN B$ = "M"
+5160  IF B2 = 9 THEN B$ = "F"
+5170  GOTO 6000
+
+6000  REM TRADE CLASSIFICATIONS
+6010 TC$ = "": IF AL$ = "KK" AND NK = 1 THEN TC$ = TC$ + "NK "
+6030  IF AL$ = "HV" AND NH = 1 THEN TC$ = TC$ + "NH "
+6040  IF AL$ = "HV" AND NH = 1 AND PO>7 AND (AM = 3 OR AM = 4 OR AM = 10 OR AM = 11 OR AM = 12) THEN TC$ = TC$ + "FA "
+6045  IF PO>8 THEN TC$ = TC$ + "HI "
+6047  IF PO<4 THEN TC$ = TC$ + "LO "
+6050  IF (AM<3 OR AM = 4 OR AM = 7 OR AM = 9) AND PO>8 THEN TC$ = TC$ + "IN "
+6055  IF (AM<2 AND HY>0) THEN TC$ = TC$ + "IC "
+6060  IF PO<7 THEN TC$ = TC$ + "NI "
+6065  IF AM>9 AND HY>0 THEN TC$ = TC$ + "FL "
+6070  IF ( LEFT$ (AL$,1) = "A" OR AL$ = "HV" OR AL$ = "KK") AND (AM = 6 OR AM = 8) AND (PO>5 AND PO<9) THEN TC$ = TC$ + "RI ": GOTO 6120
+6080  IF  LEFT$ (AL$,1) = "v" AND (AM = 6 OR AM = 8) AND (PO>5 AND PO<9) AND (GO<>7) THEN TC$ = TC$ + "RI ": GOTO 6120
+6090  IF AL$ = "DR" AND (AM = 6 OR AM = 8) AND (PO>5 AND PO<9) THEN TC$ = TC$ + "RI ": GOTO 6120
+6100  IF  LEFT$ (AL$,1) = "Z" AND (TZ = 3 OR TZ = 4) AND (AM = 6 OR AM = 8) AND (PO>5 AND PO<9) THEN TC$ = TC$ + "RI ": GOTO 6120
+6110  IF (AM = 6 OR AM = 8) AND (PO>5 OR PO<9) AND (GO>3 AND GO<10) THEN TC$ = TC$ + "RI "
+6120  IF (AM>1 AND AM<6) AND HY<4 THEN TC$ = TC$ + "PO "
+6130  IF HY = 10 THEN TC$ = TC$ + "WA "
+6140  IF HY = 0 AND AM>1 THEN TC$ = TC$ + "DE "
+6150  IF SI = 0 THEN TC$ = TC$ + "AS "
+6160  IF AM = 0 AND SI<>0 THEN TC$ = TC$ + "VA "
+6170  IF AL$ = "KK" AND (SI = 7 OR SI = 8) AND (AM = 6 OR AM = 8) AND (HY>2 AND HY<6) THEN TC$ = TC$ + "ST "
+6180  IF (AM>3 AND AM<10) AND (HY>3 AND HY<9) AND (PO>4 AND PO<8) THEN TC$ = TC$ + "AG "
+6190  IF AM<4 AND HY<4 AND PO>5 THEN TC$ = TC$ + "NA "
+6200  IF PO = 0 AND GO = 0 AND LA = 0 THEN TC$ = TC$ + "BA "
+6210 TC$ =  LEFT$ (TC$ + "               ",15)
+
+6500  REM CREATE WORLD DATA STRING
+6510 A$ = "": IF X<10 THEN A$ = "0"
+6530 A$ = A$ +  STR$ (X): IF Y<10 THEN A$ = A$ + "0"
+6550 A$ = A$ +  STR$ (Y) + " "
+6560  IF HY<0 THEN HY = 0
+6570  IF AM<0 THEN AM = 0
+6580 A$ = A$ + ST$ +  MID$ (HX$,SI + 1,1) +  MID$ (HX$,AM + 1,1) +  MID$ (HX$,HY + 1,1)
+6590 A$ = A$ +  MID$ (HX$,PO + 1,1) +  MID$ (HX$,GO + 1,1) +  MID$ (HX$,LA + 1,1) + "-"
+6600  IF TL<0 THEN TL = 0
+6610 A$ = A$ +  MID$ (HX$,TL + 1,1) + " ":A$ = A$ + B$ + " "
+6625  IF PO = 0 THEN DR$ = ""
+6630  IF DR$<>"" THEN A$ = A$ + DR$ + " " +  LEFT$ (TC$,12): GOTO 6650
+6640 A$ = A$ + TC$
+6650 A$ = A$ + AL$ + " "
+6660  IF TZ = 1 THEN A$ = A$ + "A "
+6670  IF TZ = 2 THEN A$ = A$ + "R "
+6680  IF TZ = 3 THEN A$ = A$ + "F "
+6690  IF TZ = 4 THEN A$ = A$ + "U "
+6700  IF TZ = 0 THEN A$ = A$ + "  "
+6710  IF GG = 0 THEN A$ = A$ + "  "
+6720  IF GG = 1 THEN A$ = A$ + "G "
+
+7000  REM SAVE TO DISK
+7010 R = R + 1
+7020  PRINT  CHR$ (4);"WRITE SECTOR, R";R
+7030  PRINT A$
+7040  PRINT  CHR$ (4)
+7040  PRINT A$
+7070  NEXT Y: NEXT X
+
+7090  REM SAVE FILE LENGTH
+7100  PRINT  CHR$ (4);"WRITE SECTOR, R0"
+7110  PRINT R
+7120  PRINT  CHR$ (4);"CLOSE"
+
+7130  REM SAVE FILE PARAMETERS
+7140  INPUT "NAME THIS FILE? > ";FI$
+7150  PRINT  CHR$ (4);"RENAME SECTOR,";FI$
+7160  PRINT  CHR$ (4);"OPEN ";FI$;"@"
+7170  PRINT  CHR$ (4);"WRITE ";FI$;"@"
+7180  PRINT 9: PRINT R: PRINT 49
+7190  PRINT "HEX ": PRINT 4
+7200  PRINT "UPP ": PRINT 9
+7210  PRINT "BASES ": PRINT 1
+7220  PRINT "TRADE CLA ": PRINT 14
+7280  PRINT "ALLEG ": PRINT 2
+7290  PRINT "TRAVEL ZO ": PRINT 1
+7300  PRINT "GAS GIANT ": PRINT 1
+7310  PRINT "TRADEWRLD ": PRINT 1
+7320  PRINT "EXPLORED? ": PRINT 1
+7390  PRINT  CHR$ (4);"CLOSE"
+7400  END 

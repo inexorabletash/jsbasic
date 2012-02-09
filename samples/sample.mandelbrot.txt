@@ -1,0 +1,10 @@
+100 REM Mandelbrot Set in B & W
+110 HGR:POKE 49234,0:HCOLOR=3
+120 FOR x = 0 TO 279:FOR y = 0 TO 95
+130 x1 = x / 280 * 3 - 2:y1 = y / 191 * 2 - 1
+140 i = 0:s = x1:t = y1:c = 0
+150 s1 = s * s - t * t + x1
+160 t = 2 * s * t + y1:s = s1:c = 1 - c:i = i + 1
+170 IF s * s + t * t < 4 AND i < 117 THEN GOTO 150
+180 IF c = 0 THEN HPLOT x,y:HPLOT x,191 - y
+190 NEXT:NEXT
