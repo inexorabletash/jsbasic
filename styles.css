@@ -6,10 +6,12 @@ td { vertical-align: top; }
 
 /* Apple II Screen */
 .frame   {width: 560px; height: 384px; border-style: ridge; border-width: 10px; border-color: gray; padding: 10px; background-color: #202020; }
+.frame.focused { background-color: #204020; }
 .wrapper { width: 560px; height: 384px; overflow: hidden; padding: 0; margin: 0;  position: relative; }
 .lores   {position: absolute; z-index: 2; left: 0; top: 0; width: 560px; height: 384px; overflow: hidden; visibility: hidden; }
 .hires   {position: absolute; z-index: 2; left: 0; top: 0; width: 560px; height: 384px; overflow: hidden; visibility: hidden; background-color: #000000; }
 .tty     {position: absolute; z-index: 3; left: 0; top: 0; width: 560px; height: 384px; overflow: hidden;  }
+
 
 /* Character cells */
 .normal  { background-color: #000000; color: #80ff80; }
