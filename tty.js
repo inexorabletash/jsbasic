@@ -675,7 +675,7 @@ function TTY(screenElement, keyboardElement, bell) {
       case '7':
       case '8':
       case '9':
-        if (e.location === KeyboardEvent.DOM_KEY_LOCATION_NUMPAD) {
+        if (e.keyLocation === KeyboardEvent.DOM_KEY_LOCATION_NUMPAD) {
           // Numpad, presumably - allow but nothing special
           return ord(e.keyName);
         } else if (e.ctrlKey) {
