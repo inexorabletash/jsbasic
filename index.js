@@ -42,13 +42,34 @@ window.onload = function () {
   };
   var pdl = [0, 0, 0, 0];
 
-  // Lexical highlighting
-  var editor = new CodeMirror($('#editorframe'), {
-    mode: 'basic',
-    tabMode: 'default',
-    content: $('#source').value,
-    height: '100%'
-  });
+  // Lexical highlighting, if available
+  var editor;
+  if (typeof CodeMirror === 'function') {
+    editor = new CodeMirror($('#editorframe'), {
+      mode: 'basic',
+      tabMode: 'default',
+      content: $('#source').value,
+      height: '100%'
+    });
+  } else {
+    editor = (function () {
+      var textArea = document.createElement('textarea');
+      $('#editorframe').appendChild(textArea);
+      textArea.style.width = '598px';
+      textArea.style.height = '384px';
+      return {
+        getValue: function () {
+          return textArea.value;
+        },
+        setValue: function (value) {
+          textArea.value = value;
+        },
+        setCursor: function (line, column) {
+          // TODO: Implement me!
+        }
+      };
+    }());
+  }
 
   $('#btn_share').onclick = function () {
     // Load up the hidden text area with the current source
