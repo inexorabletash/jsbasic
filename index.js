@@ -129,10 +129,12 @@ window.onload = function () {
 
   addEvent($('#btn_save'), 'click', function () {
     window.localStorage.setItem("save_program", getSource());
+    $('#btn_load').disabled = false;
   });
   addEvent($('#btn_load'), 'click', function () {
     setSource(window.localStorage.getItem("save_program"));
   });
+  $('#btn_load').disabled = (window.localStorage.getItem("save_program") === null);
 
   // Add a "printer" on demand
   addEvent($('#btn_capture'), 'click', function () {
