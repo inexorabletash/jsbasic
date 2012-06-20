@@ -112,6 +112,111 @@ var basic = (function() {
     INTERRUPT: [255, "Break"]
   };
 
+  // Keyword table - these can be altered (e.g. localized) here
+  var kws = {
+    ABS: "ABS",
+    AND: "AND",
+    ASC: "ASC",
+    ATN: "ATN",
+    AT: "AT",
+    CALL: "CALL",
+    CHR$: "CHR$",
+    CLEAR: "CLEAR",
+    COLOR: "COLOR=",
+    CONT: "CONT",
+    COS: "COS",
+    DATA: "DATA",
+    DEF: "DEF",
+    DEL: "DEL",
+    DIM: "DIM",
+    DRAW: "DRAW",
+    END: "END",
+    EXP: "EXP",
+    FLASH: "FLASH",
+    FN: "FN",
+    FOR: "FOR",
+    FRE: "FRE",
+    GET: "GET",
+    GOSUB: "GOSUB",
+    GOTO: "GOTO",
+    GR: "GR",
+    HCOLOR: "HCOLOR=",
+    HGR2: "HGR2",
+    HGR: "HGR",
+    HIMEM: "HIMEM:",
+    HLIN: "HLIN",
+    HOME: "HOME",
+    HPLOT: "HPLOT",
+    HTAB: "HTAB",
+    IF: "IF",
+    IN: "IN#",
+    INPUT: "INPUT",
+    INT: "INT",
+    INVERSE: "INVERSE",
+    LEFT$: "LEFT$",
+    LEN: "LEN",
+    LET: "LET",
+    LIST: "LIST",
+    LOAD: "LOAD",
+    LOG: "LOG",
+    LOMEM: "LOMEM:",
+    MID$: "MID$",
+    NEW: "NEW",
+    NEXT: "NEXT",
+    NORMAL: "NORMAL",
+    NOTRACE: "NOTRACE",
+    NOT: "NOT",
+    ONERR: "ONERR",
+    ON: "ON",
+    OR: "OR",
+    PDL: "PDL",
+    PEEK: "PEEK",
+    PLOT: "PLOT",
+    POKE: "POKE",
+    POP: "POP",
+    POS: "POS",
+    PRINT: "PRINT",
+    PR: "PR#",
+    READ: "READ",
+    RECALL: "RECALL",
+    REM: "REM",
+    RESTORE: "RESTORE",
+    RESUME: "RESUME",
+    RETURN: "RETURN",
+    RIGHT$: "RIGHT$",
+    RND: "RND",
+    ROT: "ROT=",
+    RUN: "RUN",
+    SAVE: "SAVE",
+    SCALE: "SCALE=",
+    SCRN: "SCRN",
+    SGN: "SGN",
+    SHLOAD: "SHLOAD",
+    SIN: "SIN",
+    SPC: "SPC",
+    SPEED: "SPEED=",
+    SQR: "SQR",
+    STEP: "STEP",
+    STOP: "STOP",
+    STORE: "STORE",
+    STR$: "STR$",
+    TAB: "TAB",
+    TAN: "TAN",
+    TEXT: "TEXT",
+    THEN: "THEN",
+    TO: "TO",
+    TRACE: "TRACE",
+    USR: "USR",
+    VAL: "VAL",
+    VLIN: "VLIN",
+    VTAB: "VTAB",
+    WAIT: "WAIT",
+    XDRAW: "XDRAW",
+    AMPERSAND: "&",
+    QUESTION: "?",
+    HSCRN: "HSCRN"
+  };
+
   //
   // Runtime flow control
   //
@@ -122,8 +227,6 @@ var basic = (function() {
     this.method = method;
     this.callback = callback;
   }
-
-
 
   // Adapted from:
   // http://stackoverflow.com/questions/424292/how-to-create-my-own-javascript-random-number-generator-that-i-can-also-set-the-s
@@ -974,7 +1077,7 @@ var basic = (function() {
       return func;
     }
 
-    funlib = {
+    funlib = {};
 
       //////////////////////////////////////////////////////////////////////
       //
@@ -985,29 +1088,29 @@ var basic = (function() {
       //////////////////////////////////////////////////////////////////////
 
 
-      "ABS": funcsign(Math.abs, 'number', 'number'),
-      "ASC": funcsign(function(s) {
+      funlib[kws.ABS] = funcsign(Math.abs, 'number', 'number');
+      funlib[kws.ASC] = funcsign(function(s) {
         if (s.length < 1) { runtime_error(ERRORS.ILLEGAL_QUANTITY); }
         return s.charCodeAt(0);
-      }, 'number', 'string'),
-      "ATN": funcsign(Math.atan, 'number', 'number'),
-      "CHR$": funcsign(String.fromCharCode, 'string', 'number'),
-      "COS": funcsign(Math.cos, 'number', 'number'),
-      "EXP": funcsign(Math.exp, 'number', 'number'),
-      "INT": funcsign(Math.floor, 'number', 'number'),
-      "LEN": funcsign(function LEN(s) { return s.length; }, 'number', 'string'),
-      "LOG": funcsign(Math.log, 'number', 'number'),
-      "SGN": funcsign(function SGN(n) { return n > 0 ? 1 : n < 0 ? -1 : 0; }, 'number', 'number'),
-      "SIN": funcsign(Math.sin, 'number', 'number'),
-      "SQR": funcsign(Math.sqrt, 'number', 'number'),
-      "STR$": funcsign(function STR$(n) { return n.toString(); }, 'string', 'number'),
-      "TAN": funcsign(Math.tan, 'number', 'number'),
-      "VAL": funcsign(function VAL(s) {
+      }, 'number', 'string');
+      funlib[kws.ATN] = funcsign(Math.atan, 'number', 'number');
+      funlib[kws.CHR$] = funcsign(String.fromCharCode, 'string', 'number');
+      funlib[kws.COS] = funcsign(Math.cos, 'number', 'number');
+      funlib[kws.EXP] = funcsign(Math.exp, 'number', 'number');
+      funlib[kws.INT] = funcsign(Math.floor, 'number', 'number');
+      funlib[kws.LEN] = funcsign(function LEN(s) { return s.length; }, 'number', 'string');
+      funlib[kws.LOG] = funcsign(Math.log, 'number', 'number');
+      funlib[kws.SGN] = funcsign(function SGN(n) { return n > 0 ? 1 : n < 0 ? -1 : 0; }, 'number', 'number');
+      funlib[kws.SIN] = funcsign(Math.sin, 'number', 'number');
+      funlib[kws.SQR] = funcsign(Math.sqrt, 'number', 'number');
+      funlib[kws.STR$] = funcsign(function STR$(n) { return n.toString(); }, 'string', 'number');
+      funlib[kws.TAN] = funcsign(Math.tan, 'number', 'number');
+      funlib[kws.VAL] = funcsign(function VAL(s) {
         var n = parseFloat(s);
         return isFinite(n) ? n : 0;
-      }, 'number', 'string'),
+      }, 'number', 'string');
 
-      "RND": funcsign(function RND(n) {
+      funlib[kws.RND] = funcsign(function RND(n) {
         if (n > 0) {
           // Next in PRNG sequence
           return state.prng.next();
@@ -1017,14 +1120,14 @@ var basic = (function() {
           return state.prng.next();
         }
         return state.prng.last;
-      }, 'number', 'number'),
+      }, 'number', 'number');
 
-      "LEFT$": funcsign(function LEFT$(s, n) { return s.substring(0, n); }, 'string', 'string', 'number'),
-      "MID$": funcsign(function MID$(s, n, n2) { return n2 === (void 0) ? s.substring(n - 1) : s.substring(n - 1, n + n2 - 1); }, 'string', 'string', 'number', 'number?'),
-      "RIGHT$": funcsign(function RIGHT$(s, n) { return s.length < n ? s : s.substring(s.length - n); }, 'string', 'string', 'number'),
+      funlib[kws.LEFT$] = funcsign(function LEFT$(s, n) { return s.substring(0, n); }, 'string', 'string', 'number');
+      funlib[kws.MID$] = funcsign(function MID$(s, n, n2) { return n2 === (void 0) ? s.substring(n - 1) : s.substring(n - 1, n + n2 - 1); }, 'string', 'string', 'number', 'number?');
+      funlib[kws.RIGHT$] = funcsign(function RIGHT$(s, n) { return s.length < n ? s : s.substring(s.length - n); }, 'string', 'string', 'number');
 
-      "POS": funcsign(function POS(n) { unused(n); return env.tty.getCursorPosition().x; }, 'number', 'number'),
-      "SCRN": funcsign(function SCRN(x, y) {
+      funlib[kws.POS] = funcsign(function POS(n) { unused(n); return env.tty.getCursorPosition().x; }, 'number', 'number');
+      funlib[kws.SCRN] = funcsign(function SCRN(x, y) {
         if (!env.lores) { runtime_error("Graphics not supported"); }
         x = x >> 0;
         y = y >> 0;
@@ -1034,8 +1137,8 @@ var basic = (function() {
         }
 
         return env.lores.getPixel(x, y);
-      }, 'number', 'number', 'number'),
-      "HSCRN": funcsign(function HSCRN(x, y) {
+      }, 'number', 'number', 'number');
+      funlib[kws.HSCRN] = funcsign(function HSCRN(x, y) {
         var hires = env.display.hires_plotting_page === 2 ? env.hires2 : env.hires;
         if (!hires) { runtime_error("Graphics not supported"); }
 
@@ -1047,30 +1150,29 @@ var basic = (function() {
         }
 
         return hires.getPixel(x, y);
-      }, 'number', 'number', 'number'),
+      }, 'number', 'number', 'number');
 
-      "PDL": funcsign(function PDL(n) {
+      funlib[kws.PDL] = funcsign(function PDL(n) {
         if (env.paddle) {
           return (env.paddle(n) * 255) & 0xff;
         } else {
-          runtime_error('Paddles not attached');
+          return runtime_error('Paddles not attached');
         }
-      }, 'number', 'number'),
-      "FRE": funcsign(function FRE(n) {
+      }, 'number', 'number');
+      funlib[kws.FRE] = funcsign(function FRE(n) {
         unused(n);
         return JSON ? JSON.stringify([state.variables, state.arrays, state.functions]).length : 0;
-      }, 'number', 'number'),
-      "PEEK": funcsign(function PEEK(address) {
+      }, 'number', 'number');
+      funlib[kws.PEEK] = funcsign(function PEEK(address) {
         address = address & 0xffff;
         if (!{}.hasOwnProperty.call(peek_table, address)) {
           runtime_error("Unsupported PEEK location: " + address);
         }
         return peek_table[address]();
-      }, 'number', 'number'),
+      }, 'number', 'number');
 
       // Not supported
-      "USR": funcsign(function USR(n) { unused(n); runtime_error("USR Function not supported"); }, 'number', 'number')
-    };
+      funlib[kws.USR] = funcsign(function USR(n) { unused(n); runtime_error("USR Function not supported"); }, 'number', 'number');
 
 
     //----------------------------------------------------------------------
@@ -1116,34 +1218,38 @@ var basic = (function() {
         }
 
         var RESERVED_WORDS = [
+          kws.ABS, kws.AND, kws.ASC, kws.ATN, kws.AT, kws.CALL, kws.CHR$, kws.CLEAR, kws.COLOR, kws.CONT, kws.COS,
+          /*kws.DATA,*/
+          kws.DEF, kws.DEL, kws.DIM, kws.DRAW, kws.END, kws.EXP, kws.FLASH, kws.FN, kws.FOR, kws.FRE, kws.GET,
+          kws.GOSUB, kws.GOTO, kws.GR, kws.HCOLOR, kws.HGR2, kws.HGR, kws.HIMEM, kws.HLIN, kws.HOME, kws.HPLOT,
+          kws.HTAB, kws.IF, kws.IN, kws.INPUT, kws.INT, kws.INVERSE, kws.LEFT$, kws.LEN, kws.LET, kws.LIST,
+          kws.LOAD, kws.LOG, kws.LOMEM, kws.MID$, kws.NEW, kws.NEXT, kws.NORMAL, kws.NOTRACE, kws.NOT, kws.ONERR,
+          kws.ON, kws.OR, kws.PDL, kws.PEEK, kws.PLOT, kws.POKE, kws.POP, kws.POS, kws.PRINT, kws.PR, kws.READ,
+          kws.RECALL, /*kws.REM,*/ kws.RESTORE, kws.RESUME, kws.RETURN, kws.RIGHT$, kws.RND, kws.ROT, kws.RUN,
+          kws.SAVE, kws.SCALE, kws.SCRN, kws.SGN, kws.SHLOAD, kws.SIN, kws.SPC, kws.SPEED, kws.SQR, kws.STEP,
+          kws.STOP, kws.STORE, kws.STR$, kws.TAB, kws.TAN, kws.TEXT, kws.THEN, kws.TO, kws.TRACE, kws.USR, kws.VAL,
+          kws.VLIN, kws.VTAB, kws.WAIT, kws.XDRAW, kws.AMPERSAND, kws.QUESTION,
+          kws.HSCRN
+        ];
         // NOTE: keywords that are stems of other words need to go after (e.g. "NOTRACE", "NOT)
-                    "ABS", "AND", "ASC", "ATN", "AT", "CALL", "CHR$", "CLEAR", "COLOR=", "CONT", "COS",
-        /*"DATA",*/"DEF", "DEL", "DIM", "DRAW", "END", "EXP", "FLASH", "FN", "FOR", "FRE", "GET",
-                    "GOSUB", "GOTO", "GR", "HCOLOR=", "HGR2", "HGR", "HIMEM:", "HLIN", "HOME", "HPLOT",
-                    "HTAB", "IF", "IN#", "INPUT", "INT", "INVERSE", "LEFT$", "LEN", "LET", "LIST",
-                    "LOAD", "LOG", "LOMEM:", "MID$", "NEW", "NEXT", "NORMAL", "NOTRACE", "NOT", "ONERR",
-                    "ON", "OR", "PDL", "PEEK", "PLOT", "POKE", "POP", "POS", "PRINT", "PR#", "READ",
-                    "RECALL", /*"REM",*/"RESTORE", "RESUME", "RETURN", "RIGHT$", "RND", "ROT=", "RUN",
-                    "SAVE", "SCALE=", "SCRN", "SGN", "SHLOAD", "SIN", "SPC", "SPEED=", "SQR", "STEP",
-                    "STOP", "STORE", "STR$", "TAB", "TAN", "TEXT", "THEN", "TO", "TRACE", "USR", "VAL",
-                    "VLIN", "VTAB", "WAIT", "XDRAW", "&", "?",
-                    "HSCRN"
-                ],
-                    regexReservedWords = new RegExp("^(" + RESERVED_WORDS.map(munge).join("|") + ")", "i"),
-                    regexIdentifier = new RegExp('^([A-Za-z][A-Za-z0-9]?)[A-Za-z0-9]*(\\$|%)?'),
-                    regexStringLiteral = new RegExp('^"([^"]*?)(?:"|(?=\\n|\\r|$))'),
-                    regexNumberLiteral = new RegExp('^([0-9]*\\.?[0-9]+(?:[eE]\\s*[\\-+]?\\s*[0-9]+)?)'),
-                    regexOperator = new RegExp('^(;|<[ \t]*=|=[ \t]*<|>[ \t]*=|=[ \t]*>|=[ \t]*=|<[ \t]*>|>[ \t]*<|=|<|>|\\+|-|\\*|/|\\^|\\(|\\)|,)'),
+        RESERVED_WORDS.sort();
+        RESERVED_WORDS.reverse();
 
-                    regexLineNumber = new RegExp('^([0-9]+)'),
-                    regexSeparator = new RegExp('^(:)'),
+        var regexReservedWords = new RegExp("^(" + RESERVED_WORDS.map(munge).join("|") + ")", "i"),
+            regexIdentifier = new RegExp('^([A-Za-z][A-Za-z0-9]?)[A-Za-z0-9]*(\\$|%)?'),
+            regexStringLiteral = new RegExp('^"([^"]*?)(?:"|(?=\\n|\\r|$))'),
+            regexNumberLiteral = new RegExp('^([0-9]*\\.?[0-9]+(?:[eE]\\s*[\\-+]?\\s*[0-9]+)?)'),
+            regexOperator = new RegExp('^(;|<[ \t]*=|=[ \t]*<|>[ \t]*=|=[ \t]*>|=[ \t]*=|<[ \t]*>|>[ \t]*<|=|<|>|\\+|-|\\*|/|\\^|\\(|\\)|,)'),
 
-                    regexRemark = new RegExp('^(' + munge('REM') + '([^\r\n]*))', 'i'),
-                    regexData = new RegExp('^(' + munge('DATA') + ')', 'i'),
+            regexLineNumber = new RegExp('^([0-9]+)'),
+            regexSeparator = new RegExp('^(:)'),
 
-                    regexLinearWhitespace = new RegExp('^[ \t]+'),
-                    regexNewline = new RegExp('^\r?\n');
+            regexRemark = new RegExp('^(' + munge(kws.REM) + '([^\r\n]*))', 'i'),
+            regexData = new RegExp('^(' + munge(kws.DATA) + ')', 'i'),
 
+            regexLinearWhitespace = new RegExp('^[ \t]+'),
+            regexNewline = new RegExp('^\r?\n');
+        
         // Token types:
         //    lineNumber    - start of a new line
         //    separator     - separates statements on same line
@@ -1196,7 +1302,7 @@ var basic = (function() {
             parseDataInput(stream, token.data);
           } else if (stream.match(regexReservedWords)) {
             token.reserved = stream.lastMatch[1].toUpperCase().replace(/\s+/g, '');
-            if (token.reserved === "?") { token.reserved = "PRINT"; } // HACK
+            if (token.reserved === kws.QUESTION) { token.reserved = kws.PRINT; } // HACK
           } else if (stream.match(regexIdentifier)) {
             token.identifier = stream.lastMatch[1].toUpperCase() + (stream.lastMatch[2] || ''); // Canonicalize identifier name
           } else if (stream.match(regexStringLiteral)) {
@@ -1438,7 +1544,7 @@ var basic = (function() {
             return { source: String(match('number')), type: 'number' };
           } else if (test('string')) {
             return { source: quote(match('string')), type: 'string' };
-          } else if (test('reserved', 'FN', true)) {
+          } else if (test('reserved', kws.FN, true)) {
             return parseUserfunction();
           } else if (test('reserved')) {
             return parsefunction(match('reserved'));
@@ -1466,7 +1572,7 @@ var basic = (function() {
 
           if (test('operator', '+') || test('operator', '-')) {
             op = match('operator');
-          } else if (test('reserved', 'NOT')) {
+          } else if (test('reserved', kws.NOT)) {
             op = match('reserved');
           }
 
@@ -1478,7 +1584,7 @@ var basic = (function() {
             switch (op) {
               case "+": return rhs;
               case "-": return { source: '(-' + rhs.source + ')', type: 'number' };
-              case "NOT": return { source: '((!' + rhs.source + ')?1:0)', type: 'number' };
+              case kws.NOT: return { source: '((!' + rhs.source + ')?1:0)', type: 'number' };
             }
           }
           return parseFinalExpression();
@@ -1566,7 +1672,7 @@ var basic = (function() {
 
         function parseAndExpression() {
           var lhs = parseRelationalExpression(), rhs;
-          while (test('reserved', 'AND', true)) {
+          while (test('reserved', kws.AND, true)) {
             rhs = parseRelationalExpression();
 
             enforce_type(lhs.type, 'number');
@@ -1582,7 +1688,7 @@ var basic = (function() {
 
         function parseOrExpression() {
           var lhs = parseAndExpression(), rhs;
-          while (test('reserved', 'OR', true)) {
+          while (test('reserved', kws.OR, true)) {
             rhs = parseAndExpression();
 
             enforce_type(lhs.type, 'number');
@@ -1612,7 +1718,7 @@ var basic = (function() {
           return 'lib[' + quote(name) + '](' + args.join(',') + ');';
         }
 
-        var keyword = test('identifier') ? 'LET' : match('reserved'),
+        var keyword = test('identifier') ? kws.LET : match('reserved'),
                     name, type, subscripts, is_to, expr, param, args, prompt, trailing, js;
 
         switch (keyword) {
@@ -1622,10 +1728,10 @@ var basic = (function() {
           //
           //////////////////////////////////////////////////////////////////////
 
-          case "CLEAR": // Clear all variables
+          case kws.CLEAR: // Clear all variables
             return slib('clear');
 
-          case "LET":  // Assign a variable, LET x = expr
+          case kws.LET:  // Assign a variable, LET x = expr
             name = match('identifier');
             subscripts = parseSubscripts();
             match('operator', '=');
@@ -1647,7 +1753,7 @@ var basic = (function() {
               return 'state.arrays[' + quote(name) + '].set([' + subscripts + '], ' + expr + ')';
             }
 
-          case "DIM":
+          case kws.DIM:
             js = '';
             do {
               name = match('identifier');
@@ -1657,8 +1763,8 @@ var basic = (function() {
             } while (test('operator', ',', true));
             return js;
 
-          case "DEF":     // DEF FN A(X) = expr
-            match("reserved", "FN");
+          case kws.DEF:     // DEF FN A(X) = expr
+            match("reserved", kws.FN);
             name = match('identifier');
             match("operator", "(");
             param = match('identifier');
@@ -1692,15 +1798,15 @@ var basic = (function() {
             //
             //////////////////////////////////////////////////////////////////////
 
-          case "GOTO": // GOTO linenum
+          case kws.GOTO: // GOTO linenum
             return slib('goto', match("number"));
 
-          case "ON":  // ON expr (GOTO|GOSUB) linenum[,linenum ... ]
+          case kws.ON:  // ON expr (GOTO|GOSUB) linenum[,linenum ... ]
             expr = parseNumericExpression();
 
             keyword = match('reserved');
-            if (keyword !== "GOTO" && keyword !== "GOSUB") {
-              parse_error("Syntax error: Expected GOTO or GOSUB");
+            if (keyword !== kws.GOTO && keyword !== kws.GOSUB) {
+              parse_error("Syntax error: Expected " + kws.GOTO + " or " + kws.GOSUB);
             }
 
             args = [];
@@ -1708,18 +1814,18 @@ var basic = (function() {
               args.push(match("number"));
             } while (test("operator", ",", true));
 
-            return slib(keyword === 'GOSUB' ? 'on_gosub' : 'on_goto', expr, args.join(','));
+            return slib(keyword === kws.GOSUB ? 'on_gosub' : 'on_goto', expr, args.join(','));
 
-          case "GOSUB": // GOSUB linenum
+          case kws.GOSUB: // GOSUB linenum
             return slib('gosub', match("number"));
 
-          case "RETURN": // Return from the last GOSUB
+          case kws.RETURN: // Return from the last GOSUB
             return slib('return');
 
-          case "POP": // Turn last GOSUB into a GOTO
+          case kws.POP: // Turn last GOSUB into a GOTO
             return slib('pop');
 
-          case "FOR": // FOR i = m TO n STEP s
+          case kws.FOR: // FOR i = m TO n STEP s
             name = match('identifier');
             if (vartype(name) !== 'float') {
               parse_error("Syntax error: Expected floating point variable");
@@ -1729,10 +1835,10 @@ var basic = (function() {
             return slib('for',
                             quote(name),
                             match("operator", "=") && parseNumericExpression(),
-                            match("reserved", "TO") && parseNumericExpression(),
-                            test('reserved', 'STEP', true) ? parseNumericExpression() : '1');
+                            match("reserved", kws.TO) && parseNumericExpression(),
+                            test('reserved', kws.STEP, true) ? parseNumericExpression() : '1');
 
-          case "NEXT": // NEXT [i [,j ... ] ]
+          case kws.NEXT: // NEXT [i [,j ... ] ]
             args = [];
             if (test('identifier')) {
               args.push(quote(match('identifier')));
@@ -1743,17 +1849,17 @@ var basic = (function() {
 
             return slib('next', args.join(','));
 
-          case "IF":  // IF expr (GOTO linenum|THEN linenum|THEN statement [:statement ... ]
+          case kws.IF:  // IF expr (GOTO linenum|THEN linenum|THEN statement [:statement ... ]
             expr = parseAnyExpression();
 
             js = slib('if', expr);
 
-            if (test('reserved', 'GOTO', true)) {
+            if (test('reserved', kws.GOTO, true)) {
               // IF expr GOTO linenum
               return js + slib('goto', match('number'));
             }
 
-            match('reserved', 'THEN');
+            match('reserved', kws.THEN);
             if (test('number')) {
               // IF expr THEN linenum
               return js + slib('goto', match('number'));
@@ -1762,10 +1868,10 @@ var basic = (function() {
               return js + parseCommand(); // recurse
             }
 
-          case "END":  // End program
+          case kws.END:  // End program
             return slib('end');
 
-          case "STOP": // Break, like an error
+          case kws.STOP: // Break, like an error
             return slib('stop');
 
             //////////////////////////////////////////////////////////////////////
@@ -1774,11 +1880,11 @@ var basic = (function() {
             //
             //////////////////////////////////////////////////////////////////////
 
-          case "ONERR": // ONERR GOTO linenum
+          case kws.ONERR: // ONERR GOTO linenum
             return slib('onerr_goto',
-                            match("reserved", "GOTO") && match("number"));
+                            match("reserved", kws.GOTO) && match("number"));
 
-          case "RESUME":
+          case kws.RESUME:
             return slib('resume');
 
             //////////////////////////////////////////////////////////////////////
@@ -1787,10 +1893,10 @@ var basic = (function() {
             //
             //////////////////////////////////////////////////////////////////////
 
-          case "RESTORE":
+          case kws.RESTORE:
             return slib('restore');
 
-          case "READ":
+          case kws.READ:
             args = [];
             do {
               args.push(parsePValue());
@@ -1804,7 +1910,7 @@ var basic = (function() {
             //
             //////////////////////////////////////////////////////////////////////
 
-          case "PRINT": // Output to the screen
+          case kws.PRINT: // Output to the screen
             args = [];
             trailing = true;
             while (!endOfStatement()) {
@@ -1813,14 +1919,14 @@ var basic = (function() {
               } else if (test('operator', ',', true)) {
                 trailing = false;
                 args.push('lib.comma()');
-              } else if (test('reserved', 'SPC') || test('reserved', 'TAB')) {
+              } else if (test('reserved', kws.SPC) || test('reserved', kws.TAB)) {
                 trailing = true;
                 keyword = match('reserved');
                 match("operator", "(");
                 expr = parseNumericExpression();
                 match("operator", ")");
 
-                args.push('lib.' + (keyword === 'SPC' ? 'spc' : 'tab') + '(' + expr + ')');
+                args.push('lib.' + (keyword === kws.SPC ? 'spc' : 'tab') + '(' + expr + ')');
               } else {
                 trailing = true;
                 args.push(parseAnyExpression());
@@ -1832,7 +1938,7 @@ var basic = (function() {
 
             return slib('print', args.join(','));
 
-          case "INPUT": // Read input from keyboard
+          case kws.INPUT: // Read input from keyboard
             prompt = '?';
             if (test('string')) {
               prompt = match('string');
@@ -1847,28 +1953,28 @@ var basic = (function() {
 
             return slib('input', quote(prompt), args.join(','));
 
-          case "GET": // Read character from keyboard
+          case kws.GET: // Read character from keyboard
             return slib('get', parsePValue());
 
-          case "HOME":  // Clear text screen
+          case kws.HOME:  // Clear text screen
             return slib('home');
 
-          case "HTAB":  // Set horizontal cursor position
+          case kws.HTAB:  // Set horizontal cursor position
             return slib('htab', parseNumericExpression());
 
-          case "VTAB":  // Set vertical cursor position
+          case kws.VTAB:  // Set vertical cursor position
             return slib('vtab', parseNumericExpression());
 
-          case "INVERSE":  // Inverse text
+          case kws.INVERSE:  // Inverse text
             return slib('inverse');
 
-          case "FLASH":  // Flashing text
+          case kws.FLASH:  // Flashing text
             return slib('flash');
 
-          case "NORMAL":  // Normal text
+          case kws.NORMAL:  // Normal text
             return slib('normal');
 
-          case "TEXT":  // Set display mode to text
+          case kws.TEXT:  // Set display mode to text
             return slib('text');
 
             //////////////////////////////////////////////////////////////////////
@@ -1877,10 +1983,10 @@ var basic = (function() {
             //
             //////////////////////////////////////////////////////////////////////
 
-          case "NOTRACE":  // Turn off line tracing
+          case kws.NOTRACE:  // Turn off line tracing
             return slib('notrace');
 
-          case "TRACE":  // Turn on line tracing
+          case kws.TRACE:  // Turn on line tracing
             return slib('trace');
 
             //////////////////////////////////////////////////////////////////////
@@ -1889,28 +1995,28 @@ var basic = (function() {
             //
             //////////////////////////////////////////////////////////////////////
 
-          case "GR":   // Set display mode to lores graphics, clear screen
+          case kws.GR:   // Set display mode to lores graphics, clear screen
             return slib('gr');
 
-          case "COLOR=":  // Set lores color
+          case kws.COLOR:  // Set lores color
             return slib('color', parseNumericExpression());
 
-          case "PLOT":  // Plot lores point
+          case kws.PLOT:  // Plot lores point
             return slib('plot',
                             parseNumericExpression(),
                             match("operator", ",") && parseNumericExpression());
 
-          case "HLIN":  // Draw lores horizontal line
+          case kws.HLIN:  // Draw lores horizontal line
             return slib('hlin',
                             parseNumericExpression(),
                             match("operator", ",") && parseNumericExpression(),
-                            match("reserved", "AT") && parseNumericExpression());
+                            match("reserved", kws.AT) && parseNumericExpression());
 
-          case "VLIN":  // Draw lores vertical line
+          case kws.VLIN:  // Draw lores vertical line
             return slib('vlin',
                             parseNumericExpression(),
                             match("operator", ",") && parseNumericExpression(),
-                            match("reserved", "AT") && parseNumericExpression());
+                            match("reserved", kws.AT) && parseNumericExpression());
 
             //////////////////////////////////////////////////////////////////////
             //
@@ -1919,24 +2025,24 @@ var basic = (function() {
             //////////////////////////////////////////////////////////////////////
 
             // Hires Display Routines
-          case "HGR":   // Set display mode to hires graphics, clear screen
+          case kws.HGR:   // Set display mode to hires graphics, clear screen
             return slib('hgr');
 
-          case "HGR2":  // Set display mode to hires graphics, page 2, clear screen
+          case kws.HGR2:  // Set display mode to hires graphics, page 2, clear screen
             return slib('hgr2');
 
-          case "HCOLOR=":  // Set hires color
+          case kws.HCOLOR:  // Set hires color
             return slib('hcolor', parseNumericExpression());
 
-          case "HPLOT":  // Draw hires line
-            is_to = test('reserved', 'TO', true);
+          case kws.HPLOT:  // Draw hires line
+            is_to = test('reserved', kws.TO, true);
 
             args = [];
             do {
               args.push(parseNumericExpression());
               match("operator", ",");
               args.push(parseNumericExpression());
-            } while (test('reserved', 'TO', true));
+            } while (test('reserved', kws.TO, true));
 
             return slib(is_to ? 'hplot_to' : 'hplot', args.join(','));
 
@@ -1946,18 +2052,18 @@ var basic = (function() {
             //
             //////////////////////////////////////////////////////////////////////
 
-          case "PR#":   // Direct output to slot
+          case kws.PR:   // Direct output to slot
             return slib('pr#', parseNumericExpression());
 
-          case "CALL":  // Call native routine
+          case kws.CALL:  // Call native routine
             return slib('call', parseNumericExpression());
 
-          case "POKE":  // Set memory value
+          case kws.POKE:  // Set memory value
             return slib('poke',
                             parseNumericExpression(),
                             match("operator", ",") && parseNumericExpression());
 
-          case "SPEED=":  // Output speed
+          case kws.SPEED:  // Output speed
             return slib('speed', parseNumericExpression());
 
             //////////////////////////////////////////////////////////////////////
@@ -1966,7 +2072,7 @@ var basic = (function() {
             //
             //////////////////////////////////////////////////////////////////////
 
-          case "LIST":  // List program statements
+          case kws.LIST:  // List program statements
             parse_error("Introspection statement not supported: " + keyword);
             return;
 
@@ -1977,36 +2083,36 @@ var basic = (function() {
             //////////////////////////////////////////////////////////////////////
 
             // Shape tables
-          case "ROT=":   // Set rotation angle for hires shape
-          case "SCALE=": // Set rotation angle for hires shape
-          case "DRAW":   // Draw hires shape
-          case "XDRAW":  // XOR draw hires shape
+          case kws.ROT:   // Set rotation angle for hires shape
+          case kws.SCALE: // Set rotation angle for hires shape
+          case kws.DRAW:   // Draw hires shape
+          case kws.XDRAW:  // XOR draw hires shape
             parse_error("Display statement not supported: " + keyword);
             return;
 
             // Interpreter Routines
-          case "CONT":  // Continue stopped program (immediate mode)
-          case "DEL":   // Deletes program statements
-          case "NEW":   // Wipe program
-          case "RUN":   // Execute program
+          case kws.CONT:  // Continue stopped program (immediate mode)
+          case kws.DEL:   // Deletes program statements
+          case kws.NEW:   // Wipe program
+          case kws.RUN:   // Execute program
             parse_error("Interpreter statement not supported: " + keyword);
             return;
 
             // Native Routines
-          case "HIMEM:":  // Set upper bound of variable memory
-          case "IN#":     // Direct input from slot
-          case "LOMEM:":  // Set low bound of variable memory
-          case "WAIT":    // Wait for memory value to match a condition
-          case "&":       // Command hook
+          case kws.HIMEM:  // Set upper bound of variable memory
+          case kws.IN:     // Direct input from slot
+          case kws.LOMEM:  // Set low bound of variable memory
+          case kws.WAIT:    // Wait for memory value to match a condition
+          case kws.AMPERSAND:       // Command hook
             parse_error("Native interop statement not supported: " + keyword);
             return;
 
             // Tape Routines
-          case "LOAD":    // Load program from cassette port
-          case "RECALL":  // Load array from cassette port
-          case "SAVE":    // Save program to cassette port
-          case "STORE":   // Store array to cassette port
-          case "SHLOAD":  // Load shape table from cassette port
+          case kws.LOAD:    // Load program from cassette port
+          case kws.RECALL:  // Load array from cassette port
+          case kws.SAVE:    // Save program to cassette port
+          case kws.STORE:   // Store array to cassette port
+          case kws.SHLOAD:  // Load shape table from cassette port
             parse_error("Tape statement not supported: " + keyword);
             return;
 
@@ -2285,7 +2391,7 @@ var basic = (function() {
 
 // TODO: DOS implementation
 
-if (!window) {
+if (typeof window === 'undefined') {
   (function() {
     /*jslint windows: true, rhino: true */
 
