@@ -38,11 +38,11 @@ By <a href="mailto:inexorabletash@hotmail.com">Joshua Bell</a>
 <!-- Screen -->
 <div id="frame" class="frame" style="float: left; margin: 5px;">
   <div id="screen-wrapper" class="wrapper">
-	  <div id="lores" class="lores"></div>
-	  <canvas id="hires" width="560" height="384" class="hires"></canvas>
-	  <canvas id="hires2" width="560" height="384" class="hires"></canvas>
-	  <div id="screen" class="tty"></div>
-	</div>
+    <div id="lores" class="lores"></div>
+    <canvas id="hires" width="560" height="384" class="hires"></canvas>
+    <canvas id="hires2" width="560" height="384" class="hires"></canvas>
+    <div id="screen" class="tty"></div>
+  </div>
 </div>
 
 <!-- Keyboard - positioned offscreen -->
@@ -50,16 +50,16 @@ By <a href="mailto:inexorabletash@hotmail.com">Joshua Bell</a>
 
 <!-- Source -->
 <div style="float: left; margin: 5px;">
-	Enter code:	&nbsp;&nbsp;
-	<input type="button" value="Run"  id="btn_run">
-	<input type="button" value="Stop" id="btn_stop" disabled="disabled">
+  Enter code:  &nbsp;&nbsp;
+  <input type="button" value="Run"  id="btn_run">
+  <input type="button" value="Stop" id="btn_stop" disabled="disabled">
 
-	<select id="lb_files">
-	  <option disabled selected="selected">Select a file...</option>
-	  <option value="sample.basic">DEMOS</option>
+  <select id="lb_files">
+    <option disabled selected="selected">Select a file...</option>
+    <option value="sample.basic">DEMOS</option>
 
     <option disabled>---- Tests ----</option>
-	  <option value="sample.unittests">Unit Tests</option>
+    <option value="sample.unittests">Unit Tests</option>
     <option value="sample.keyboard">Keyboard Test</option>
     <option value="sample.charset">Charset Test</option>
 
@@ -67,44 +67,44 @@ By <a href="mailto:inexorabletash@hotmail.com">Joshua Bell</a>
     <option disabled>---- User Submissions ----</option>
 
     <option disabled>Games</option>
-	  <option value="simple.pong">SIMPLE.PONG</option>
-	  <option value="sample.adventure">Text Adventure (Floyd McWilliams)</option>
-	  <option value="sample.pacman">(Not Really) ASCII Pac-Man (Michael Kemp)</option>
-	  <option value="sample.puzzler">Puzzler (Gregg Buntin)</option>
-	  <option value="sample.hangman">Hangman (Mike Gleason)</option>
+    <option value="simple.pong">SIMPLE.PONG</option>
+    <option value="sample.adventure">Text Adventure (Floyd McWilliams)</option>
+    <option value="sample.pacman">(Not Really) ASCII Pac-Man (Michael Kemp)</option>
+    <option value="sample.puzzler">Puzzler (Gregg Buntin)</option>
+    <option value="sample.hangman">Hangman (Mike Gleason)</option>
     <option value="sample.raindrops">Catch the Raindrop (Nicholas Merchant)</option>
     <option value="sample.jot">JOT (Mike Gleason)</option>
     
     <option disabled>Graphics</option>
-	  <option value="sample.rodscolorpattern">Rod&apos;s Color Pattern</option>
-	  <option value="sample.hacker">Hacker Logo (markwstock)</option>
-	  <option value="sample.loreswalk">Random LoRes (John Melesky)</option>
-	  <option value="sample.hireswalk">Random HiRes (John Melesky)</option>
-	  <option value="sample.sierpinski">Sierpinski Triangles (Kevin Miller)</option>
-	  <option value="sample.stringart">String Art (Chris Heric)</option>
-	  <option value="sample.paint">Drawing Program (Brian Broker)</option>
-	  <option value="sample.scribble">Scribble (William Simms)</option>
-	  <option value="sample.connections">Connections (Gregg Buntin)</option>
-	  <option value="sample.squiggle">Squiggle (Gregg Buntin)</option>
-	  <option value="sample.boys_surface">Boy&apos;s Surface (Lukas Innig)</option>
-	  <option value="sample.gaussian">Gaussian Distribution 2D (John Russ)</option>
-	  <option value="sample.bitmaps">Bitmap Images (Brian Broker)</option>
-	  <option value="sample.mandelbrot">Mandelbrot Set (c/o Gregory Lewis)</option>
-	  <option value="sample.mandelbrot2">Mandelbrot Set in Color</option>
-	  <option value="sample.steve">Steve (Nicola Foggi)</option>
+    <option value="sample.rodscolorpattern">Rod's Color Pattern</option>
+    <option value="sample.hacker">Hacker Logo (markwstock)</option>
+    <option value="sample.loreswalk">Random LoRes (John Melesky)</option>
+    <option value="sample.hireswalk">Random HiRes (John Melesky)</option>
+    <option value="sample.sierpinski">Sierpinski Triangles (Kevin Miller)</option>
+    <option value="sample.stringart">String Art (Chris Heric)</option>
+    <option value="sample.paint">Drawing Program (Brian Broker)</option>
+    <option value="sample.scribble">Scribble (William Simms)</option>
+    <option value="sample.connections">Connections (Gregg Buntin)</option>
+    <option value="sample.squiggle">Squiggle (Gregg Buntin)</option>
+    <option value="sample.boys_surface">Boy's Surface (Lukas Innig)</option>
+    <option value="sample.gaussian">Gaussian Distribution 2D (John Russ)</option>
+    <option value="sample.bitmaps">Bitmap Images (Brian Broker)</option>
+    <option value="sample.mandelbrot">Mandelbrot Set (c/o Gregory Lewis)</option>
+    <option value="sample.mandelbrot2">Mandelbrot Set in Color</option>
+    <option value="sample.steve">Steve (Nicola Foggi)</option>
 
     <option disabled>Other</option>
-	  <option value="sample.primes">Prime Sieve (Kevin Miller)</option>
-	  <option value="sample.february">February Surprise (Antti Pirskanen)</option>
-	  <option value="sample.hellosine">Hello World Sine Wave (Jamie Beu)</option>
+    <option value="sample.primes">Prime Sieve (Kevin Miller)</option>
+    <option value="sample.february">February Surprise (Antti Pirskanen)</option>
+    <option value="sample.hellosine">Hello World Sine Wave (Jamie Beu)</option>
     <option value="sample.bodymass">Body Mass Index Calculator (Tim Dwyer)</option>
 
     <option disabled>---- Traveller RPG Utilities ----</option>
-	  <option value="TRADER C">TRADER</option>
-	  <option value="sample.sectorgen">Traveller Sector Generator</option>
-	  <option value="sample.zhorelay">Zhodani Relay Station Placement</option>
-	  <option value="sample.readsector">Read Sector File</option>
-	</select>
+    <option value="TRADER C">TRADER</option>
+    <option value="sample.sectorgen">Traveller Sector Generator</option>
+    <option value="sample.zhorelay">Zhodani Relay Station Placement</option>
+    <option value="sample.readsector">Read Sector File</option>
+  </select>
 
   <input type="button" id="btn_capture" value="Echo to &quot;Printer&quot;" title="Pops up a &quot;printer&quot; window and echoes all output there, so you can copy/paste">
 
@@ -130,8 +130,8 @@ By <a href="mailto:inexorabletash@hotmail.com">Joshua Bell</a>
   on an Apple since the erroneous second statement is never reached. <code>10 END : CHR$(PRINT)</code>
   <li>Handling of BASIC code that does not match the canonical <code>LIST</code> output format may not behave as on an Apple:
     <ul>
-      <li>Keyword parsing differs from Applesoft command line. For example <code>FOR I = S TO P</code> doesn&apos;t collapse into <code>FOR I = STOP</code>.
-      <li>The interpreter doesn&apos;t actually care about line numbers for statement ordering (just for <code>GOTO</code>/<code>GOSUB</code> targets and <code>IF</code> statements). So <code>20 PRINT "A"</code>, <code>10 PRINT "B"</code> will just print A, then B
+      <li>Keyword parsing differs from Applesoft command line. For example <code>FOR I = S TO P</code> doesn't collapse into <code>FOR I = STOP</code>.
+      <li>The interpreter doesn't actually care about line numbers for statement ordering (just for <code>GOTO</code>/<code>GOSUB</code> targets and <code>IF</code> statements). So <code>20 PRINT "A"</code>, <code>10 PRINT "B"</code> will just print A, then B
     </ul>
   <li>To improve readability, lines may start with <code>:</code> and continue the previously numbered line.
   <li>Floating point overflow is only detected on variable assignment.
@@ -150,15 +150,16 @@ By <a href="mailto:inexorabletash@hotmail.com">Joshua Bell</a>
 
 <h3 id="todo">To Do</h3>
 <ul>
-	<li>Implement DOS functionality for consoles
+  <li>Implement DOS functionality for consoles
 </ul>
 
 <h3 id="links">Links</h3>
 <ul>
-	<li><a href="http://www.6502asm.com/">6502asm.com</a> - a 6502 assembler/emulator in JavaScript
-	<li><a href="http://www.quitebasic.com/">Quite BASIC</a> - a similar project aimed at teaching programming
-	<li><a href="http://navahogunleg.net/blog/my-projects/ng-basic/">NG-BASIC for Javascript</a> Navaho Gunleg&apos;s interpreter
-	<li><a href="http://www.nicholson.com/rhn/basic/">BASIC Programming Resources</a>
+  <li><a href="http://www.6502asm.com/">6502asm.com</a> - a 6502 assembler/emulator in JavaScript
+  <li><a href="http://www.quitebasic.com/">Quite BASIC</a> - a similar project aimed at teaching programming
+  <li><a href="http://navahogunleg.net/blog/my-projects/ng-basic/">NG-BASIC for Javascript</a> Navaho Gunleg's interpreter
+  <li><a href="http://www.nicholson.com/rhn/basic/">BASIC Programming Resources</a>
+  <li><a href="http://www.scullinsteel.com/apple2/">Apple II emulator in JavaScript</a>
 </ul>
 
 <h3 id="history">History</h3>
