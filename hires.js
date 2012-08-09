@@ -26,7 +26,7 @@
 // Usage:
 //
 //   var hires = new LoRes( element, width, height )
-//   hires.clear()
+//   hires.clear( [color_index] )
 //   hires.setColor( color_index )
 //   hires.plot( x, y )
 //   hires.plot_to( x, x )
@@ -70,19 +70,16 @@ function HiRes(element, width, height) {
     '#ffffff'  // White 2
   ];
 
-  this.clear = function(use_color) {
+  this.clear = function(opt_color) {
     var i;
-    if (!use_color) {
-      context.clearRect(0, 0, element.width, element.height);
-      pixels = [];
-      pixels.length = width * height;
-    } else {
-      context.fillStyle = COLORS[color];
+    context.clearRect(0, 0, element.width, element.height);
+    pixels = [];
+    pixels.length = width * height;
+    if (arguments.length >= 1) {
+      context.fillStyle = COLORS[opt_color];
       context.fillRect(0, 0, element.width, element.height);
-      pixels = [];
-      pixels.length = width * height;
       for (i = 0; i < pixels.length; i += 1) {
-        pixels[i] = color;
+        pixels[i] = opt_color;
       }
     }
   };
