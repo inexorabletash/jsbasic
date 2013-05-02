@@ -752,6 +752,12 @@ function TTY(screenElement, keyboardElement, bell) {
       case 'Quote': return e.shiftKey ? ord('"') : ord('\'');
 
         // not present on Apple II keyboard
+      case 'NumpadAdd': return ord('+');
+      case 'NumpadSubtract': return ord('-');
+      case 'NumpadMultiply': return ord('*');
+      case 'NumpadDivide': return ord('/');
+      case 'NumpadDecimal': return ord('.');
+      case 'NumpadEnter': return 13;
       default:
         break;
     }
