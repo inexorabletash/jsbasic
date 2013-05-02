@@ -650,96 +650,106 @@ function TTY(screenElement, keyboardElement, bell) {
 
     function ord(c) { return c.charCodeAt(0); }
 
-    switch (e.keyName) {
+    switch (e.code) {
 
       // Non-Printables
       case 'Backspace': return 127;
       case 'Tab': return 9; // NOTE: Blocked elsewhere, for web page accessibility
       case 'Enter': return 13;
-      case 'Escape': return 27;
-      case 'Left': return 8;
-      case 'Up': return 11;
-      case 'Right': return 21;
-      case 'Down': return 10;
+      case 'Esc': return 27;
+      case 'ArrowLeft': return 8;
+      case 'ArrowUp': return 11;
+      case 'ArrowRight': return 21;
+      case 'ArrowDown': return 10;
       case 'Delete': return 127;
       case 'Clear': return 24; // ctrl-X - used on the IIgs
 
         // Numeric
-      case '0':
-      case '1':
-      case '2':
-      case '3':
-      case '4':
-      case '5':
-      case '6':
-      case '7':
-      case '8':
-      case '9':
-        if (e.keyLocation === KeyboardEvent.DOM_KEY_LOCATION_NUMPAD) {
-          // Numpad, presumably - allow but nothing special
-          return ord(e.keyName);
-        } else if (e.ctrlKey) {
+      case 'Numpad0': return 0x30;
+      case 'Numpad1': return 0x31;
+      case 'Numpad2': return 0x32;
+      case 'Numpad3': return 0x33;
+      case 'Numpad4': return 0x34;
+      case 'Numpad5': return 0x35;
+      case 'Numpad6': return 0x36;
+      case 'Numpad7': return 0x37;
+      case 'Numpad8': return 0x38;
+      case 'Numpad9': return 0x39;
+
+      case 'Digit0':
+      case 'Digit1':
+      case 'Digit2':
+      case 'Digit3':
+      case 'Digit4':
+      case 'Digit5':
+      case 'Digit6':
+      case 'Digit7':
+      case 'Digit8':
+      case 'Digit9':
+        var digit = e.code.substring(5);
+        if (e.ctrlKey) {
           if (e.shiftKey) {
-            switch (e.keyName) {
+            switch (digit) {
               case '2': return 0; // ctrl-@
               case '6': return 30; // ctrl-^
             }
           }
-          return;
+          return (void 0);
         } else if (e.shiftKey) {
-          return ')!@#$%^&*('.charCodeAt(ord(e.keyName) - ord('0'));
+          return ')!@#$%^&*('.charCodeAt(ord(digit) - ord('0'));
         } else {
-          return ord(e.keyName);
+          return ord(digit);
         }
 
         // Alphabetic
-      case 'A':
-      case 'B':
-      case 'C':
-      case 'D':
-      case 'E':
-      case 'F':
-      case 'G':
-      case 'H':
-      case 'I':
-      case 'J':
-      case 'K':
-      case 'L':
-      case 'M':
-      case 'N':
-      case 'O':
-      case 'P':
-      case 'Q':
-      case 'R':
-      case 'S':
-      case 'T':
-      case 'U':
-      case 'V':
-      case 'W':
-      case 'X':
-      case 'Y':
-      case 'Z':
+      case 'KeyA':
+      case 'KeyB':
+      case 'KeyC':
+      case 'KeyD':
+      case 'KeyE':
+      case 'KeyF':
+      case 'KeyG':
+      case 'KeyH':
+      case 'KeyI':
+      case 'KeyJ':
+      case 'KeyK':
+      case 'KeyL':
+      case 'KeyM':
+      case 'KeyN':
+      case 'KeyO':
+      case 'KeyP':
+      case 'KeyQ':
+      case 'KeyR':
+      case 'KeyS':
+      case 'KeyT':
+      case 'KeyU':
+      case 'KeyV':
+      case 'KeyW':
+      case 'KeyX':
+      case 'KeyY':
+      case 'KeyZ':
+        var letter = e.code.substring(3);
         if (e.ctrlKey) {
-          return ord(e.keyName) - 64; // Control keys, Apple II-style
+          return ord(letter) - 0x40; // Control keys, Apple II-style
         } else if (capsLock || e.shiftKey) {
-          return ord(e.keyName); // Upper case
+          return ord(letter); // Upper case
         } else {
-          return ord(e.keyName) + 32; // Lower case
+          return ord(letter) + 0x20; // Lower case
         }
 
         // Symbol and Punctuation
       case 'Spacebar': return ord(' ');
       case 'Semicolon': return e.shiftKey ? ord(':') : ord(';');
-      case 'Equals': return e.shiftKey ? ord('+') : ord('=');
+      case 'Equal': return e.shiftKey ? ord('+') : ord('=');
       case 'Comma': return e.shiftKey ? ord('<') : ord(',');
       case 'Minus': return e.ctrlKey ? 31 : e.shiftKey ? ord('_') : ord('-');
       case 'Period': return e.shiftKey ? ord('>') : ord('.');
-      case 'Solidus': return e.shiftKey ? ord('?') : ord('/');
-      case 'Grave': return e.shiftKey ? ord('~') : ord('`');
-      case 'LeftSquareBracket': return e.ctrlKey ? 27 : e.shiftKey ? ord('{') : ord('[');
+      case 'Slash': return e.shiftKey ? ord('?') : ord('/');
+      case 'BackQuote': return e.shiftKey ? ord('~') : ord('`');
+      case 'BracketLeft': return e.ctrlKey ? 27 : e.shiftKey ? ord('{') : ord('[');
       case 'Backslash': return e.ctrlKey ? 28 : e.shiftKey ? ord('|') : ord('\\');
-      case 'RightSquareBracket': return e.ctrlKey ? 29 : e.shiftKey ? ord('}') : ord(']');
-      case 'Apostrophe': return e.shiftKey ? ord('"') : ord('\'');
+      case 'BracketRight': return e.ctrlKey ? 29 : e.shiftKey ? ord('}') : ord(']');
+      case 'Quote': return e.shiftKey ? ord('"') : ord('\'');
 
         // not present on Apple II keyboard
       default:
@@ -750,7 +760,7 @@ function TTY(screenElement, keyboardElement, bell) {
   }
 
   function isBrowserKey(e) {
-    return e.keyName === 'Tab' || e.keyName === 'F5' || e.metaKey;
+    return e.code === 'Tab' || e.code === 'F5' || e.metaKey;
   }
 
 
@@ -758,13 +768,13 @@ function TTY(screenElement, keyboardElement, bell) {
   function handleKeyDown(e) {
     identifyKey(e);
 
-    if (!e.keyName || isBrowserKey(e)) {
+    if (!e.code || isBrowserKey(e)) {
       return true;
     }
 
     var handled = false, code;
 
-    switch (e.keyName) {
+    switch (e.code) {
 
       case 'CapsLock':
         capsLock = !capsLock;
@@ -775,7 +785,10 @@ function TTY(screenElement, keyboardElement, bell) {
       case 'Home': buttonState[0] = 255; handled = true; break;
       case 'End': buttonState[1] = 255; handled = true; break;
       case 'PageUp': buttonState[2] = 255; handled = true; break;
-      case 'Shift': buttonState[2] = 255; handled = true; break;
+      case 'Shift':
+      case 'ShiftLeft':
+      case 'ShiftRight':
+      buttonState[2] = 255; handled = true; break;
       case 'PageDown': buttonState[3] = 255; handled = true; break;
 
       default:
@@ -801,14 +814,14 @@ function TTY(screenElement, keyboardElement, bell) {
   function handleKeyUp(e) {
     identifyKey(e);
 
-    if (!e.keyName || isBrowserKey(e)) {
+    if (!e.code || isBrowserKey(e)) {
       return true;
     }
 
     var handled = false,
             code;
 
-    switch (e.keyName) {
+    switch (e.code) {
 
       case 'CapsLock':
         handled = true;
