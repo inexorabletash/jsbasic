@@ -738,7 +738,7 @@ function TTY(screenElement, keyboardElement, bell) {
         }
 
         // Symbol and Punctuation
-      case 'Spacebar': return ord(' ');
+      case 'Space': return ord(' ');
       case 'Semicolon': return e.shiftKey ? ord(':') : ord(';');
       case 'Equal': return e.shiftKey ? ord('+') : ord('=');
       case 'Comma': return e.shiftKey ? ord('<') : ord(',');
@@ -751,7 +751,8 @@ function TTY(screenElement, keyboardElement, bell) {
       case 'BracketRight': return e.ctrlKey ? 29 : e.shiftKey ? ord('}') : ord(']');
       case 'Quote': return e.shiftKey ? ord('"') : ord('\'');
 
-        // not present on Apple II keyboard
+        // Apple IIgs Keyboard
+      case 'NumpadClear': return 24;
       case 'NumpadAdd': return ord('+');
       case 'NumpadSubtract': return ord('-');
       case 'NumpadMultiply': return ord('*');

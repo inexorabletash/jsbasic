@@ -233,6 +233,15 @@ window.onload = function () {
     }
   }
 
+  function parseQueryParams() {
+    var params = {};
+    var query = document.location.search.substring(1);
+    query.split(/&/g).forEach(function(pair) {
+      pair = pair.replace(/\+/g, " ").split(/=/).map(decodeURIComponent);
+      params[pair[0]] = pair.length === 1 ? pair[0] : pair[1];
+    });
+    return params;
+  }
 
   function loadFile(filename, callback) {
     var req = new XMLHttpRequest();
@@ -250,7 +259,12 @@ window.onload = function () {
   }
 
   // load default
-  loadFile('samples/sample.default.txt', setSource);
+  var params = parseQueryParams();
+  if ('source' in params) {
+    setSource(params.source);
+  } else {
+    loadFile('samples/sample.default.txt', setSource);
+  }
 
   // Show change history
   atomToHtml('feed.xml?' + Math.random(), $('#feed'));
