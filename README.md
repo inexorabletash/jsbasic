@@ -28,10 +28,9 @@ To Do
 * Implement DOS functionality for consoles
 
 Links
-
 -----
-[6502asm.com](http://www.6502asm.com/) - a 6502 assembler/emulator in JavaScript
-[Quite BASIC](http://www.quitebasic.com/) - a similar project aimed at teaching programming
-[NG-BASIC for Javascript](http://navahogunleg.net/blog/my-projects/ng-basic/) Navaho Gunleg's interpreter
-[BASIC Programming Resources](http://www.nicholson.com/rhn/basic/)
-[Apple II emulator in JavaScript](http://www.scullinsteel.com/apple2/)
+* [6502asm.com](http://www.6502asm.com/) - a 6502 assembler/emulator in JavaScript
+* [Quite BASIC](http://www.quitebasic.com/) - a similar project aimed at teaching programming
+* [NG-BASIC for Javascript](http://navahogunleg.net/blog/my-projects/ng-basic/) Navaho Gunleg's interpreter
+* [BASIC Programming Resources](http://www.nicholson.com/rhn/basic/)
+* [Apple II emulator in JavaScript](http://www.scullinsteel.com/apple2/)
