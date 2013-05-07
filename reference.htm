@@ -1,6 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Strict//EN">
-<html>
-<head>
+<!DOCTYPE html>
 <title>Applesoft BASIC Reference</title>
 <style type="text/css">
 body { background-color: #EEEACD; color: black; }
@@ -9,20 +7,18 @@ code, dt { font-family: 'Lucida Console', 'Courier New', Courier, monospace; fon
 
 h2 { border-top: solid 1px black; border-bottom: solid 1px black; }
 </style>
-</head>
-<body>
 
-<div id="toc"></div>	
+<div id="toc"></div>
 
 <h1>Applesoft BASIC Quick Reference</h1>
 
 <p>
 This is intended as a quick reference for the <a href="index.htm">Applesoft BASIC in JavaScript</a> by <a href="mailto:inexorabletash@hotmail.com">Joshua Bell</a>.
 </p>
-	
+
 <p>
 <a href="#Extensions">Extensions</a> beyond Applesoft BASIC are called out with footnotes.
-</p>	
+</p>
 
 <p>See also:</p>
 <ul>
@@ -30,13 +26,13 @@ This is intended as a quick reference for the <a href="index.htm">Applesoft BASI
 	<li><a href="http://www.apple2.org/faq/FAQ.applesoft.html">Applesoft BASIC Frequently Asked Questions (FAQ)</a>
 	<li><a href="http://www.lazilong.com/apple_II/bbros/">Beagle Bros. Peeks, Pokes & Pointers Chart (Colors, ASCII values, etc)</a>
 	<li><a href="http://beagle.applearchives.com/posters.htm">More Beagle Bros. Posters - including Apple Commands Chart, in PDF format</a>
-</ul>	
-	
+</ul>
 
-	
-<!-- ================================================== -->	
+
+
+<!-- ================================================== -->
 <h2 id="Statements">Statements</h2>
-<!-- ================================================== -->	
+<!-- ================================================== -->
 
 <h3>Variable Control</h3>
 <dl>
@@ -173,9 +169,9 @@ This is intended as a quick reference for the <a href="index.htm">Applesoft BASI
 
 </dl>
 
-<!-- ================================================== -->	
+<!-- ================================================== -->
 <h2>Functions</h2>
-<!-- ================================================== -->	
+<!-- ================================================== -->
 
 <h3>Numeric Functions</h3>
 <dl>
@@ -243,9 +239,9 @@ This is intended as a quick reference for the <a href="index.htm">Applesoft BASI
 
 </dl>
 
-<!-- ================================================== -->	
+<!-- ================================================== -->
 <h2 id="Operators">Operators</h2>
-<!-- ================================================== -->	
+<!-- ================================================== -->
 
 <h3>Comparison Operators</h3>
 <dl>
@@ -275,9 +271,9 @@ This is intended as a quick reference for the <a href="index.htm">Applesoft BASI
     <dt>+<dd>String Concatenation
 </dl>
 
-<!-- ================================================== -->	
+<!-- ================================================== -->
 <h2>Error Codes</h2>
-<!-- ================================================== -->	
+<!-- ================================================== -->
 <p>Error codes can be determined by calling
 <code>PEEK(222)</code> in an ONERR handler.</p>
 
@@ -303,17 +299,17 @@ This is intended as a quick reference for the <a href="index.htm">Applesoft BASI
 
 
 
-<!-- ================================================== -->	
-<h2 id="DOSQuickReference">DOS 3.3 / ProDOS Quick Reference</h2>	
-<!-- ================================================== -->	
+<!-- ================================================== -->
+<h2 id="DOSQuickReference">DOS 3.3 / ProDOS Quick Reference</h2>
+<!-- ================================================== -->
 
-<p>See also</p>	
+<p>See also</p>
 <ul>
 	<li><a href="http://www.xs4all.nl/~fjkraan/comp/apple2faq/app2doscmdfaq.html">Apple II DOS &amp; Commands FAQ</a>
 	<li><a href="http://www.textfiles.com/apple/ANATOMY/">Apple II Textfiles: the DOS 3.3 Anatomy</a>
 	<li><a href="http://vectronicsappleworld.com/appleii/dos.html">Vectronic's Apple World DOS 3.3 and ProDOS Guide</a>
-</ul>	
-	
+</ul>
+
 <h3>DOS Commands</h3>
 <dl>
     <dt>MON[,C][,I][,O]<dd>Traces DOS 3.3 commands ('Commands', 'Input' and 'Output')
@@ -353,9 +349,9 @@ This is intended as a quick reference for the <a href="index.htm">Applesoft BASI
     <dt>15<dd>Not direct command <em>- Not generated</em>
 </dl>
 
-<!-- ================================================== -->	
+<!-- ================================================== -->
 <h2>Input and Output</h2>
-<!-- ================================================== -->	
+<!-- ================================================== -->
 
 <h3>Input</h3>
 
@@ -438,9 +434,9 @@ The text window can be changed and cursor finely controlled
 with <code>POKE 32,<var>n</var></code> ... <code>POKE 37,<var>n</var></code>
 </p>
 
-<!-- ================================================== -->	
+<!-- ================================================== -->
 <h2>Process and Grammars</h2>
-<!-- ================================================== -->	
+<!-- ================================================== -->
 <p><var>For the even geekier in the audience...</var></p>
 
 <p>Compilation is done by splitting the input into tokens which are then
@@ -508,9 +504,9 @@ which are used as arguments for the library calls.</p>
 the output of the compiler is an array of statement-functions plus a driver
 function which implements the logic for walking over the array.<p>
 
-<!-- ================================================== -->	
+<!-- ================================================== -->
 <h2 id="Extensions">Extensions beyond Standard Applesoft</h2>
-<!-- ================================================== -->	
+<!-- ================================================== -->
 <ul style="list-style: none;">
     <li id="Extension_StringFuncs">
         [1] <code>DEF FN</code> supports string and integer functions
@@ -566,5 +562,3 @@ function which implements the logic for walking over the array.<p>
 }(document.getElementById("toc")));
 
 </script>
-</body>
-</html>
