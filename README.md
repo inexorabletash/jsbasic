@@ -1,11 +1,10 @@
-jsbasic
-=======
+jsbasic - Applesoft BASIC in JavaScript
+=======================================
 
-Applesoft BASIC in JavaScript
+This is hosted for playing with at http://calormen.com/applesoft/ 
 
-This is hosted at http://calormen.com/applesoft/ 
-
-Depends on various polyfills at: http://calormen.com/polyfill
+* The code depends on various polyfills at: http://calormen.com/polyfill
+* The editor depends on CodeMirror and custom BASIC parser/styles
 
 Notes & Known Issues
 --------------------
@@ -17,7 +16,7 @@ Notes & Known Issues
 * Floating point overflow is only detected on variable assignment.
 * The DOS operating system implements only a subset of DOS 3.3 and ProDOS useful for basic file I/O.
 * Except for a small number of compatibility shims for common operations (e.g. keyboard strobe), commands that refer to assembly routines (`PEEK`, `POKE`, `CALL`, `USR` etc.), shape tables, or tape I/O are not implemented.
-* Commands that operate on the program itself (LIST, RUN, DEL, etc.) are not implemented.
+* Commands that operate on the program itself (`LIST`, `RUN`, `DEL`, etc.) are not implemented.
 
 You can run your basic programs from the command line (with only basic text input and output, and no graphics or DOS commands):
 * On Windows, download basic.js and run from a command prompt via: `cscript.exe basic.js your_basic_program.txt`
@@ -25,9 +24,12 @@ You can run your basic programs from the command line (with only basic text inpu
 
 To Do
 -----
-Implement DOS functionality for consoles
+* Upload the CodeMirror styles
+* Snapshot and/or link sensibly to the polyfills
+* Implement DOS functionality for consoles
 
 Links
+
 -----
 [6502asm.com](http://www.6502asm.com/) - a 6502 assembler/emulator in JavaScript
 [Quite BASIC](http://www.quitebasic.com/) - a similar project aimed at teaching programming
