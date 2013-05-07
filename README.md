@@ -28,7 +28,6 @@ To Do
 * Implement DOS functionality for consoles
 
 Links
-
 -----
 [6502asm.com](http://www.6502asm.com/) - a 6502 assembler/emulator in JavaScript
 [Quite BASIC](http://www.quitebasic.com/) - a similar project aimed at teaching programming
