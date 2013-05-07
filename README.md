@@ -24,7 +24,6 @@ You can run your basic programs from the command line (with only basic text inpu
 
 To Do
 -----
-* Upload the CodeMirror styles
 * Snapshot and/or link sensibly to the polyfills
 * Implement DOS functionality for consoles
 

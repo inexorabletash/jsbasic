@@ -1,0 +1,46 @@
+.cm-s-default span.cm-basic-statement {
+  color: #00007f;
+}
+
+.cm-s-default span.cm-basic-unsupported {
+  color: #00007f;
+  background-color: #ff7f7f
+}
+
+.cm-s-default span.cm-basic-function {
+  color: teal;
+}
+
+.cm-s-default span.cm-basic-identifier {
+  color: #7f7f00;
+}
+
+.cm-s-default span.cm-basic-string {
+  color: #007f00;
+}
+
+.cm-s-default span.cm-basic-number {
+  color: #0000ff;
+}
+
+.cm-s-default span.cm-basic-operator {
+  color: #7f007f;
+}
+
+.cm-s-default span.cm-basic-separator {
+  color: #7f7f7f;
+}
+
+.cm-s-default span.cm-basic-linenumber {
+  color: orange;
+}
+
+.cm-s-default span.cm-basic-comment {
+  color: #cc00ff;
+  font-style: italic;
+}
+
+.cm-s-default span.cm-basic-error {
+  color: black;
+  background-color: red;
+}
