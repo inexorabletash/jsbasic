@@ -265,9 +265,4 @@ window.onload = function () {
   } else {
     loadFile('samples/sample.default.txt', setSource);
   }
-
-  // Show change history
-  atomToHtml('feed.xml?' + Math.random(), $('#feed'));
 };
-
-
