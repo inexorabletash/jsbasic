@@ -3,8 +3,8 @@ jsbasic - Applesoft BASIC in JavaScript
 
 This is hosted for playing with at http://calormen.com/applesoft/ 
 
-* The code depends on various polyfills at: http://calormen.com/polyfill
-* The editor depends on CodeMirror and custom BASIC parser/styles
+* The code depends on various [polyfills](http://github.com/inexorabletash/polyfill)
+* The editor optionally uses [CodeMirror](http://codemirror.net) and custom BASIC parser/styles
 
 Notes & Known Issues
 --------------------
@@ -12,7 +12,7 @@ Notes & Known Issues
 * Handling of BASIC code that does not match the canonical `LIST` output format may not behave as on an Apple:
 * Keyword parsing differs from Applesoft command line. For example `FOR I = S TO P` doesn't collapse into `FOR I = STOP`.
 * The interpreter doesn't actually care about line numbers for statement ordering (just for `GOTO/GOSUB` targets and `IF` statements). So `20 PRINT "A"`, `10 PRINT "B"` will just print `A`, then `B`
-* To improve readability, lines may start with : and continue the previously numbered line.
+* To improve readability, lines may start with `:` and continue the previously numbered line.
 * Floating point overflow is only detected on variable assignment.
 * The DOS operating system implements only a subset of DOS 3.3 and ProDOS useful for basic file I/O.
 * Except for a small number of compatibility shims for common operations (e.g. keyboard strobe), commands that refer to assembly routines (`PEEK`, `POKE`, `CALL`, `USR` etc.), shape tables, or tape I/O are not implemented.
