@@ -3,8 +3,13 @@ jsbasic - Applesoft BASIC in JavaScript
 
 This is hosted for playing with at http://calormen.com/applesoft/ 
 
-* The code depends on various [polyfills](http://github.com/inexorabletash/polyfill)
-* The editor optionally uses [CodeMirror](http://codemirror.net) and custom BASIC parser/styles
+For older browsers, the code depends on various [polyfills](http://github.com/inexorabletash/polyfill).
+For syntax highlighting, the editor optionally uses [CodeMirror](http://codemirror.net) and custom BASIC parser/styles.
+Clone these into sibling directories, so you end up with a structure like:
+
+    jsbasic/
+    polyfill/
+    CodeMirror/
 
 Notes & Known Issues
 --------------------
