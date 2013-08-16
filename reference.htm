@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <title>Applesoft BASIC Reference</title>
+<meta charset="UTF-8">
 <style type="text/css">
 @import url(http://fonts.googleapis.com/css?family=Coustard);
 body { font-family: "Coustard"; }
@@ -9,15 +10,19 @@ a { color: #803010; text-decoration: none; }
 a:hover { text-decoration: underline; }
 
 #toc { float: right; background-color: #DDDABD; font-size: 80%;}
-code, dt { font-family: 'Lucida Console', 'Courier New', Courier, monospace; font-weight: bold; font-size: 80%; }
+code, .code, dt { font-family: 'Lucida Console', 'Courier New', Courier, monospace; font-weight: bold; color: #406040; }
 h1 { margin-top: 0; }
-h2 { border-top: solid 1px black; border-bottom: solid 1px black; }
+h2 { border-top: solid 2px black; border-bottom: solid 2px black; }
+
+.nyi { opacity: 0.65; }
+
 </style>
 
 <div id="toc"></div>
 
 <h1>Applesoft BASIC Quick Reference</h1>
 
+<section id="intro">
 <p>
 This is intended as a quick reference for the <a href="index.htm">Applesoft BASIC in JavaScript</a> by <a href="mailto:inexorabletash@gmail.com">Joshua Bell</a>.
 </p>
@@ -33,13 +38,14 @@ This is intended as a quick reference for the <a href="index.htm">Applesoft BASI
   <li><a href="http://www.lazilong.com/apple_II/bbros/">Beagle Bros. Peeks, Pokes & Pointers Chart (Colors, ASCII values, etc)</a>
   <li><a href="http://beagle.applearchives.com/posters.htm">More Beagle Bros. Posters - including Apple Commands Chart, in PDF format</a>
 </ul>
+</section>
 
-
-
+<section id="Statements">
 <!-- ================================================== -->
-<h2 id="Statements">Statements</h2>
+<h2>Statements</h2>
 <!-- ================================================== -->
 
+<section>
 <h3>Variable Control</h3>
 <dl>
     <dt>CLEAR<dd>Clear all variables
@@ -47,6 +53,9 @@ This is intended as a quick reference for the <a href="index.htm">Applesoft BASI
     <dt>DIM <var>var</var>( <var>size</var> [ , <var>size2</var> ...] ) [ , <var>var2</var>( <var>size</var> [ , <var>size2</var> ...] ) ... ] <dd>Allocate array
     <dt>DEF FN <var>f</var>(<var>var</var> ) = <var>expr</var><dd>Define function of a single variable <a href="#Extension_StringFuncs">[1]</a>
 </dl>
+</section>
+
+<section>
 <h3>Flow Control</h3>
 <dl>
     <dt>GOTO<dd>Go to line number
@@ -61,11 +70,17 @@ This is intended as a quick reference for the <a href="index.htm">Applesoft BASI
     <dt>END<dd>Terminate program
     <dt>STOP<dd>Break, as if an error occurred
 </dl>
+</section>
+
+<section>
 <h3>Error Handling</h3>
 <dl>
     <dt>ONERR GOTO <var>line</var><dd>Set error hook
     <dt>RESUME<dd>Retry line that caused ONERR GOTO
 </dl>
+</section>
+
+<section>
 <h3>Input/Output</h3>
 <dl>
     <dt>PRINT <var>expr</var> [ [;,] <var>expr2</var> ... ] [;]<dd>Output text
@@ -79,18 +94,27 @@ This is intended as a quick reference for the <a href="index.htm">Applesoft BASI
     <dt>NORMAL<dd>Set output mode to white-on-black
     <dt>TEXT<dd>Set display to text mode
 </dl>
+</section>
+
+<section>
 <h3>Miscellaneous</h3>
 <dl>
     <dt>REM [ <var>comment</var> ]<dd>Begin a comment; rest of line is skipped
     <dt>TRACE<dd>Turn on trace mode (line numbers printed)
     <dt>NOTRACE<dd>Turn off trace mode
 </dl>
+</section>
+
+<section>
 <h3>Inline Data</h3>
 <dl>
     <dt>DATA <var>value</var> [, <var>value2</var> ... ]<dd>Define inline data
     <dt>READ <var>var</var> [, <var>var2</var> ... ]<dd>Read the next DATA value
     <dt>RESTORE<dd>Restore the DATA pointer to the first value
 </dl>
+</section>
+
+<section>
 <h3>Lo-Res Graphics</h3>
 <dl>
     <dt>GR<dd>Set display to lores mode, clear screen
@@ -99,6 +123,9 @@ This is intended as a quick reference for the <a href="index.htm">Applesoft BASI
     <dt>HLIN <var>expr</var>, <var>expr</var> AT <var>expr</var><dd>Plot horizontal line (x1, x2 at y)
     <dt>VLIN <var>expr</var>, <var>expr</var> AT <var>expr</var><dd>Plot vertical line (y1, y2 at x)
 </dl>
+</section>
+
+<section>
 <h3>Hi-Res Graphics</h3>
 <dl>
     <dt>HGR<dd>Set display to hires mode, clear screen
@@ -106,6 +133,9 @@ This is intended as a quick reference for the <a href="index.htm">Applesoft BASI
     <dt>HPLOT [TO] <var>expr</var>, <var>expr</var> [ TO <var>expr</var>, <var>expr</var> ] ... <dd>Plot hires point/line (x=0...279, y=0...191)
     <dt>HCOLOR= <var>expr</var><dd>Set hires color (0...7)
 </dl>
+</section>
+
+<section class="nyi">
 <h3>Hi-Res Shape Tables <var>- NOT IMPLEMENTED</var></h3>
 <dl>
     <dt>ROT= <var>expr</var><dd>Set hires shape table rotation (0...63)
@@ -113,6 +143,9 @@ This is intended as a quick reference for the <a href="index.htm">Applesoft BASI
     <dt>DRAW <var>expr</var> [ AT <var>expr</var>, <var>expr</var> ]<dd>Draw hires shape table shape in color
     <dt>XDRAW <var>expr</var> [ AT <var>expr</var>, <var>expr</var> ]<dd>Draw hires shape table shape with XOR
 </dl>
+</section>
+
+<section class="nyi">
 <h3>Interpreter and Program State <var>- NOT IMPLEMENTED</var></h3>
 <dl>
     <dt>CONT<dd>Continue from a STOP
@@ -121,6 +154,9 @@ This is intended as a quick reference for the <a href="index.htm">Applesoft BASI
     <dt>NEW<dd>Clear program and variables
     <dt>RUN [ <var>expr</var> ]<dd>Start program execution at line
 </dl>
+</section>
+
+<section class="nyi">
 <h3>Native Platform Interaction <var>- NOT IMPLEMENTED</var></h3>
 <dl>
     <dt>HIMEM: <var>expr</var><dd>Set upper address of variable memory
@@ -128,6 +164,9 @@ This is intended as a quick reference for the <a href="index.htm">Applesoft BASI
     <dt>LOMEM: <var>expr</var><dd>Set lower address of variable memory
     <dt>WAIT <var>expr</var>, <var>expr</var> [, <var>expr</var>]<dd>Wait until memory location masked by second argument equals third argument (or zero)
 </dl>
+</section>
+
+<section class="nyi">
 <h3>Cassette Tape <var>- NOT IMPLEMENTED</var></h3>
 <dl>
     <dt>LOAD<dd>Load program from cassette
@@ -136,7 +175,10 @@ This is intended as a quick reference for the <a href="index.htm">Applesoft BASI
     <dt>STORE<dd>Save variables to cassette
     <dt>SHLOAD<dd>Load hires shape table from cassette
 </dl>
-<h3 id="Compatibility_Shims">Compatibility Shims</h3>
+</section>
+
+<section id="Compatibility_Shims">
+<h3>Compatibility Shims</h3>
 <dl>
     <dt>SPEED= <var>expr</var><dd>Set character output delay - <em>has no effect</em>
     <dt id="Poke">POKE <var>expr</var>, <var>expr</var><dd>Set memory location to value
@@ -174,7 +216,10 @@ This is intended as a quick reference for the <a href="index.htm">Applesoft BASI
         </ul>
 
 </dl>
+</section>
+</section>
 
+<section id="functions">
 <!-- ================================================== -->
 <h2>Functions</h2>
 <!-- ================================================== -->
@@ -244,9 +289,11 @@ This is intended as a quick reference for the <a href="index.htm">Applesoft BASI
         </ul>
 
 </dl>
+</section>
 
+<section id="Operators">
 <!-- ================================================== -->
-<h2 id="Operators">Operators</h2>
+<h2>Operators</h2>
 <!-- ================================================== -->
 
 <h3>Comparison Operators</h3>
@@ -276,7 +323,9 @@ This is intended as a quick reference for the <a href="index.htm">Applesoft BASI
 <dl>
     <dt>+<dd>String Concatenation
 </dl>
+</section>
 
+<section id="errorcodes">
 <!-- ================================================== -->
 <h2>Error Codes</h2>
 <!-- ================================================== -->
@@ -302,11 +351,11 @@ This is intended as a quick reference for the <a href="index.htm">Applesoft BASI
     <dt>254<dd>Re-enter
     <dt>255<dd>Break
 </dl>
+</section>
 
-
-
+<section  id="DOSQuickReference">
 <!-- ================================================== -->
-<h2 id="DOSQuickReference">DOS 3.3 / ProDOS Quick Reference</h2>
+<h2>DOS 3.3 / ProDOS Quick Reference</h2>
 <!-- ================================================== -->
 
 <p>See also</p>
@@ -354,7 +403,9 @@ This is intended as a quick reference for the <a href="index.htm">Applesoft BASI
     <dt>14<dd>Program too large - <em>Not generated</em>
     <dt>15<dd>Not direct command - <em>Not generated</em>
 </dl>
+</section>
 
+<section id="io">
 <!-- ================================================== -->
 <h2>Input and Output</h2>
 <!-- ================================================== -->
@@ -401,7 +452,7 @@ The page attempts to emulate the display of an Apple II system with
 </p>
 
 <p>
-When printing characters, <code>CHR$</code> functions as expected for values
+When printing characters, <code>CHR$()</code> functions as expected for values
 from 32-126 (printable ASCII). Control characters have the typical Apple II meanings:
 </p>
 
@@ -439,11 +490,13 @@ If 80-column firmware is active, the following additional codes are available:
 The text window can be changed and cursor finely controlled
 with <code>POKE 32,<var>n</var></code> ... <code>POKE 37,<var>n</var></code>
 </p>
+</section>
 
+<section id="grammar">
 <!-- ================================================== -->
 <h2>Process and Grammars</h2>
 <!-- ================================================== -->
-<p><var>For the even geekier in the audience...</var></p>
+<p><em>For the even geekier in the audience...</em></p>
 
 <p>Compilation is done by splitting the input into tokens which are then
 consumed by a recursive descent parser which outputs a JavaScript
@@ -466,16 +519,16 @@ object representing the program.</p>
     from the comma-delimited, optionally-quoted values in the source.
 </p>
 
-<ul>
-<li><var>[x]</var> zero or one occurences of x
-<li><var>{x}</var> zero or more occurences of x
-<li><var>x | y</var> one of either x or y
-<li><var>(x)</var> grouping construct
-</ul>
+<dl>
+<dt>[x]<dd> zero or one occurences of x
+<dt>{x}<dd> zero or more occurences of x
+<dt>x|y<dd> one of either x or y
+<dt>(x)<dd> grouping construct
+</dl>
 
 <p>Overall program parsing is done with a recursive descent parser.</p>
 
-<pre>
+<pre class="code">
     Program                  = Line { Line }
     Line                     = line-number Statement { separator Statement }
     Statement                = data-declaration | remark | Command | EmptyStatement
@@ -487,21 +540,22 @@ Most statements compile into a function call to a library of Applesoft routines.
 with a standard recursive descent parser. The parser generates JavaScript expressions for each expression,
 which are used as arguments for the library calls.</p>
 
-<pre>
+<pre class="code">
     Expression               = OrExpression
-    OrExpression             = AndExpression [ 'OR' AndExpression ... ]
-    AndExpression            = RelationalExpression [ 'AND' RelationalExpression ... ]
-    RelationalExpression     = AdditiveExpression [ ( '=' | '&lt;' | '&gt;' | '&lt;=' | '=&lt;' | '&gt;=' | '=&gt;' | '&lt;&gt;' | '&gt;&lt;' ) AdditiveExpression ... ]
-    AdditiveExpression       = MultiplicativeExpression [ ( '+' | '-' ) MultiplicativeExpression ... ]
-    MultiplicativeExpression = PowerExpression [ ( '*' | '/' ) PowerExpression ... ]
+    OrExpression             = AndExpression { 'OR' AndExpression  }
+    AndExpression            = RelationalExpression { 'AND' RelationalExpression }
+    RelationalExpression     = AdditiveExpression { RelOp AdditiveExpression }
+    RelOp                    = '=' | '&lt;' | '&gt;' | '&lt;=' | '=&lt;' | '&gt;=' | '=&gt;' | '&lt;&gt;' | '&gt;&lt;'
+    AdditiveExpression       = MultiplicativeExpression { ( '+' | '-' ) MultiplicativeExpression }
+    MultiplicativeExpression = PowerExpression { ( '*' | '/' ) PowerExpression }
     PowerExpression          = UnaryExpression [ '^' UnaryExpression ]
     UnaryExpression          = ( '+' | '-' | 'NOT' ) UnaryExpression
                               | FinalExpression
     FinalExpression          = number-literal
                               | string-literal
                               | 'FN' user_function_name '(' Expression ')'
-                              | reserved '(' Expression [, Expression ...] ')'
-                              | identifier [ '(' Expression [, Expression ...] ')' ]
+                              | reserved '(' Expression { ',' Expression } ')'
+                              | identifier [ '(' Expression { ',' Expression } ')' ]
                               | '(' Expression ')'
 </pre>
 
@@ -509,9 +563,11 @@ which are used as arguments for the library calls.</p>
 <p>Since Applesoft supports re-entrant error handling and synchronous input,
 the output of the compiler is an array of statement-functions plus a driver
 function which implements the logic for walking over the array.<p>
+</section>
 
+<section id="Extensions">
 <!-- ================================================== -->
-<h2 id="Extensions">Extensions beyond Standard Applesoft</h2>
+<h2>Extensions beyond Standard Applesoft</h2>
 <!-- ================================================== -->
 <ul style="list-style: none;">
     <li id="Extension_StringFuncs">
@@ -521,12 +577,14 @@ function which implements the logic for walking over the array.<p>
     <li id="Extension_DoubleEquals">
         [2] <code>==</code> is supported for equality comparisons, in addition to <code>=</code>
     <li id="Extension_CHR">
-        [3] When printing characters, <code>CHR$</code> values greater than 255 generate glyphs that might be useful for certain maze games.
+        [3] When printing characters, <code>CHR$()</code> values greater than 255 generate glyphs that might be useful for certain maze games.
     <li id="Extension_HSCRN">
-        [4] <code>HSCRN(<var>x</var>, <var>y</var>)</code> is added to allow reading the
-        hires screen. On a real Apple this required a machine-language routine (or a shape table and XDRAW).
+        [4] <code>HSCRN(<var>x</var>,<var>y</var>)</code> is added to allow reading the
+        hires screen. On a real Apple this required a machine-language routine (or a shape table and <code>XDRAW</code>).
 
 </ul>
+</section>
+
 
 <script>
 (function (el) {
