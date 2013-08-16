@@ -11,7 +11,7 @@ window.onload = function () {
   } ());
 
 
-  var tty = new TTY($('#screen'), $('#keyboard'), bell);
+  var tty = new TTY($('#screen'), $('#screen'), bell);
   var dos = new DOS(tty);
 
   var lores = new LoRes($('#lores'), 40, 48);
@@ -98,10 +98,10 @@ window.onload = function () {
   addEvent($('#frame'), 'click', keyboardFocus);
   addEvent($('#frame'), 'blur', keyboardFocus); // Needed on IE, not sure why it tries to get focus
 
-  addEvent($('#keyboard'), 'focus', function () {
+  addEvent($('#screen'), 'focus', function () {
     getClassList($('#frame')).add('focused');
   });
-  addEvent($('#keyboard'), 'blur', function () {
+  addEvent($('#screen'), 'blur', function () {
     getClassList($('#frame')).remove('focused');
   });
 
