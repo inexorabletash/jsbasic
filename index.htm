@@ -19,19 +19,17 @@
 
 <h1>Applesoft BASIC in Javascript</h1>
 <p>
-By <a href="mailto:inexorabletash@hotmail.com">Joshua Bell</a>
-| <a target="_blank" href="reference.htm">Applesoft BASIC Quick Reference</a>
-| <a href="#notes">Notes &amp; Known Issues</a>
-| <a href="#todo">To Do</a>
-| <a href="#links">Links</a>
-| <a href="#changes">Changes</a>
+By <a href="mailto:inexorabletash@gmail.com">Joshua Bell</a>
+| <a target="_blank" href="https://github.com/inexorabletash/jsbasic/">Source</a>
+| <a target="_blank" href="https://github.com/inexorabletash/jsbasic/blob/master/README.md">README</a>
+&mdash; <a target="_blank" href="reference.htm">Applesoft BASIC Quick Reference</a>
 
 <p>Related projects:
    <a href="/Logo">Logo in Javascript</a>
  | <a href="/vnIIc">Streaming video to an Apple II - vnIIc</a>
 </p>
 
-<br clear=left>
+<br clear="left">
 
 <!-- Screen -->
 <div id="frame" class="frame" style="float: left; margin: 5px;">
@@ -119,36 +117,6 @@ By <a href="mailto:inexorabletash@hotmail.com">Joshua Bell</a>
 
 <br clear=left>
 
-<h3 id="notes">Notes &amp; Known Issues</h3>
-<ul>
-  <li>The BASIC program is compiled to JavaScript before execution. Syntax errors are therefore detected at compile-time
-  rather than at run-time as on a traditional interpreter. For example, the following program would run without errors
-  on an Apple since the erroneous second statement is never reached. <code>10 END : CHR$(PRINT)</code>
-  <li>Handling of BASIC code that does not match the canonical <code>LIST</code> output format may not behave as on an Apple:
-    <ul>
-      <li>Keyword parsing differs from Applesoft command line. For example <code>FOR I = S TO P</code> doesn't collapse into <code>FOR I = STOP</code>.
-      <li>The interpreter doesn't actually care about line numbers for statement ordering (just for <code>GOTO</code>/<code>GOSUB</code> targets and <code>IF</code> statements). So <code>20 PRINT "A"</code>, <code>10 PRINT "B"</code> will just print A, then B
-    </ul>
-  <li>To improve readability, lines may start with <code>:</code> and continue the previously numbered line.
-  <li>Floating point overflow is only detected on variable assignment.
-  <li>The DOS operating system implements only a subset of DOS 3.3 and ProDOS useful for basic file I/O.
-  <li>Except for a small number of compatibility shims for common operations (e.g. keyboard strobe), commands that refer to assembly routines (<code>PEEK</code>, <code>POKE</code>, <code>CALL</code>, <code>USR</code> etc.), shape tables, or tape I/O are not implemented.
-  <li>Commands that operate on the program itself (<code>LIST</code>, <code>RUN</code>, <code>DEL</code>, etc.) are not implemented.
-  <li>You can run your basic programs from the command line (with only basic text input and output, and no graphics or DOS commands):
-  <ul>
-    <li>On Windows, download <a href="basic.js">basic.js</a> and run from a command prompt via:
-    <code>cscript.exe basic.js your_basic_program.txt</code>
-    <li>On Mac/Linux, install <a href="http://www.mozilla.org/rhino/">Mozilla Rhino</a>,
-    download <a href="basic.js">basic.js</a> and run from the command prompt via:
-    <code>java -jar PATH_TO/js.jar basic.js your_program.txt</code>
-  </ul>
-</ul>
-
-<h3 id="todo">To Do</h3>
-<ul>
-  <li>Implement DOS functionality for consoles
-</ul>
-
 <h3 id="links">Links</h3>
 <ul>
   <li><a href="http://www.6502asm.com/">6502asm.com</a> - a 6502 assembler/emulator in JavaScript
@@ -157,10 +125,6 @@ By <a href="mailto:inexorabletash@hotmail.com">Joshua Bell</a>
   <li><a href="http://www.nicholson.com/rhn/basic/">BASIC Programming Resources</a>
   <li><a href="http://www.scullinsteel.com/apple2/">Apple II emulator in JavaScript</a>
 </ul>
-
-<h3 id="changes">Changes</h3>
-<p>The source is tracked on <a href="http://github.com">GitHub</a> at <a href="https://github.com/inexorabletash/jsbasic/">https://github.com/inexorabletash/jsbasic/</a>.
-<p>Older changes are documented in the <a href="https://github.com/inexorabletash/jsbasic/blob/master/CHANGELOG">CHANGELOG</a>
 
 <!-- CodeMirror syntax highlighting - this is optional -->
 <script src="../CodeMirror/lib/codemirror.js"></script>

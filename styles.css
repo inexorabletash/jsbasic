@@ -1,6 +1,11 @@
-body { background-color: #EEEACD; }
-h1, h2, h3, p { margin-bottom: 6pt; margin-top: 6pt; }
-td { vertical-align: top; }
+@import url(http://fonts.googleapis.com/css?family=Coustard);
+body { font-family: "Coustard"; }
+
+a { color: #803010; text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+body { background-color: #EEEACD; color: black; }
+h1, h2, h3, p, ul { margin-bottom: 0; margin-top: 0; }
 
 
 /* Apple II Screen */
