@@ -158,13 +158,16 @@ window.onload = function () {
   $('#btn_load').disabled = (window.localStorage.getItem("save_program") === null);
 
   // Add a "printer" on demand
-  addEvent($('#btn_capture'), 'click', function () {
-    $('#btn_capture').disabled = true;
-    var printer = new Printer(tty);
-
-    printer.onclose = function () {
-      $('#btn_capture').disabled = false;
-    };
+  var printer = null;
+  var paper = $('#paper');
+  addEvent($('#show_paper'), 'click', function () {
+    window.getClassList(document.body).add('printout');
+    printer = new Printer(tty, paper);
+  });
+  addEvent($('#hide_paper'), 'click', function () {
+    window.getClassList(document.body).remove('printout');
+    printer.close();
+    printer = null;
   });
 
 

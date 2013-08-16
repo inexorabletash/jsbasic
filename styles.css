@@ -7,6 +7,34 @@ a:hover { text-decoration: underline; }
 body { background-color: #EEEACD; color: black; }
 h1, h2, h3, p, ul { margin-bottom: 0; margin-top: 0; }
 
+/* "Paper" (for copying output) */
+#paper {
+  display: none;
+  margin: 0;
+  position: fixed;
+  z-index: 100;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 560px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  font-family: Courier, Monospace;
+  background-color: #ffffff;
+  background-image: url('lpt.jpg');
+  background-repeat: repeat-y;
+  background-attachment: local;
+  color: #000000;
+  padding-left: 50px;
+  white-space: pre;
+  box-shadow: inset 0 5px 10px black;
+}
+
+body.printout #paper { display: block; }
+#show_paper { display: inline-block; }
+#hide_paper { display: none; }
+body.printout #show_paper { display: none; }
+body.printout #hide_paper { display: inline-block; }
 
 /* Apple II Screen */
 .frame   {width: 560px; height: 384px; border-style: ridge; border-width: 10px; border-color: gray; padding: 10px; background-color: #202020; }

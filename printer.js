@@ -17,24 +17,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-function Printer(tty) {
-
-  // For closures
-  var self = this;
-
-  // Create new window and document
-  var w = window.open('about:blank', '_blank', 'width=500,height=400,status=0,location=0,menubar=0,toolbar=0');
-  var body = w.document.getElementsByTagName('body')[0];
-  body.style.fontFamily = 'Courier, Monospace';
-  body.style.backgroundColor = '#ffffff';
-  body.style.backgroundImage = "url('http://calormen.com/Star_Trek/ASCII/lpt.jpg')";
-  body.style.color = '#000000';
-  body.style.paddingLeft = '50px';
-
-  var paper = w.document.createElement('div');
-  paper.style.whiteSpace = 'pre';
-  body.appendChild(paper);
-
+function Printer(tty, paper) {
   var tty_writeChar = tty.writeChar;
   tty.writeChar = function(c) {
 
@@ -75,21 +58,21 @@ function Printer(tty) {
 
       case 10: // (LF) line feed
       case 13: // (CR) return
-        paper.appendChild(w.document.createTextNode('\n'));
+        paper.appendChild(document.createTextNode('\n'));
         break;
 
       default:
-        paper.appendChild(w.document.createTextNode(c));
+        paper.appendChild(document.createTextNode(c));
         break;
     }
 
-    paper.parentElement.scrollTop = paper.parentElement.scrollHeight;
+    if ('normalize' in paper) {
+      paper.normalize();
+    }
+    paper.scrollTop = paper.scrollHeight;
   };
 
-  w.onunload = function() {
-    if (self.onclose) {
-      self.onclose();
-    }
+  this.close = function() {
     tty.writeChar = tty_writeChar;
   };
 }
