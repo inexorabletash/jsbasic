@@ -51,7 +51,7 @@ This is intended as a quick reference for the <a href="index.htm">Applesoft BASI
 <dl>
   <dt>CLEAR<dd>Clear all variables
   <dt>[LET] <var>var</var> = <var>expr</var><dd>Assign variable
-  <dt>DIM <var>var</var>( <var>size</var> [ , <var>size2</var> ...] ) [ , <var>var2</var>( <var>size</var> [ , <var>size2</var> ...] ) ... ] <dd>Allocate array
+  <dt>DIM <var>var</var>( <var>size</var> [ , <var>size2</var> ...] ) [ , <var>var2</var>( <var>size</var> [ , <var>size2</var> ...] ) ...] <dd>Allocate array(s) with given dimension(s)
   <dt>DEF FN <var>f</var>(<var>var</var> ) = <var>expr</var><dd>Define function of a single variable <a href="#def_fn_string">[1]</a>
 </dl>
 </section>
@@ -59,16 +59,16 @@ This is intended as a quick reference for the <a href="index.htm">Applesoft BASI
 <section>
 <h3>Flow Control</h3>
 <dl>
-  <dt>GOTO<dd>Go to line number
-  <dt>GOSUB <var>line</var><dd>Go to subroutine
+  <dt>GOTO <var>line</var><dd>Jump to line number
+  <dt>GOSUB <var>line</var><dd>Enter subroutine at line number
   <dt>RETURN<dd>Return from subroutine
-  <dt>ON <var>expr</var> GOTO <var>line</var> [, <var>line2</var> ... ]<dd>Branch based on index (value = 1, 2, ...)
-  <dt>ON <var>expr</var> GOSUB <var>line</var> [, <var>line2</var> ... ]<dd>Subroutine branch based on index (value = 1, 2, ...)
-  <dt>POP<dd>Convert last gosub into a goto
+  <dt>ON <var>expr</var> GOTO <var>line</var> [, <var>line2</var> ...]<dd>Branch based on index (value = 1, 2, ...)
+  <dt>ON <var>expr</var> GOSUB <var>line</var> [, <var>line2</var> ...]<dd>Subroutine branch based on index (value = 1, 2, ...)
+  <dt>POP<dd>Convert last <code>GOSUB</code> into a <code>GOTO</code>
   <dt>FOR <var>var</var> = <var>start</var> TO <var>end</var> [ STEP <var>incr</var> ]<dd>Loop with counter variable
   <dt>NEXT [<var>var</var> [, <var>var</var> ...] ]<dd>End of loop(s)
-  <dt>IF <var>expr</var> THEN <var>statement</var><br />IF <var>expr</var> GOTO <var>line</var><dd>Conditional; if expr is false, rest of line is skipped
-  <dt>END<dd>Terminate program
+  <dt>IF <var>expr</var> THEN <var>statement</var><br />IF <var>expr</var> GOTO <var>line</var><dd>Conditional; if <var>expr</var> is false, rest of line is skipped
+  <dt>END<dd>Terminate program cleanly
   <dt>STOP<dd>Break, as if an error occurred
 </dl>
 </section>
@@ -77,19 +77,20 @@ This is intended as a quick reference for the <a href="index.htm">Applesoft BASI
 <h3>Error Handling</h3>
 <dl>
   <dt>ONERR GOTO <var>line</var><dd>Set error hook
-  <dt>RESUME<dd>Retry line that caused ONERR GOTO
+  <dt>RESUME<dd>Retry line that caused <code>ONERR GOTO</code>
 </dl>
 </section>
 
 <section>
 <h3>Input/Output</h3>
 <dl>
-  <dt>PRINT <var>expr</var> [ [;,] <var>expr2</var> ... ] [;]<dd>Output text
-  <dt>INPUT [<var>string</var> ;] <var>var</var> [, <var>var2</var> ... ]<dd>Read line of input
+  <dt>PRINT <var>expr</var> [ [;,] <var>expr2</var> ... ] [;]<dd>Output text. <code>;</code> concatenates,
+      <code>,</code> advances to next tab stop. A trailing <code>;</code> suppresses line break.
+  <dt>INPUT [<var>string</var> ;] <var>var</var> [, <var>var2</var> ...]<dd>Read line of comma-delimited input, with optional prompt
   <dt>GET <var>var</var><dd>Read single key
   <dt>HOME<dd>Clear text display
-  <dt>HTAB <var>expr</var><dd>Position text cursor horizontally
-  <dt>VTAB <var>expr</var><dd>Position text cursor vertically
+  <dt>HTAB <var>expr</var><dd>Position text cursor horizontally (1...40 or 1...80)
+  <dt>VTAB <var>expr</var><dd>Position text cursor vertically (1...24)
   <dt>INVERSE<dd>Set output mode to black-on-white
   <dt>FLASH<dd>Set output mode to flashing
   <dt>NORMAL<dd>Set output mode to white-on-black
@@ -100,7 +101,7 @@ This is intended as a quick reference for the <a href="index.htm">Applesoft BASI
 <section>
 <h3>Miscellaneous</h3>
 <dl>
-  <dt>REM [ <var>comment</var> ]<dd>Begin a comment; rest of line is skipped
+  <dt>REM [<var>comment</var>]<dd>Begin a comment; rest of line is skipped
   <dt>TRACE<dd>Turn on trace mode (line numbers printed)
   <dt>NOTRACE<dd>Turn off trace mode
 </dl>
@@ -109,8 +110,8 @@ This is intended as a quick reference for the <a href="index.htm">Applesoft BASI
 <section>
 <h3>Inline Data</h3>
 <dl>
-  <dt>DATA <var>value</var> [, <var>value2</var> ... ]<dd>Define inline data
-  <dt>READ <var>var</var> [, <var>var2</var> ... ]<dd>Read the next DATA value
+  <dt>DATA <var>value</var> [, <var>value2</var> ...]<dd>Define inline data
+  <dt>READ <var>var</var> [, <var>var2</var> ...]<dd>Read the next DATA value
   <dt>RESTORE<dd>Restore the DATA pointer to the first value
 </dl>
 </section>
@@ -118,7 +119,7 @@ This is intended as a quick reference for the <a href="index.htm">Applesoft BASI
 <section>
 <h3>Lo-Res Graphics</h3>
 <dl>
-  <dt>GR<dd>Set display to lores mode, clear screen
+  <dt>GR<dd>Set display to mixed test/low resolution ("lores") graphics mode, clear screen to black
   <dt>COLOR= <var>expr</var><dd>Set lores color (0...15)
   <dt>PLOT <var>expr</var>, <var>expr</var><dd>Plot lores point (x = 0...39, y = 0...39/47)
   <dt>HLIN <var>expr</var>, <var>expr</var> AT <var>expr</var><dd>Plot horizontal line (x1, x2 at y)
@@ -129,8 +130,8 @@ This is intended as a quick reference for the <a href="index.htm">Applesoft BASI
 <section>
 <h3>Hi-Res Graphics</h3>
 <dl>
-  <dt>HGR<dd>Set display to hires mode, clear screen
-  <dt>HGR2<dd>Set display to hires mode (page 2), clear screen
+  <dt>HGR<dd>Set display to mixed/high resolution ("hires") graphics mode, clear screen to black
+  <dt>HGR2<dd>Set display to full hires mode (page 2), clear screen
   <dt>HPLOT [TO] <var>expr</var>, <var>expr</var> [ TO <var>expr</var>, <var>expr</var> ] ... <dd>Plot hires point/line (x=0...279, y=0...191)
   <dt>HCOLOR= <var>expr</var><dd>Set hires color (0...7)
 </dl>
@@ -196,10 +197,10 @@ This is intended as a quick reference for the <a href="index.htm">Applesoft BASI
         <li><code>POKE 49200,0</code> - toggle speaker (no-op)
         <li><code>POKE 49232,0</code> - graphics mode
         <li><code>POKE 49233,0</code> - text mode
-        <li><code>POKE 49234,0</code> - full graphics
-        <li><code>POKE 49235,0</code> - split screen
-        <li><code>POKE 49238,0</code> - lores
-        <li><code>POKE 49239,0</code> - hires
+        <li><code>POKE 49234,0</code> - full graphics mode
+        <li><code>POKE 49235,0</code> - mixed text/graphics mode
+        <li><code>POKE 49238,0</code> - lores graphics mode
+        <li><code>POKE 49239,0</code> - hires graphics mode
       </ul>
 
   <dt>CALL <var>expr</var><dd>Call native routine
@@ -535,7 +536,8 @@ Statement                = data-declaration | remark | Command | EmptyStatement
 Command                  = identifier /*...*/ | reserved /*...*/
 </pre>
 
-<p>Statements ("commands" in the above grammar) are parsed with distinct cases for each statement type.
+<p>Due to the irregular structure of the BASIC language, statements ("commands" in the above grammar)
+are parsed with distinct cases for each statement type.
 Most statements compile into a function call to a library of Applesoft routines. Expressions are parsed
 with a standard recursive descent parser. The parser generates JavaScript expressions for each expression,
 which are used as arguments for the library calls.</p>
@@ -544,23 +546,22 @@ which are used as arguments for the library calls.</p>
 Expression               = OrExpression
 OrExpression             = AndExpression { 'OR' AndExpression  }
 AndExpression            = RelationalExpression { 'AND' RelationalExpression }
-RelationalExpression     = AdditiveExpression { RelOp AdditiveExpression }
-RelOp                    = '=' | '&lt;' | '&gt;' | '&lt;=' | '=&lt;' | '&gt;=' | '=&gt;' | '&lt;&gt;' | '&gt;&lt;'
+RelationalExpression     = AdditiveExpression { ('=' | '&lt;' | '&gt;' | '&lt;=' | '=&lt;' | '&gt;=' | '=&gt;' | '&lt;&gt;' | '&gt;&lt;') AdditiveExpression }
 AdditiveExpression       = MultiplicativeExpression { ( '+' | '-' ) MultiplicativeExpression }
 MultiplicativeExpression = PowerExpression { ( '*' | '/' ) PowerExpression }
-PowerExpression          = UnaryExpression [ '^' UnaryExpression ]
+PowerExpression          = UnaryExpression { '^' UnaryExpression }
 UnaryExpression          = ( '+' | '-' | 'NOT' ) UnaryExpression
-                          | FinalExpression
+                         | FinalExpression
 FinalExpression          = number-literal
-                          | string-literal
-                          | 'FN' user_function_name '(' Expression ')'
-                          | reserved '(' Expression { ',' Expression } ')'
-                          | identifier [ '(' Expression { ',' Expression } ')' ]
-                          | '(' Expression ')'
+                         | string-literal
+                         | 'FN' user_function_name '(' Expression ')'
+                         | reserved '(' Expression { ',' Expression } ')'
+                         | identifier [ '(' Expression { ',' Expression } ')' ]
+                         | '(' Expression ')'
 </pre>
 
 <p>Since Applesoft supports re-entrant error handling and synchronous input,
-the output of the compiler is an array of statement-functions plus a driver
+the output of the compiler is an array of statement-functions plus an executor
 function which implements the logic for walking over the array.<p>
 </section>
 
@@ -568,19 +569,21 @@ function which implements the logic for walking over the array.<p>
 <!-- ================================================== -->
 <h2>Extensions beyond Standard Applesoft</h2>
 <!-- ================================================== -->
-<ul style="list-style: none;">
+<ol>
   <li id="def_fn_string">
-    [1] <code>DEF FN</code> supports string and integer functions
+    <code>DEF FN</code> supports string and integer functions
     e.g. <code>DEF FN IN$(X$) = " " + X$</code>
-    (but return type must still match argument type)
+    - the return type must match the argument type, so string-to-number or number-to-string functions
+    can not be implemented.
   <li id="eqeq">
-    [2] <code>==</code> is supported for equality comparisons, in addition to <code>=</code>
+    "Double equals" <code>==</code> is supported for equality comparisons, with the same meaning as "single equals" <code>=</code>
   <li id="chr_extras">
-    [3] When printing characters, <code>CHR$()</code> values greater than 255 generate glyphs that might be useful for certain maze games.
+    When printing characters, <code>CHR$()</code> values greater than 255 generate glyphs that might be useful for implementing certain maze games. <em>(An earlier version of this page allowed arbitrary Unicode characters to be displayed, but the text is now displayed using bitmaps so that is not possible.)</em>
   <li id="hscrn">
-    [4] <code>HSCRN(<var>x</var>,<var>y</var>)</code> is added to allow reading the
-    hires screen. On a real Apple this required a machine-language routine (or a shape table and <code>XDRAW</code>).
-</ul>
+    <code>HSCRN(<var>x</var>,<var>y</var>)</code> is added to allow reading the
+    hires screen. On a real Apple this required a machine-language routine (or a shape table and <code>XDRAW</code>) and
+    extensive knowledge of the Apple's color generation scheme.
+</ol>
 </section>
 
 <script type="text/javascript" src="../polyfill/polyfill.js"></script>
