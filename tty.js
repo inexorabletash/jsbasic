@@ -789,7 +789,9 @@ function TTY(screenElement, keyboardElement, bell) {
         break;
 
       // Used as paddle buttons (0=Open Apple, 1=Solid Apple)
+      case 'AltLeft':
       case 'Home': buttonState[0] = 255; handled = true; break;
+      case 'AltRight':
       case 'End': buttonState[1] = 255; handled = true; break;
       case 'PageUp': buttonState[2] = 255; handled = true; break;
       case 'Shift':
@@ -835,7 +837,9 @@ function TTY(screenElement, keyboardElement, bell) {
         break;
 
       // Used as paddle buttons (0=Open Apple, 1=Solid Apple)
+      case 'AltLeft':
       case 'Home': buttonState[0] = 0; handled = true; break;
+      case 'AltRight':
       case 'End': buttonState[1] = 0; handled = true; break;
       case 'PageUp': buttonState[2] = 0; handled = true; break;
       case 'Shift': buttonState[2] = 0; handled = true; break;
