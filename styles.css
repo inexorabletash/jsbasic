@@ -913,57 +913,9 @@ td { vertical-align: top; }
 .tty_80col .a2c286 { background-position: -224px -372px }
 .tty_80col .a2c287 { background-position: -224px -398px }
 
-/* For non-canvas based hires implementations */
-.hiresPixel { width: 4px; height: 2px; background-color: black; }
-
 .loresPixel { width: 14px; height: 8px; margin: 0; padding: 0; }
 .loresRow { height: 8px; margin: 0; padding: 0; }
 .loresDisplay { table-layout: fixed; border-collapse: collapse; }
 
-
-
 /* Input Devices */
 .keyboard { width: 1px; height: 1px; border: none; position: absolute; left: -100px; top: -100px; }
-td.controlbox { vertical-align: middle; padding-left: 12px; padding-right: 12px; }
-
-#paddle0, #paddle1
-{
-    border-style: inset;
-    border-width: 2px;
-    border-color: gray;
-    background-color: #c0c0c0;
-    height: 20px;
-    width: 245px;
-    text-align: center;
-}
-#knob0, #knob1
-{
-    border-style: outset;
-    border-width: 2px;
-    border-color: gray;
-    background-color: #404040;
-    height: 16px;
-    width: 10px;
-}
-
-#joystick
-{
-    border-style: inset;
-    border-width: 2px;
-    border-color: gray;
-    background-color: #c0c0c0;
-    width: 100px;
-    height: 100px;
-    text-align: center;
-    vertical-align: middle;
-    line-height: 100px;
-}
-#stick
-{
-    border-style: outset;
-    border-width: 2px;
-    border-color: gray;
-    background-color: #404040;
-    height: 16px;
-    width: 16px;
-}
