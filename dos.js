@@ -123,7 +123,7 @@ function DOS(tty) {
   // Implementation
   //----------------------------------------------------------------------
 
-  this.reset = function _reset() {
+  this.reset = function reset() {
     buffers = {};
     activebuffer = null;
     mode = "";
@@ -396,7 +396,7 @@ function DOS(tty) {
   tty_readChar = tty.readChar;
   tty_writeChar = tty.writeChar;
 
-  tty.readLine = function _dos_readLine(callback, prompt) {
+  tty.readLine = function dos_readLine(callback, prompt) {
 
     var string = "", c, data, len, fp, buffer;
     if (mode === "r") {
@@ -435,7 +435,7 @@ function DOS(tty) {
 
   };
 
-  tty.readChar = function _dos_readChar(callback) {
+  tty.readChar = function dos_readChar(callback) {
 
     var character = "";
     if (mode === "r") {
@@ -457,7 +457,7 @@ function DOS(tty) {
     }
   };
 
-  tty.writeChar = function _dos_writeChar(c) {
+  tty.writeChar = function dos_writeChar(c) {
 
     if (commandMode) {
       if (c === "\r") {

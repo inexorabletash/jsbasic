@@ -290,7 +290,7 @@ this.basic = (function() {
       }
     };
 
-    this.get = function _get(subscripts) {
+    this.get = function get(subscripts) {
       if (!array) {
         this.dim(subscripts.map(function() { return 10; }));
       }
@@ -299,7 +299,7 @@ this.basic = (function() {
       return array[offset(dimensions, subscripts)];
     };
 
-    this.set = function _set(subscripts, value) {
+    this.set = function set(subscripts, value) {
       if (!array) {
         this.dim(subscripts.map(function() { return 10; }));
       }
@@ -355,7 +355,7 @@ this.basic = (function() {
         regexUnquotedString = /^[^:,\r\n]*/,
         regexComma = /^,/;
 
-    return function _parseDataInput(stream, items) {
+    return function parseDataInput(stream, items) {
 
       do {
         stream.match(regexWhitespace);
@@ -372,7 +372,7 @@ this.basic = (function() {
   } ());
 
 
-  basic.compile = function _compile(source) {
+  basic.compile = function compile(source) {
     "use strict";
 
     function vartype(name) {
@@ -1021,25 +1021,25 @@ this.basic = (function() {
       //
       //////////////////////////////////////////////////////////////////////
 
-      'div': function _div(n, d) {
+      'div': function div(n, d) {
         var r = n / d;
         if (!isFinite(r)) { runtime_error(ERRORS.DIVISION_BY_ZERO); }
         return r;
       },
 
-      'fn': function _fn(name, arg) {
+      'fn': function fn(name, arg) {
         if (!{}.hasOwnProperty.call(state.functions, name)) {
           runtime_error(ERRORS.UNDEFINED_FUNCTION);
         }
         return state.functions[name](arg);
       },
 
-      'checkFinite': function _checkFinite(n) {
+      'checkFinite': function checkFinite(n) {
         if (!isFinite(n)) { runtime_error(ERRORS.OVERFLOW); }
         return n;
       },
 
-      'toint': function _toint(n) {
+      'toint': function toint(n) {
         n = n >> 0;
         if (n > 0x7fff || n < -0x8000) { runtime_error(ERRORS.ILLEGAL_QUANTITY); }
         return n;
@@ -1298,7 +1298,7 @@ this.basic = (function() {
 
         var lookahead = nextToken();
 
-        match = function _match(type, value) {
+        match = function match(type, value) {
 
           if (!lookahead) {
             parse_error("Syntax error: Expected " + type + ", saw end of file");
@@ -1321,7 +1321,7 @@ this.basic = (function() {
           return token[type];
         };
 
-        test = function _test(type, value, consume) {
+        test = function test(type, value, consume) {
           if (lookahead && {}.hasOwnProperty.call(lookahead, type) &&
                         (value === (void 0) || lookahead[type] === value)) {
 
@@ -1339,13 +1339,13 @@ this.basic = (function() {
           return false;
         };
 
-        endOfStatement = function _endOfStatement() {
+        endOfStatement = function endOfStatement() {
           return !lookahead ||
                         {}.hasOwnProperty.call(lookahead, 'separator') ||
                         {}.hasOwnProperty.call(lookahead, 'lineNumber');
         };
 
-        endOfProgram = function _endOfProgram() {
+        endOfProgram = function endOfProgram() {
           return !lookahead;
         };
 
@@ -2171,7 +2171,7 @@ this.basic = (function() {
       return parseProgram();
     } ());
 
-    program.init = function _init(environment) {
+    program.init = function init(environment) {
 
       // stuff these into runtime library closure/binding
       env = environment;
@@ -2210,7 +2210,7 @@ this.basic = (function() {
 
       state.clear();
 
-      state.parsevar = function _parsevar(name, subscripts, input) {
+      state.parsevar = function parsevar(name, subscripts, input) {
 
         if (arguments.length === 2) {
           input = arguments[1];
@@ -2243,7 +2243,7 @@ this.basic = (function() {
       };
     };
 
-    program.step = function _step(driver) {
+    program.step = function step(driver) {
 
       function gotoline(line) {
         if (!{}.hasOwnProperty.call(program.jump, line)) {

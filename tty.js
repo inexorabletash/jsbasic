@@ -149,7 +149,7 @@ function TTY(screenElement, keyboardElement, bell) {
     setCellByte(x, y, byte);
   }
 
-  this.reset = function _reset() {
+  this.reset = function reset() {
     this.hideCursor();
     lineCallback = undefined;
     charCallback = undefined;
@@ -212,7 +212,7 @@ function TTY(screenElement, keyboardElement, bell) {
     self.setCursorPosition(0, 0);
   }
 
-  this.clearScreen = function _clearScreen() {
+  this.clearScreen = function clearScreen() {
     var x, y;
     cursorX = self.textWindow.left;
     cursorY = self.textWindow.top;
@@ -224,7 +224,7 @@ function TTY(screenElement, keyboardElement, bell) {
   };
 
 
-  this.clearEOL = function _clearEOL() {
+  this.clearEOL = function clearEOL() {
     var x;
     for (x = cursorX; x < self.textWindow.left + self.textWindow.width; x += 1) {
       setCellChar(x, cursorY, 0x20);
@@ -232,7 +232,7 @@ function TTY(screenElement, keyboardElement, bell) {
   };
 
 
-  this.setFirmwareActive = function _setFirmwareActive(active) {
+  this.setFirmwareActive = function setFirmwareActive(active) {
     init(active, 24, active ? 80 : 40);
   };
 
@@ -271,11 +271,11 @@ function TTY(screenElement, keyboardElement, bell) {
     }
   }
 
-  this.scrollScreen = function _scrollScreen() {
+  this.scrollScreen = function scrollScreen() {
     scrollUp();
   };
 
-  this.setTextStyle = function _setTextStyle(style) {
+  this.setTextStyle = function setTextStyle(style) {
     curStyle = style;
   };
 
@@ -319,7 +319,7 @@ function TTY(screenElement, keyboardElement, bell) {
   }
 
   // Hookable
-  this.writeChar = function _writeChar(c) {
+  this.writeChar = function writeChar(c) {
     var code = c.charCodeAt(0),
             x, y;
 
@@ -503,22 +503,22 @@ function TTY(screenElement, keyboardElement, bell) {
   };
 
   // Hookable
-  this.writeString = function _writeString(s) {
+  this.writeString = function writeString(s) {
     var i;
     for (i = 0; i < s.length; i += 1) {
       this.writeChar(s.charAt(i));
     }
   };
 
-  this.getScreenSize = function _getScreenSize() {
+  this.getScreenSize = function getScreenSize() {
     return { width: screenWidth, height: screenHeight };
   };
 
-  this.getCursorPosition = function _getCursorPosition() {
+  this.getCursorPosition = function getCursorPosition() {
     return { x: cursorX, y: cursorY };
   };
 
-  this.setCursorPosition = function _setCursorPosition(x, y) {
+  this.setCursorPosition = function setCursorPosition(x, y) {
     if (x !== undefined) {
       x = Math.min(Math.max(Math.floor(x), 0), screenWidth - 1);
     } else {
@@ -541,7 +541,7 @@ function TTY(screenElement, keyboardElement, bell) {
     updateCursor();
   };
 
-  this.showCursor = function _showCursor() {
+  this.showCursor = function showCursor() {
     cursorVisible = true;
     cursorInterval = setInterval(function() {
       cursorState = !cursorState;
@@ -549,14 +549,14 @@ function TTY(screenElement, keyboardElement, bell) {
     }, 500);
   };
 
-  this.hideCursor = function _hideCursor() {
+  this.hideCursor = function hideCursor() {
     clearInterval(cursorInterval);
     cursorVisible = false;
     updateCursor();
 
   };
 
-  this.splitScreen = function _splitScreen(splitAt) {
+  this.splitScreen = function splitScreen(splitAt) {
     splitPos = splitAt;
 
     var y;
@@ -837,18 +837,18 @@ function TTY(screenElement, keyboardElement, bell) {
   }
 
 
-  this.getButtonState = function _getButtonState(btn) {
+  this.getButtonState = function getButtonState(btn) {
     return buttonState[btn];
   };
 
 
-  this.focus = function _focus() {
+  this.focus = function focus() {
     keyboardElement.focus();
   };
 
 
   // Hookable
-  this.readLine = function _readLine(callback, prompt) {
+  this.readLine = function readLine(callback, prompt) {
     self.writeString(prompt);
 
     lineCallback = callback;
@@ -858,7 +858,7 @@ function TTY(screenElement, keyboardElement, bell) {
 
 
   // Hookable
-  this.readChar = function _readChar(callback) {
+  this.readChar = function readChar(callback) {
     // If there is a key ready, deliver it immediately
     if (keyboardRegister & 0x80) {
       keyboardRegister = keyboardRegister & 0x7f;
@@ -873,12 +873,12 @@ function TTY(screenElement, keyboardElement, bell) {
   };
 
 
-  this.getKeyboardRegister = function _getKeyboardRegister() {
+  this.getKeyboardRegister = function getKeyboardRegister() {
     return keyboardRegister;
   };
 
 
-  this.clearKeyboardStrobe = function _clearKeyboardStrobe() {
+  this.clearKeyboardStrobe = function clearKeyboardStrobe() {
     keyboardRegister = keyboardRegister & 0x7f;
     return keyboardRegister | (keyDown ? 0x80 : 0x00);
   };
@@ -894,7 +894,7 @@ function TTY(screenElement, keyboardElement, bell) {
   window.addEvent(keyboardElement, 'keydown', handleKeyDown);
   window.addEvent(keyboardElement, 'keyup', handleKeyUp);
 
-  setInterval(function _blinkFlash() {
+  setInterval(function blinkFlash() {
     window.getClassList(styleElem).toggle('jsb-flash');
   }, 250);
 }
