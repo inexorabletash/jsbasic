@@ -48,8 +48,10 @@ if(!Object.keys){Object.keys=function(o){if(o!==Object(o))throw new TypeError();
 if(!Array.prototype.forEach){Array.prototype.forEach=function(fun){if(this===void 0||this===null){throw new TypeError();}var t=Object(this);var len=t.length>>>0;if(typeof fun!=="function"){throw new TypeError();}var thisp=arguments[1],i;for(i=0;i<len;i++){if(i in t){fun.call(thisp,t[i],i,t);}}};}
 if(!Array.prototype.map){Array.prototype.map=function(fun){if(this===void 0||this===null){throw new TypeError();}var t=Object(this);var len=t.length>>>0;if(typeof fun!=="function"){throw new TypeError();}var res=[];res.length=len;var thisp=arguments[1],i;for(i=0;i<len;i++){if(i in t){res[i]=fun.call(thisp,t[i],i,t);}}return res;};}
 if(!Array.prototype.reduce){Array.prototype.reduce=function(fun){if(this===void 0||this===null){throw new TypeError();}var t=Object(this);var len=t.length>>>0;if(typeof fun!=="function"){throw new TypeError();}if(len===0&&arguments.length===1){throw new TypeError();}var k=0;var accumulator;if(arguments.length>=2){accumulator=arguments[1];}else{do{if(k in t){accumulator=t[k++];break;}if(++k>=len){throw new TypeError();}}while(true);}while(k<len){if(k in t){accumulator=fun.call(undefined,accumulator,t[k],k,t);}k++;}return accumulator;};}
-// Functions from harmony.js, via jsmin, for running via console
-if(!String.prototype.repeat){String.prototype.repeat=function(count){var array=[];array.length=count+1;return array.join(String(this));};}
+
+
+// ES6 polyfill:
+if (!String.prototype.repeat) { String.prototype.repeat = function(n){return Array(n+1).join(this); }; }
 
 var basic = (function() {
 
@@ -698,7 +700,6 @@ var basic = (function() {
             return ' '.repeat(pos - cur);
           }
         };
-
       },
 
       'spc': function SPC(n) {
