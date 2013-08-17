@@ -287,7 +287,7 @@ var basic = (function() {
       dimensions = dims.map(function(n) { return (Number(n) >> 0) + 1; });
 
       var i, len = dimensions.reduce(function(a, b) { return a * b; }),
-                defval = (type === 'string') ? '' : 0;
+          defval = (type === 'string') ? '' : 0;
 
       array = [];
       for (i = 0; i < len; i += 1) {
@@ -392,12 +392,12 @@ var basic = (function() {
     //----------------------------------------------------------------------
 
     var env,        // Environment - passed in to program, contains tty, graphics, etc.
-            state,      // Program state - initialized at runtime
-            lib,        // Statement Library (closure over state and env)
-            funlib,     // Function Library (closure over state and env)
-            peek_table, // Native memory access shims (PEEK, POKE, CALL)
-            poke_table,
-            call_table;
+        state,      // Program state - initialized at runtime
+        lib,        // Statement Library (closure over state and env)
+        funlib,     // Function Library (closure over state and env)
+        peek_table, // Native memory access shims (PEEK, POKE, CALL)
+        poke_table,
+        call_table;
 
     //
     // NOTE: tempting to make these part of env but some access/modify program state,
