@@ -358,10 +358,10 @@ var basic = (function() {
   // the substring consumed.
   var parseDataInput = (function() {
 
-    var regexWhitespace = new RegExp('^[ \\t]+'),
-            regexQuotedString = new RegExp('^"([^"]*?)"'),
-            regexUnquotedString = new RegExp('^([^:,\\r\\n]*)'),
-            regexComma = new RegExp('^,');
+    var regexWhitespace = /^[ \t]+/,
+        regexQuotedString = /^"([^"]*?)"/,
+        regexUnquotedString = /^([^:,\r\n]*)/,
+        regexComma = /^,/;
 
     return function _parseDataInput(stream, items) {
 
@@ -1236,19 +1236,19 @@ var basic = (function() {
         RESERVED_WORDS.reverse();
 
         var regexReservedWords = new RegExp("^(" + RESERVED_WORDS.map(munge).join("|") + ")", "i"),
-            regexIdentifier = new RegExp('^([A-Za-z][A-Za-z0-9]?)[A-Za-z0-9]*(\\$|%)?'),
-            regexStringLiteral = new RegExp('^"([^"]*?)(?:"|(?=\\n|\\r|$))'),
-            regexNumberLiteral = new RegExp('^([0-9]*\\.?[0-9]+(?:[eE]\\s*[\\-+]?\\s*[0-9]+)?)'),
-            regexOperator = new RegExp('^(;|<[ \t]*=|=[ \t]*<|>[ \t]*=|=[ \t]*>|=[ \t]*=|<[ \t]*>|>[ \t]*<|=|<|>|\\+|-|\\*|/|\\^|\\(|\\)|,)'),
+            regexIdentifier = /^([A-Za-z][A-Za-z0-9]?)[A-Za-z0-9]*(\$|%)?/,
+            regexStringLiteral = /^"([^"]*?)(?:"|(?=\n|\r|$))/,
+            regexNumberLiteral = /^([0-9]*\.?[0-9]+(?:[eE]\s*[\-+]?\s*[0-9]+)?)/,
+            regexOperator = /^(;|<[ \t]*=|=[ \t]*<|>[ \t]*=|=[ \t]*>|=[ \t]*=|<[ \t]*>|>[ \t]*<|=|<|>|\+|-|\*|\/|\^|\(|\)|,)/,
 
-            regexLineNumber = new RegExp('^([0-9]+)'),
-            regexSeparator = new RegExp('^(:)'),
+            regexLineNumber = /^([0-9]+)/,
+            regexSeparator = /^(:)/,
 
             regexRemark = new RegExp('^(' + munge(kws.REM) + '([^\r\n]*))', 'i'),
             regexData = new RegExp('^(' + munge(kws.DATA) + ')', 'i'),
 
-            regexLinearWhitespace = new RegExp('^[ \t]+'),
-            regexNewline = new RegExp('^\r?\n');
+            regexLinearWhitespace = /^[ \t]+/,
+            regexNewline = /^\r?\n/;
         
         // Token types:
         //    lineNumber    - start of a new line
@@ -1383,7 +1383,7 @@ var basic = (function() {
 
       function quote(string) {
         // From json2.js (http://www.json.org/js.html)
-        var escapable = new RegExp('[\\\\"\\x00-\\x1f\\x7f-\\x9f\\u00ad\\u0600-\\u0604\\u070f\\u17b4\\u17b5\\u200c-\\u200f\\u2028-\\u202f\\u2060-\\u206f\\ufeff\\ufff0-\\uffff]', 'g'),
+        var escapable = /[\\"\x00-\x1f\x7f-\x9f\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g,
                     meta = {    // table of character substitutions
                       '\b': '\\b',
                       '\t': '\\t',
