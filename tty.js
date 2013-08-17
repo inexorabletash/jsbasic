@@ -42,64 +42,47 @@
 //   tty.TEXT_STYLE_NORMAL  = 0
 //   tty.TEXT_STYLE_INVERSE = 1
 //   tty.TEXT_STYLE_FLASH   = 2
-//
-// Example:
-//
-//   <script>
-//      tty = new TTY( document.getElementById( 'screen' ), document.getElementById( 'keyboard' ), 80, 24 );
-//   </script>
-//   <style>
-//      #screen { font-size: 10pt; font-family: monospace; font-weight: bold; background-color: black; color: #80ff80; }
-//      .normal  { background-color: #000000; color: #80ff80; }
-//      .inverse { background-color: #80ff80; color: #000000; }
-//   </style>
-//   <div id="screen" tabindex="0"></div>
 
 function TTY(screenElement, keyboardElement, bell) {
 
   // Constants
 
-
   this.TEXT_STYLE_NORMAL = 0;
   this.TEXT_STYLE_INVERSE = 1;
   this.TEXT_STYLE_FLASH = 2;
 
-
   // Internal Fields
-
 
   // For references to "this" within callbacks and closures
   var self = this,
 
   // Display
-        cursorX = 0,
-        cursorY = 0,
-        cursorVisible = false,
-        cursorElement = null,
-        styleElem,
-        screenGrid,
-        screenRow = [],
-        splitPos = 0,
-        screenWidth,
-        screenHeight,
-        curStyle = this.TEXT_STYLE_NORMAL,
-        cursorState = true,
-        cursorInterval,
-        firmwareActive = true, // 80-column firmware
-        mousetext = false,
+      cursorX = 0,
+      cursorY = 0,
+      cursorVisible = false,
+      cursorElement = null,
+      styleElem,
+      screenGrid,
+      screenRow = [],
+      splitPos = 0,
+      screenWidth,
+      screenHeight,
+      curStyle = this.TEXT_STYLE_NORMAL,
+      cursorState = true,
+      cursorInterval,
+      firmwareActive = true, // 80-column firmware
+      mousetext = false,
 
   // Input
-        lineCallback,
-        charCallback,
-        inputBuffer = [],
-        keyboardRegister = 0,
-        keyDown = false,
-        capsLock = true, // Caps lock state is tracked unique to the TTY
-        buttonState = [0, 0, 0, 0];
+      lineCallback,
+      charCallback,
+      inputBuffer = [],
+      keyboardRegister = 0,
+      keyDown = false,
+      capsLock = true, // Caps lock state is tracked unique to the TTY
+      buttonState = [0, 0, 0, 0];
 
   this.autoScroll = true;
-
-
 
   //
   // Display
@@ -109,7 +92,7 @@ function TTY(screenElement, keyboardElement, bell) {
     var cell = screenGrid[x + screenWidth * y];
     if (cell && cell.byte !== byte) {
       cell.byte = byte;
-      cell.elem.className = 'a2c a2c' + String(byte);
+      cell.elem.className = 'jsb-chr jsb-chr' + String(byte);
     }
   }
 
@@ -122,7 +105,6 @@ function TTY(screenElement, keyboardElement, bell) {
   // 0xA0-0xBF = NORMAL   !"#$%&'()*+,-./0123456789:;<=>?
   // 0xC0-0xDF = NORMAL  @ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_
   // 0xE0-0xFF = NORMAL  `abcdefghijklmnopqrstuvwxyz{|}~
-
 
   function setCellChar(x, y, c) {
     var byte;
@@ -200,8 +182,8 @@ function TTY(screenElement, keyboardElement, bell) {
     tbody = document.createElement('tbody');
     styleElem = tbody;
 
-    getClassList(styleElem).add(screenWidth === 40 ? 'tty_40col' : 'tty_80col');
-    if (firmwareActive) { getClassList(styleElem).add('active'); }
+    getClassList(styleElem).add(screenWidth === 40 ? 'jsb-40col' : 'jsb-80col');
+    if (firmwareActive) { getClassList(styleElem).add('jsb-active'); }
 
     for (y = 0; y < screenHeight; y += 1) {
       tr = document.createElement('tr');
@@ -226,7 +208,7 @@ function TTY(screenElement, keyboardElement, bell) {
 
     // Create cursor
     cursorElement = document.createElement('span');
-    cursorElement.className = 'a2c a2c-cursor a2c255';
+    cursorElement.className = 'jsb-chr jsb-chr-cursor jsb-chr255';
     self.setCursorPosition(0, 0);
   }
 
@@ -913,7 +895,7 @@ function TTY(screenElement, keyboardElement, bell) {
   window.addEvent(keyboardElement, 'keyup', handleKeyUp);
 
   setInterval(function _blinkFlash() {
-    window.getClassList(styleElem).toggle('flash');
+    window.getClassList(styleElem).toggle('jsb-flash');
   }, 250);
 }
 

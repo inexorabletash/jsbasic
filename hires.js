@@ -33,14 +33,6 @@
 //   hires.getPixel( x, x ) // for "HSCRN"
 //   hires.show( bool )
 //   { width: w, height: h } = hires.getScreenSize()
-//
-// Example:
-//
-//   <script>
-//     hires = new HiRes( document.getElementById( 'hires' ), 140, 192 );
-//     interpreter = new BasicInterpreter( tty, lores, hires, paddle );
-//   </script>
-//   <canvas id="hires"></canvas>
 
 function HiRes(element, width, height) {
   var COLORS, // Apple II to HTML color table

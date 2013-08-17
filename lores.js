@@ -29,17 +29,6 @@
 //   lores.show( bool )
 //   color_index = lores.getPixel( x, y )
 //   { width: w, height: h } = lores.getScreenSize()
-//
-// Example:
-//
-//   <style>
-//     .loresPixel { width: 14px; height: 8px; }
-//   </style>
-//   <script>
-//     lores = new LoRes( document.getElementById( 'lores' ), 40, 40 );
-//     interpreter = new BasicInterpreter( tty, lores, paddle );
-//   </script>
-//   <div id="lores"></div>
 
 function LoRes(element, width, height) {
 
@@ -83,15 +72,12 @@ function LoRes(element, width, height) {
     loresPixel.length = width * height;
 
     table = document.createElement('table');
-    table.className = 'jsb-lores-display';
 
     tbody = document.createElement('tbody');
     for (y = 0; y < height; y += 1) {
       tr = document.createElement('tr');
-      tr.className = 'jsb-lores-row';
       for (x = 0; x < width; x += 1) {
         td = document.createElement('td');
-        td.className = 'jsb-lores-pixel';
         td.style.backgroundColor = 'black';
 
         loresPixel[y * width + x] = td;

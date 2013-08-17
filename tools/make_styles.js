@@ -7,7 +7,7 @@ function pos(code, sw) {
 }
 
 function gen(cc, sc, sw, styles) {
-  console.log('.'+sw+'col'+styles+' .a2c'+cc+' { background-position: '+ pos(sc,sw)+' }');
+  console.log('.'+sw+'col'+styles+' .jsb-chr'+cc+' { background-position: '+ pos(sc,sw)+' }');
 }
 
 var sw, i;
