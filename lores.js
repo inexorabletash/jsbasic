@@ -83,15 +83,15 @@ function LoRes(element, width, height) {
     loresPixel.length = width * height;
 
     table = document.createElement('table');
-    table.className = 'loresDisplay';
+    table.className = 'jsb-lores-display';
 
     tbody = document.createElement('tbody');
     for (y = 0; y < height; y += 1) {
       tr = document.createElement('tr');
-      tr.className = 'loresRow';
+      tr.className = 'jsb-lores-row';
       for (x = 0; x < width; x += 1) {
         td = document.createElement('td');
-        td.className = 'loresPixel';
+        td.className = 'jsb-lores-pixel';
         td.style.backgroundColor = 'black';
 
         loresPixel[y * width + x] = td;

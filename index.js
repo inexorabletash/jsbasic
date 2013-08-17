@@ -150,23 +150,15 @@ window.onload = function () {
     printer = null;
   });
 
-
   // Mouse-as-Joystick
   var wrapper = $('#screen-wrapper');
   addEvent(wrapper, 'mousemove', function (e) {
-    // compute relative coordinates
-    var x = e.clientX, y = e.clientY, elem = wrapper;
-    while (elem) {
-      x -= elem.offsetLeft - elem.scrollLeft;
-      y -= elem.offsetTop - elem.scrollTop;
-      elem = elem.offsetParent;
-    }
-
-    function clamp(n, min, max) { return Math.min(Math.max(n, min), max); }
-    pdl[0] = clamp(x / (wrapper.offsetWidth - 1), 0, 1);
-    pdl[1] = clamp(y / (wrapper.offsetHeight - 1), 0, 1);
+    var rect = wrapper.getBoundingClientRect(),
+        x = e.clientX - rect.left, y = e.clientY - rect.top;
+    function clamp(n, min, max) { return n < min ? min : n > max ? max : n; }
+    pdl[0] = clamp(x / (rect.width - 1), 0, 1);
+    pdl[1] = clamp(y / (rect.height - 1), 0, 1);
   });
-
 
   var stopped = true;
   function updateUI() {

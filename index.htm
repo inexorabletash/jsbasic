@@ -2,7 +2,7 @@
 <title>Applesoft BASIC in JavaScript</title>
 <meta charset="UTF-8">
 <link rel="alternate" type="application/atom+xml" href="https://github.com/inexorabletash/jsbasic/commits/master.atom">
-<link rel="Stylesheet" href="styles.css" type="text/css">
+<link rel="stylesheet" href="styles.css" type="text/css">
 <meta http-equiv="X-UA-Compatible" content="IE=edge"> <!-- Suppress browser compat button -->
 
 <script type="text/javascript" src="../polyfill/polyfill.js?update=2012-02-08"></script>
@@ -31,12 +31,13 @@ By <a href="mailto:inexorabletash@gmail.com">Joshua Bell</a>
 <br clear="left">
 
 <!-- Screen -->
-<div id="frame" class="frame" style="float: left; margin: 5px;" tabIndex="0">
-  <div id="screen-wrapper" class="wrapper">
-    <div id="lores" class="lores"></div>
-    <canvas id="hires" width="560" height="384" class="hires"></canvas>
-    <canvas id="hires2" width="560" height="384" class="hires"></canvas>
-    <div id="screen" class="tty"></div>
+<link rel="stylesheet" href="display.css" type="text/css">
+<div id="frame" class="jsb-frame" style="float: left; margin: 5px;" tabIndex="0">
+  <div id="screen-wrapper" class="jsb-wrapper">
+    <div id="lores" class="jsb-lores"></div>
+    <canvas id="hires" width="560" height="384" class="jsb-hires"></canvas>
+    <canvas id="hires2" width="560" height="384" class="jsb-hires"></canvas>
+    <div id="screen" class="jsb-tty"></div>
   </div>
 </div>
 
@@ -66,7 +67,7 @@ By <a href="mailto:inexorabletash@gmail.com">Joshua Bell</a>
     <option value="sample.hangman">Hangman (Mike Gleason)</option>
     <option value="sample.raindrops">Catch the Raindrop (Nicholas Merchant)</option>
     <option value="sample.jot">JOT (Mike Gleason)</option>
-    
+
     <option disabled>Graphics</option>
     <option value="sample.rodscolorpattern">Rod's Color Pattern</option>
     <option value="sample.hacker">Hacker Logo (markwstock)</option>

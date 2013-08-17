@@ -197,8 +197,6 @@ function TTY(screenElement, keyboardElement, bell) {
     screenGrid.length = screenWidth * screenHeight;
 
     table = document.createElement('table');
-    table.className = 'tty_table';
-
     tbody = document.createElement('tbody');
     styleElem = tbody;
 
@@ -207,7 +205,6 @@ function TTY(screenElement, keyboardElement, bell) {
 
     for (y = 0; y < screenHeight; y += 1) {
       tr = document.createElement('tr');
-      tr.className = 'tty_tr';
       tr.style.visibility = (y < splitPos) ? "hidden" : "";
       screenRow[y] = tr;
 
