@@ -139,41 +139,23 @@ CodeMirror.defineMode('basic', function(config, parserConfig) {
         if (stream.eatSpace()) {
           return null;
         }
-        else if (/[0-9.]/.test(stream.peek())) {
-          stream.eatWhile(/[0-9]/);
-          if (stream.peek() === '.') {
-            stream.next();
-            stream.eatWhile(/[0-9]/);
-          }
-          if (/[eE]/.test(stream.peek())) {
-            stream.next();
-            stream.eatWhile(/[ \u00a0]/);
-            if (stream.peek() === '-' || stream.peek() === '+') {
-              stream.next();
-            }
-            stream.eatWhile(/[ \u00a0]/);
-            stream.eatWhile(/[0-9]/);
-          }
+
+        if (stream.match(/^[0-9]*\.?[0-9]+(?:[eE]\s*[\-+]?\s*[0-9]+)?/, true)) {
           return 'basic-number';
         }
-        else if (stream.peek() === '"') {
-          stream.next();
-          while (!stream.eol()) {
-            if (stream.next() === '"') {
-              break;
-            }
-          }
-          return 'basic-string';
+        if (stream.match(/^\$[0-9A-Fa-f]+/, true)) {
+          return 'basic-number';
         }
-        else if (/[;=<>+\-*\/\^(),]/.test(stream.peek())) {
-          stream.next();
+        if (stream.match(/^[;=<>+\-*\/\^(),]/, true)) {
           return 'basic-operator';
         }
-        else if (stream.peek() === ':') {
-          stream.next();
+        if (stream.match(/^:/, true)) {
           return 'basic-separator';
         }
-        else if (stream.match('REM', true, true)) {
+        if (stream.match(/^"([^"]*?)(?:"|(?=\n|\r|$))/, true)) {
+          return 'basic-string';
+        }
+        if (stream.match('REM', true, true)) {
           stream.eatWhile(/[ \u00a0]/);
           if (!stream.eol()) {
             state.state = 'comment';
@@ -190,30 +172,23 @@ CodeMirror.defineMode('basic', function(config, parserConfig) {
           }
         }
 
-        if (/[A-Za-z]/.test(stream.peek())) {
-          stream.next();
-          stream.eatWhile(/[A-Za-z0-9]/);
-          if (stream.peek() === '$' || stream.peek() === '%') {
-            stream.next();
-          }
+        if (stream.match(/[A-Za-z][A-Za-z0-9]*(\$|%)?/, true)) {
           return 'basic-identifier';
         }
 
         stream.next();
         return 'basic-error';
       }
-      else if (state.state === 'comment') {
+
+      if (state.state === 'comment') {
         while (!stream.eol()) {
           stream.next();
         }
         state.state = 'normal';
         return 'basic-comment';
       }
-      else {
-        throw 'WTF!?';
-      }
 
-
+      throw 'WTF!?';
     }
   };
 });

@@ -51,10 +51,7 @@ if(!Array.prototype.reduce){Array.prototype.reduce=function(fun){if(this===void 
 // Functions from harmony.js, via jsmin, for running via console
 if(!String.prototype.repeat){String.prototype.repeat=function(count){var array=[];array.length=count+1;return array.join(String(this));};}
 
-/*global window, java*/
 var basic = (function() {
-  /*jslint bitwise: false, onevar:false*/
-  function unused() { } // explicitly mark unused parameters (for jslint)
 
   var basic = {
     STATE_STOPPED: 0,
@@ -360,7 +357,7 @@ var basic = (function() {
 
     var regexWhitespace = /^[ \t]+/,
         regexQuotedString = /^"([^"]*?)"/,
-        regexUnquotedString = /^([^:,\r\n]*)/,
+        regexUnquotedString = /^[^:,\r\n]*/,
         regexComma = /^,/;
 
     return function _parseDataInput(stream, items) {
@@ -373,7 +370,7 @@ var basic = (function() {
           items.push(stream.lastMatch[1]);
         } else if (stream.match(regexUnquotedString)) {
           // unquoted string
-          items.push(stream.lastMatch[1]);
+          items.push(stream.lastMatch[0]);
         }
       } while (stream.match(regexComma));
     };
@@ -382,7 +379,6 @@ var basic = (function() {
 
   basic.compile = function _compile(source) {
     "use strict";
-    /*jslint continue: true*/ // for readability
 
     function vartype(name) {
       var s = name.charAt(name.length - 1);
@@ -458,20 +454,20 @@ var basic = (function() {
       0x00E6: function(v) { if (env.display) { env.display.hires_plotting_page = (v === 64 ? 2 : 1); } },
 
       // Keyboard strobe
-      0xC010: function(v) { unused(v); if (env.tty.clearKeyboardStrobe) { env.tty.clearKeyboardStrobe(); } },
+      0xC010: function(v) { if (env.tty.clearKeyboardStrobe) { env.tty.clearKeyboardStrobe(); } },
 
       // Display switches
-      0xC050: function(v) { unused(v); if (env.display) { env.display.setState("graphics", true); } }, // Graphics
-      0xC051: function(v) { unused(v); if (env.display) { env.display.setState("graphics", false); } }, // Text
-      0xC052: function(v) { unused(v); if (env.display) { env.display.setState("full", true); } }, // Full Graphics
-      0xC053: function(v) { unused(v); if (env.display) { env.display.setState("full", false); } }, // Split Screen
-      0xC054: function(v) { unused(v); if (env.display) { env.display.setState("page1", true); } }, // Page 1
-      0xC055: function(v) { unused(v); if (env.display) { env.display.setState("page1", false); } }, // Page 2
-      0xC056: function(v) { unused(v); if (env.display) { env.display.setState("lores", true); } }, // Lo-Res
-      0xC057: function(v) { unused(v); if (env.display) { env.display.setState("lores", false); } }, // Hi-Res
+      0xC050: function(v) { if (env.display) { env.display.setState("graphics", true); } }, // Graphics
+      0xC051: function(v) { if (env.display) { env.display.setState("graphics", false); } }, // Text
+      0xC052: function(v) { if (env.display) { env.display.setState("full", true); } }, // Full Graphics
+      0xC053: function(v) { if (env.display) { env.display.setState("full", false); } }, // Split Screen
+      0xC054: function(v) { if (env.display) { env.display.setState("page1", true); } }, // Page 1
+      0xC055: function(v) { if (env.display) { env.display.setState("page1", false); } }, // Page 2
+      0xC056: function(v) { if (env.display) { env.display.setState("lores", true); } }, // Lo-Res
+      0xC057: function(v) { if (env.display) { env.display.setState("lores", false); } }, // Hi-Res
 
       // Speaker toggle
-      0xC030: function(v) { unused(v); } // no-op
+      0xC030: function(v) { } // no-op
     };
 
     call_table = {
@@ -528,7 +524,6 @@ var basic = (function() {
       },
 
       'on_goto': function ON_GOTO(index, line1, line2 /* ... */) {
-        unused(line1, line2);
         index = (index - 1) >> 0;
         var lines = Array.prototype.slice.call(arguments, 1);
 
@@ -547,7 +542,6 @@ var basic = (function() {
       },
 
       'on_gosub': function ON_GOSUB(index, line1, line2 /* ... */) {
-        unused(line1, line2);
         index = (index - 1) >> 0;
         var lines = Array.prototype.slice.call(arguments, 1);
         if (index < 0 || index >= lines.length) {
@@ -597,8 +591,6 @@ var basic = (function() {
       },
 
       'next': function NEXT(var1, var2 /* ... */) {
-        unused(var1, var2);
-
         var varnames = Array.prototype.slice.call(arguments),
                     varname, stack_record, value;
         do {
@@ -669,8 +661,6 @@ var basic = (function() {
 
       // PERF: optimize by turning into a function, e.g. "state.parsevar(name, lib.read())"
       'read': function READ(lvalue1, lvalue2 /* ... */) {
-        unused(lvalue1, lvalue2);
-
         var lvalues = Array.prototype.slice.call(arguments);
         while (lvalues.length) {
           if (state.data_index >= state.data.length) {
@@ -688,8 +678,6 @@ var basic = (function() {
       //////////////////////////////////////////////////////////////////////
 
       'print': function PRINT(string1, string2 /* ... */) {
-        unused(string1, string2);
-
         var args = Array.prototype.slice.call(arguments), arg;
         while (args.length) {
           arg = args.shift();
@@ -745,7 +733,6 @@ var basic = (function() {
       },
 
       'input': function INPUT(prompt, var1, var2 /* ... */) {
-        unused(var1, var2);
         var varlist = Array.prototype.slice.call(arguments, 1); // copy for closure
         var im, ih;
         im = function(cb) { return env.tty.readLine(cb, prompt); };
@@ -941,8 +928,6 @@ var basic = (function() {
       },
 
       'hplot': function HPLOT(x1, y1, x2, y2 /* ...  */) {
-        unused(x1, y1, x2, y2);
-
         var hires = env.display.hires_plotting_page === 2 ? env.hires2 : env.hires;
         if (!hires) { runtime_error('Hires graphics not supported'); }
 
@@ -969,8 +954,6 @@ var basic = (function() {
       },
 
       'hplot_to': function HPLOT_TO(x1, y1, x2, y2 /* ...  */) {
-        unused(x1, y1, x2, y2);
-
         var hires = env.display.hires_plotting_page === 2 ? env.hires2 : env.hires;
         if (!hires) { runtime_error('Hires graphics not supported'); }
 
@@ -1071,8 +1054,6 @@ var basic = (function() {
 
     // Apply a signature [return_type, arg0_type, arg1_type, ...] to a function
     function funcsign(func, return_type, arg0_type, arg1_type /* ... */) {
-      unused(return_type, arg0_type, arg1_type);
-
       func.signature = Array.prototype.slice.call(arguments, 1);
       return func;
     }
@@ -1126,7 +1107,7 @@ var basic = (function() {
       funlib[kws.MID$] = funcsign(function MID$(s, n, n2) { return n2 === (void 0) ? s.substring(n - 1) : s.substring(n - 1, n + n2 - 1); }, 'string', 'string', 'number', 'number?');
       funlib[kws.RIGHT$] = funcsign(function RIGHT$(s, n) { return s.length < n ? s : s.substring(s.length - n); }, 'string', 'string', 'number');
 
-      funlib[kws.POS] = funcsign(function POS(n) { unused(n); return env.tty.getCursorPosition().x; }, 'number', 'number');
+      funlib[kws.POS] = funcsign(function POS(n) { return env.tty.getCursorPosition().x; }, 'number', 'number');
       funlib[kws.SCRN] = funcsign(function SCRN(x, y) {
         if (!env.lores) { runtime_error("Graphics not supported"); }
         x = x >> 0;
@@ -1160,7 +1141,6 @@ var basic = (function() {
         }
       }, 'number', 'number');
       funlib[kws.FRE] = funcsign(function FRE(n) {
-        unused(n);
         return JSON ? JSON.stringify([state.variables, state.arrays, state.functions]).length : 0;
       }, 'number', 'number');
       funlib[kws.PEEK] = funcsign(function PEEK(address) {
@@ -1172,7 +1152,7 @@ var basic = (function() {
       }, 'number', 'number');
 
       // Not supported
-      funlib[kws.USR] = funcsign(function USR(n) { unused(n); runtime_error("USR Function not supported"); }, 'number', 'number');
+      funlib[kws.USR] = funcsign(function USR(n) { runtime_error("USR Function not supported"); }, 'number', 'number');
 
 
     //----------------------------------------------------------------------
@@ -1238,18 +1218,19 @@ var basic = (function() {
         var regexReservedWords = new RegExp("^(" + RESERVED_WORDS.map(munge).join("|") + ")", "i"),
             regexIdentifier = /^([A-Za-z][A-Za-z0-9]?)[A-Za-z0-9]*(\$|%)?/,
             regexStringLiteral = /^"([^"]*?)(?:"|(?=\n|\r|$))/,
-            regexNumberLiteral = /^([0-9]*\.?[0-9]+(?:[eE]\s*[\-+]?\s*[0-9]+)?)/,
+            regexNumberLiteral = /^[0-9]*\.?[0-9]+(?:[eE]\s*[\-+]?\s*[0-9]+)?/,
+            regexHexLiteral = /^\$[0-9A-Fa-f]+/,
             regexOperator = /^(;|<[ \t]*=|=[ \t]*<|>[ \t]*=|=[ \t]*>|=[ \t]*=|<[ \t]*>|>[ \t]*<|=|<|>|\+|-|\*|\/|\^|\(|\)|,)/,
 
-            regexLineNumber = /^([0-9]+)/,
-            regexSeparator = /^(:)/,
+            regexLineNumber = /^[0-9]+/,
+            regexSeparator = /^:/,
 
             regexRemark = new RegExp('^(' + munge(kws.REM) + '([^\r\n]*))', 'i'),
             regexData = new RegExp('^(' + munge(kws.DATA) + ')', 'i'),
 
             regexLinearWhitespace = /^[ \t]+/,
             regexNewline = /^\r?\n/;
-        
+
         // Token types:
         //    lineNumber    - start of a new line
         //    separator     - separates statements on same line
@@ -1288,10 +1269,10 @@ var basic = (function() {
 
           if (newline) {
             if (stream.match(regexLineNumber)) {
-              token.lineNumber = Number(stream.lastMatch[1]);
+              token.lineNumber = Number(stream.lastMatch[0]);
             } else if (stream.match(regexSeparator)) {
               // Extension - allow leading : to continue previous line
-              token.separator = stream.lastMatch[1];
+              token.separator = stream.lastMatch[0];
             } else {
               parse_error("Syntax error: Expected line number or separator");
             }
@@ -1308,11 +1289,13 @@ var basic = (function() {
           } else if (stream.match(regexStringLiteral)) {
             token.string = stream.lastMatch[1];
           } else if (stream.match(regexNumberLiteral)) {
-            token.number = parseFloat(stream.lastMatch[1].replace(/\s+/g, ''));
+            token.number = parseFloat(stream.lastMatch[0].replace(/\s+/g, ''));
+          } else if (stream.match(regexHexLiteral)) {
+            token.number = parseInt(stream.lastMatch[0].substring(1), 16);
           } else if (stream.match(regexOperator)) {
-            token.operator = stream.lastMatch[1].replace(/\s+/g, '');
+            token.operator = stream.lastMatch[0].replace(/\s+/g, '');
           } else if (stream.match(regexSeparator)) {
-            token.separator = stream.lastMatch[1];
+            token.separator = stream.lastMatch[0];
           } else {
             parse_error("Syntax error: Unexpected '" + source.substr(0, 40) + "'");
           }
@@ -1713,7 +1696,6 @@ var basic = (function() {
       function parseCommand() {
 
         function slib(name, arg0, arg1 /* ... */) {
-          unused(arg0, arg1);
           var args = Array.prototype.slice.call(arguments, 1);
           return 'lib[' + quote(name) + '](' + args.join(',') + ');';
         }
@@ -2142,7 +2124,6 @@ var basic = (function() {
         };
 
         function mkfun(js) {
-          /*jslint evil:true*/
           var fun; // NOTE: for IE; would prefer Function()
           eval('fun = (function (){' + js + '});');
           return fun;
@@ -2393,8 +2374,6 @@ var basic = (function() {
 
 if (typeof window === 'undefined') {
   (function() {
-    /*jslint windows: true, rhino: true */
-
     var console, program, state, filename, source;
 
     if (typeof WScript === 'object') {

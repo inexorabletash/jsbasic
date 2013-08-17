@@ -43,8 +43,6 @@
 
 function LoRes(element, width, height) {
 
-  /*jslint browser: true*/
-
   var COLORS, // Apple II to HTML color table
       loresPixel = [], // element references
       pixels = [], // color values

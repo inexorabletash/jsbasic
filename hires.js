@@ -135,7 +135,6 @@ function HiRes(element, width, height) {
   };
 
   this.getPixel = function(x, y) {
-    /*jslint bitwise:false*/
     return pixels[y * width + x] >>> 0;
   };
 

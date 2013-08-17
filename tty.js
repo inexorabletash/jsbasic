@@ -55,12 +55,7 @@
 //   </style>
 //   <div id="screen" tabindex="0"></div>
 
-/*global getClassList*/ // from polyfill.js
-/*global identifyKey */ // From keyboard.js
-
 function TTY(screenElement, keyboardElement, bell) {
-  /*jslint browser: true, white: false, bitwise: false */
-
 
   // Constants
 

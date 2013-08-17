@@ -21,10 +21,7 @@
 //   var dos = new DOS( tty )    // hooks tty's writeChar/readChar/readLine
 //   dos.reset()                 // Close all open buffers
 
-/*global basic*/
-
 function DOS(tty) {
-  /*jslint bitwise: false, browser: true*/
 
   var DOSErrors = {
     LANGUAGE_NOT_AVAILABLE: [1, "Language not available"],
