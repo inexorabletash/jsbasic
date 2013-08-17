@@ -1173,10 +1173,8 @@ this.basic = (function() {
                 currLineNumber = 0;
 
       function parse_error(msg) {
-        var e = new basic.ParseError(msg + " in line " + currLineNumber,
-                    currLine, currColumn);
-
-        throw e;
+        return new basic.ParseError(msg + " in line " + currLineNumber,
+                                    currLine, currColumn);
       }
 
 
@@ -1214,7 +1212,7 @@ this.basic = (function() {
             regexStringLiteral = /^"([^"]*?)(?:"|(?=\n|\r|$))/,
             regexNumberLiteral = /^[0-9]*\.?[0-9]+(?:[eE]\s*[\-+]?\s*[0-9]+)?/,
             regexHexLiteral = /^\$[0-9A-Fa-f]+/,
-            regexOperator = /^(;|<[ \t]*=|=[ \t]*<|>[ \t]*=|=[ \t]*>|=[ \t]*=|<[ \t]*>|>[ \t]*<|=|<|>|\+|-|\*|\/|\^|\(|\)|,)/,
+            regexOperator = /^[;=<>+\-*\/\^(),]/,
 
             regexLineNumber = /^[0-9]+/,
             regexSeparator = /^:/,
@@ -1268,7 +1266,7 @@ this.basic = (function() {
               // Extension - allow leading : to continue previous line
               token.separator = stream.lastMatch[0];
             } else {
-              parse_error("Syntax error: Expected line number or separator");
+              throw parse_error("Syntax error: Expected line number or separator");
             }
           } else if (stream.match(regexRemark)) {
             token.remark = stream.lastMatch[2];
@@ -1291,7 +1289,7 @@ this.basic = (function() {
           } else if (stream.match(regexSeparator)) {
             token.separator = stream.lastMatch[0];
           } else {
-            parse_error("Syntax error: Unexpected '" + source.substr(0, 40) + "'");
+            throw parse_error("Syntax error: Unexpected '" + source.substr(0, 40) + "'");
           }
           return token;
         }
@@ -1301,7 +1299,7 @@ this.basic = (function() {
         match = function match(type, value) {
 
           if (!lookahead) {
-            parse_error("Syntax error: Expected " + type + ", saw end of file");
+            throw parse_error("Syntax error: Expected " + type + ", saw end of file");
           }
 
           var token = lookahead;
@@ -1311,11 +1309,11 @@ this.basic = (function() {
           lookahead = nextToken();
 
           if (!{}.hasOwnProperty.call(token, type)) {
-            parse_error("Syntax error: Expected " + type + ", saw " + JSON.stringify(token));
+            throw parse_error("Syntax error: Expected " + type + ", saw " + JSON.stringify(token));
           }
 
           if (value !== (void 0) && token[type] !== value) {
-            parse_error("Syntax error: Expected '" + value + "', saw " + JSON.stringify(token));
+            throw parse_error("Syntax error: Expected '" + value + "', saw " + JSON.stringify(token));
           }
 
           return token[type];
@@ -1397,7 +1395,7 @@ this.basic = (function() {
 
       function enforce_type(actual, expected) {
         if (actual !== expected) {
-          parse_error('Type mismatch error: Expected ' + expected);
+          throw parse_error('Type mismatch error: Expected ' + expected);
         }
       }
 
@@ -1477,7 +1475,7 @@ this.basic = (function() {
 
         function parsefunction(name) {
           if (!{}.hasOwnProperty.call(funlib, name)) {
-            parse_error("Undefined function: " + name);
+            throw parse_error("Undefined function: " + name);
           }
 
           match("operator", "(");
@@ -1618,31 +1616,29 @@ this.basic = (function() {
 
         function parseRelationalExpression() {
           var lhs = parseAdditiveExpression(), rhs, op;
-          while (
-                        test('operator', '<') || test('operator', '>') ||
-                        test('operator', '=') || test('operator', '==') ||
-                        test('operator', '<=') || test('operator', '=<') ||
-                        test('operator', '>=') || test('operator', '=>') ||
-                        test('operator', '<>') || test('operator', '><')) {
+          while (test('operator', '<') || test('operator', '>') || test('operator', '=')) {
 
             op = match('operator');
+            switch (op) {
+            case '<':
+              if (test('operator', '=', true)) { op = '<='; break; }
+              if (test('operator', '>', true)) { op = '!=='; break; }
+              break;
+            case '>':
+              if (test('operator', '=', true)) { op = '>='; break; }
+              if (test('operator', '<', true)) { op = '!=='; break; }
+              break;
+            case '=':
+              if (test('operator', '<', true)) { op = '<='; break; }
+              if (test('operator', '>', true)) { op = '>='; break; }
+              if (test('operator', '=', true)) { op = '==='; break; }
+              op = '===';
+            }
 
             rhs = parseAdditiveExpression();
 
             enforce_type(rhs.type, lhs.type);
-
-            switch (op) {
-              case "<": lhs = { source: '((' + lhs.source + '<' + rhs.source + ')?1:0)', type: 'number' }; break;
-              case ">": lhs = { source: '((' + lhs.source + '>' + rhs.source + ')?1:0)', type: 'number' }; break;
-              case "<=":
-              case "=<": lhs = { source: '((' + lhs.source + '<=' + rhs.source + ')?1:0)', type: 'number' }; break;
-              case ">=":
-              case "=>": lhs = { source: '((' + lhs.source + '>=' + rhs.source + ')?1:0)', type: 'number' }; break;
-              case "=":
-              case "==": lhs = { source: '((' + lhs.source + '===' + rhs.source + ')?1:0)', type: 'number' }; break;
-              case "<>":
-              case "><": lhs = { source: '((' + lhs.source + '!==' + rhs.source + ')?1:0)', type: 'number' }; break;
-            }
+            lhs = lhs = { source: '((' + lhs.source + op + rhs.source + ')?1:0)', type: 'number' };
           }
           return lhs;
         }
@@ -1748,7 +1744,7 @@ this.basic = (function() {
             match("operator", "=");
 
             if (vartype(name) !== vartype(param)) {
-              parse_error("DEF FN function type and argument type must match");
+              throw parse_error("DEF FN function type and argument type must match");
             }
 
             expr = vartype(name) === 'string'
@@ -1782,7 +1778,7 @@ this.basic = (function() {
 
             keyword = match('reserved');
             if (keyword !== kws.GOTO && keyword !== kws.GOSUB) {
-              parse_error("Syntax error: Expected " + kws.GOTO + " or " + kws.GOSUB);
+              throw parse_error("Syntax error: Expected " + kws.GOTO + " or " + kws.GOSUB);
             }
 
             args = [];
@@ -1804,7 +1800,7 @@ this.basic = (function() {
           case kws.FOR: // FOR i = m TO n STEP s
             name = match('identifier');
             if (vartype(name) !== 'float') {
-              parse_error("Syntax error: Expected floating point variable");
+              throw parse_error("Syntax error: Expected floating point variable");
             }
             identifiers.variables[name] = true;
 
@@ -2049,8 +2045,7 @@ this.basic = (function() {
             //////////////////////////////////////////////////////////////////////
 
           case kws.LIST:  // List program statements
-            parse_error("Introspection statement not supported: " + keyword);
-            return;
+            throw parse_error("Introspection statement not supported: " + keyword);
 
             //////////////////////////////////////////////////////////////////////
             //
@@ -2063,16 +2058,14 @@ this.basic = (function() {
           case kws.SCALE: // Set rotation angle for hires shape
           case kws.DRAW:   // Draw hires shape
           case kws.XDRAW:  // XOR draw hires shape
-            parse_error("Display statement not supported: " + keyword);
-            return;
+            throw parse_error("Display statement not supported: " + keyword);
 
             // Interpreter Routines
           case kws.CONT:  // Continue stopped program (immediate mode)
           case kws.DEL:   // Deletes program statements
           case kws.NEW:   // Wipe program
           case kws.RUN:   // Execute program
-            parse_error("Interpreter statement not supported: " + keyword);
-            return;
+            throw parse_error("Interpreter statement not supported: " + keyword);
 
             // Native Routines
           case kws.HIMEM:  // Set upper bound of variable memory
@@ -2080,8 +2073,7 @@ this.basic = (function() {
           case kws.LOMEM:  // Set low bound of variable memory
           case kws.WAIT:    // Wait for memory value to match a condition
           case kws.AMPERSAND:       // Command hook
-            parse_error("Native interop statement not supported: " + keyword);
-            return;
+            throw parse_error("Native interop statement not supported: " + keyword);
 
             // Tape Routines
           case kws.LOAD:    // Load program from cassette port
@@ -2089,8 +2081,7 @@ this.basic = (function() {
           case kws.SAVE:    // Save program to cassette port
           case kws.STORE:   // Store array to cassette port
           case kws.SHLOAD:  // Load shape table from cassette port
-            parse_error("Tape statement not supported: " + keyword);
-            return;
+            throw parse_error("Tape statement not supported: " + keyword);
 
             //////////////////////////////////////////////////////////////////////
             //
@@ -2100,8 +2091,7 @@ this.basic = (function() {
 
             // Parts of other statements - AT, FN, STEP, TO, THEN, etc.
           default:
-            parse_error("Syntax error: " + keyword);
-            return;
+            throw parse_error("Syntax error: " + keyword);
         }
       }
 
