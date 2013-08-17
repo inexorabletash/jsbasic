@@ -43,17 +43,10 @@
 //    // driver will also be called after input is unblocked
 //    // driver may want to yield via setTimeout() after N steps
 
-// Functions from polyfill.js, via jsmin, for running via console
-if(!Object.keys){Object.keys=function(o){if(o!==Object(o))throw new TypeError();var ret=[],p;for(p in o)if(Object.prototype.hasOwnProperty.call(o,p))ret.push(p);return ret;};}
-if(!Array.prototype.forEach){Array.prototype.forEach=function(fun){if(this===void 0||this===null){throw new TypeError();}var t=Object(this);var len=t.length>>>0;if(typeof fun!=="function"){throw new TypeError();}var thisp=arguments[1],i;for(i=0;i<len;i++){if(i in t){fun.call(thisp,t[i],i,t);}}};}
-if(!Array.prototype.map){Array.prototype.map=function(fun){if(this===void 0||this===null){throw new TypeError();}var t=Object(this);var len=t.length>>>0;if(typeof fun!=="function"){throw new TypeError();}var res=[];res.length=len;var thisp=arguments[1],i;for(i=0;i<len;i++){if(i in t){res[i]=fun.call(thisp,t[i],i,t);}}return res;};}
-if(!Array.prototype.reduce){Array.prototype.reduce=function(fun){if(this===void 0||this===null){throw new TypeError();}var t=Object(this);var len=t.length>>>0;if(typeof fun!=="function"){throw new TypeError();}if(len===0&&arguments.length===1){throw new TypeError();}var k=0;var accumulator;if(arguments.length>=2){accumulator=arguments[1];}else{do{if(k in t){accumulator=t[k++];break;}if(++k>=len){throw new TypeError();}}while(true);}while(k<len){if(k in t){accumulator=fun.call(undefined,accumulator,t[k],k,t);}k++;}return accumulator;};}
-
-
 // ES6 polyfill:
 if (!String.prototype.repeat) { String.prototype.repeat = function(n){return Array(n+1).join(this); }; }
 
-var basic = (function() {
+this.basic = (function() {
 
   var basic = {
     STATE_STOPPED: 0,
@@ -2364,134 +2357,4 @@ var basic = (function() {
 
 } ());
 
-
 // TODO: Unit tests for compile errors
-
-// Console:
-// For rhino: rhino basic.js your_basic_program.txt
-// For CScript: CScript basic.js your_basic_program.txt
-
-// TODO: DOS implementation
-
-if (typeof window === 'undefined') {
-  (function() {
-    var console, program, state, filename, source;
-
-    if (typeof WScript === 'object') {
-
-      // Microsoft Windows Scripting engine
-
-      if (WScript.Arguments.length !== 1) {
-        WScript.StdOut.WriteLine("Usage: cscript basic.js program_name");
-        WScript.Quit(-1);
-      }
-      filename = WScript.Arguments(0);
-
-      source = (function() {
-        var code = '',
-                    fso = new ActiveXObject("Scripting.FileSystemObject"),
-                    stream = fso.OpenTextFile(filename);
-        while (!stream.AtEndOfStream) {
-          code += stream.ReadLine() + '\n';
-        }
-        stream.Close();
-        return code;
-      } ());
-
-      console = {
-        gets: function() { return WScript.StdIn.ReadLine(); },
-        getc: function() { return WScript.StdIn.ReadLine().substring(0, 1); },
-        puts: function(s) { WScript.StdOut.Write(s); },
-        putc: function(c) { WScript.StdOut.Write(c); },
-        errs: function(s) { WScript.StdErr.Write(s); },
-        quit: function(s) { WScript.Quit(s); }
-      };
-    } else if (typeof java === 'object') {
-
-      // Mozilla Rhino
-
-      if (arguments.length !== 1) {
-        java.lang.System.err.println("Usage: rhino basic.js program_name");
-        quit(1);
-      }
-      filename = arguments[0];
-
-      source = (function() {
-        var r = new java.io.BufferedReader(new java.io.FileReader(new java.io.File(filename))),
-                    sb = new java.lang.StringBuilder(),
-                    s;
-
-        do {
-          s = r.readLine();
-          if (s !== null) {
-            sb.append(s).append('\n');
-          }
-        } while (s !== null);
-        return String(sb);
-      } ());
-
-      (function() {
-        var stdin = new java.io.BufferedReader(new java.io.InputStreamReader(java.lang.System['in']));
-
-        console = {
-          gets: function() { return String(stdin.readLine()); },
-          getc: function() { return String(stdin.readLine()).substring(0, 1); },
-          puts: function(s) { java.lang.System.out.print(s); },
-          putc: function(c) { java.lang.System.out.print(c); },
-          errs: function(s) { java.lang.System.err.print(s); },
-          quit: function(s) { quit(s); }
-        };
-      } ());
-    } else {
-      throw 'Unknown script host';
-    }
-
-
-    // Compile
-    console.puts('Compiling...\n');
-    try {
-      program = basic.compile(source);
-    } catch (pe) {
-      if (pe instanceof basic.ParseError) {
-        console.errs(pe.message + ' (source line: ' + pe.line + ', column: ' + pe.column + ')\n');
-        console.quit(1);
-      } else {
-        throw pe;
-      }
-    }
-
-    // Run
-    console.puts('Running...\n');
-    program.init({
-      tty: {
-        getCursorPosition: function() { return { x: 0, y: 0 }; },
-        setCursorPosition: function() { },
-        getScreenSize: function() { return { width: 80, height: 24 }; },
-        writeChar: function(ch) { console.putc(ch.replace(/\r/g, '\n')); },
-        writeString: function(string) { console.puts(string.replace(/\r/g, '\n')); },
-        readChar: function(callback) {
-          callback(console.getc());
-        },
-        readLine: function(callback, prompt) {
-          console.puts(prompt);
-          callback(console.gets().replace(/[\r\n]*/, ''));
-        }
-      }
-    });
-
-    try {
-      do {
-        state = program.step();
-      } while (state !== basic.STATE_STOPPED);
-    } catch (rte) {
-      if (rte instanceof basic.RuntimeError) {
-        console.errs(rte.message + '\n');
-        console.quit(1);
-      } else {
-        throw rte;
-      }
-    }
-  } ());
-}
-
-

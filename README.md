@@ -24,8 +24,9 @@ Notes & Known Issues
 * Commands that operate on the program itself (`LIST`, `RUN`, `DEL`, etc.) are not implemented.
 
 You can run your basic programs from the command line (with only basic text input and output, and no graphics or DOS commands):
-* On Windows, download basic.js and run from a command prompt via: `cscript.exe basic.js your_basic_program.txt`
-* On Mac/Linux, install Mozilla Rhino, download basic.js and run from the command prompt via: `java -jar PATH_TO/js.jar basic.js your_program.txt`
+* Clone the repository locally
+* On Windows, run from a command prompt via: `cscript.exe cbasic.js your_program.txt`
+* On Mac/Linux, install Mozilla Rhino, run from the command prompt via: `java -jar PATH_TO/js.jar cbasic.js your_program.txt`
 
 To Do
 -----
