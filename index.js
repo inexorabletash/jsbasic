@@ -11,7 +11,8 @@ window.onload = function () {
   } ());
 
 
-  var tty = new TTY($('#screen'), $('#screen'), bell);
+  var frame = $('#frame');
+  var tty = new TTY($('#screen'), frame, bell);
   var dos = new DOS(tty);
 
   var lores = new LoRes($('#lores'), 40, 48);
@@ -83,27 +84,6 @@ window.onload = function () {
   function setSource(source) {
     editor.setValue(source);
   }
-
-  // Do not let certain events take focus away from "keyboard"
-  function keyboardFocus(e) {
-    tty.focus();
-    e.stopPropagation(); // W3C
-    e.preventDefault(); // e.g. to block arrows from scrolling the page
-  }
-
-  addEvent($('#lores'), 'click', keyboardFocus);
-  addEvent($('#hires'), 'click', keyboardFocus);
-  addEvent($('#hires2'), 'click', keyboardFocus);
-  addEvent($('#screen'), 'click', keyboardFocus);
-  addEvent($('#frame'), 'click', keyboardFocus);
-  addEvent($('#frame'), 'blur', keyboardFocus); // Needed on IE, not sure why it tries to get focus
-
-  addEvent($('#screen'), 'focus', function () {
-    getClassList($('#frame')).add('focused');
-  });
-  addEvent($('#screen'), 'blur', function () {
-    getClassList($('#frame')).remove('focused');
-  });
 
   var program;
   addEvent($('#btn_run'), 'click', function () {
