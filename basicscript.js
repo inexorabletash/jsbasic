@@ -16,7 +16,7 @@
   load(baseURL + 'bell.js');
   load(baseURL + 'dos.js');
   load(baseURL + 'basic.js');
-  
+
   function createInstance(src) {
     function ce(element, attributes, children) {
       var e = document.createElement(element);
@@ -37,13 +37,13 @@
     var lores_elem = ce('div', {className: 'jsb-lores'});
     var hgr1_elem = ce('canvas', {className: 'jsb-hires', width: 560, height: 384});
     var hgr2_elem = ce('canvas', {className: 'jsb-hires', width: 560, height: 384});
-    var jsb-elem = ce('div', {className: 'jsb-tty'});
-    var wrapper_elem = ce('div', {className: 'jsb-wrapper'}, [lores_elem, hgr1_elem, hgr2_elem, jsb-elem]);
+    var tty_elem = ce('div', {className: 'jsb-tty'});
+    var wrapper_elem = ce('div', {className: 'jsb-wrapper'}, [lores_elem, hgr1_elem, hgr2_elem, tty_elem]);
     var frame = ce('div', {className: 'jsb-frame', tabIndex: 0}, [wrapper_elem]);
 
     // JS OM
     var bell = new Bell(baseURL);
-    var tty = new TTY(jsb-elem, frame, bell.play.bind(bell));
+    var tty = new TTY(tty_elem, frame, bell.play.bind(bell));
     var dos = new DOS(tty);
     var lores = new LoRes(lores_elem, 40, 48);
     var hires = new HiRes(hgr1_elem, 280, 192);
