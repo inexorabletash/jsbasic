@@ -3,8 +3,8 @@ Web Page Embedding
 
 Want to show off your BASIC creation on your own web site? Now you can with just a tiny bit of HTML.
 There are two parts:
- 1. Insert `<script src="http://calormen.com/jsbasic/basicscript.js"></script>` on your page to enable it
- 2. Add `<script type="text/basicscript">` then your BASIC program then `</script>`
+ 1. Insert `<script src="http://calormen.com/jsbasic/script.js"></script>` on your page to enable it
+ 2. Add `<script type="text/applesoft-basic">` then your BASIC program then `</script>`
 
 Like this:
 ```html
@@ -12,8 +12,8 @@ Like this:
 <title>My BASIC example</title>
 <h1>Look what I did!</h1>
 
-<script src="http://calormen.com/jsbasic/basicscript.js"></script>
-<script type="text/basicscript">
+<script src="http://calormen.com/jsbasic/script.js"></script>
+<script type="text/applesoft-basic">
 
 10 REM Your BASIC program goes here
 20 PRINT "HELLO WORLD"
@@ -27,7 +27,7 @@ Wherever you have the BASIC program, a simulated screen will appear and the prog
 Notes:
 
 * If the program stops, the user will need to re-load the page to re-run it, so this works best with interactive programs or programs that run as loops.
-* You can have more than one `<script type="text/basicscript">` instance on the page, although the last one will get focus.
+* You can have more than one `<script type="text/applesoft-basic">` instance on the page, although the last one will get focus.
 * Text and graphics (lo-res, hi-res) are supported.
 * Input is supported, just like the main page:
   * Keyboard: click to give a particular program focus
