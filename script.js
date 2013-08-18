@@ -91,11 +91,11 @@
       program = basic.compile(src);
     } catch (e) {
       if (e instanceof basic.ParseError) {
-        // TODO: Print error to display
-        console.log(e.message +
-                    ' (source line:' + e.line + ', column:' + e.column + ')');
+        tty.writeString(e.message + '\r');
+        tty.writeString('Source line: ' + e.line + ', column: ' + e.column);
+      } else {
+        tty.writeString(e.message);
       }
-      alert(e);
       return frame;
     }
 
@@ -120,8 +120,7 @@
         try {
           state = program.step(driver);
         } catch (e) {
-          console.log(e);
-          alert(e.message ? e.message : e);
+          tty.writeString(e.message);
           stopped = true;
           return;
         }
