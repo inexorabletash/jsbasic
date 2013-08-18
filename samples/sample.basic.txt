@@ -226,9 +226,9 @@
 2465 IF K = 10+128 THEN DX =  0 : DY =  1
 2466 IF ( LX AND LX = -DX ) OR (LY AND LY = -DY) THEN DX = LX : DY = LY
 2470 X = X + DX : Y = Y + DY
-2480 IF SCRN(X,Y) <> 0 THEN HTAB 1 : VTAB 23 : PRINT "Crashed! Press any key to continue: " : GET A$ : GOTO 5
+2480 IF SCRN(X,Y) <> 0 THEN HTAB 1 : VTAB 23 : PRINT "Crashed! Press any key to continue: " :  POKE 49168,0 : GET A$ : GOTO 5
 2490 HTAB 1 : VTAB 21 : SC = SC + 10 : PRINT "Score: "; SC
-2490 GOTO 2450
+2490 FOR I = 0 TO 500 : NEXT : GOTO 2450
 
 2500 REM Hires Demo
 2510 HOME : HGR
