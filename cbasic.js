@@ -88,8 +88,7 @@ if (args.length !== 1) {
 
 var filename = args[0];
 
-function load(_s) { eval(host.fetch(_s)); }
-load("basic.js");
+eval(host.fetch("basic.js"));
 
 // Compile
 var program = (function() {

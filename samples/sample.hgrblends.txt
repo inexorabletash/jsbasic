@@ -1,0 +1,14 @@
+0 DIM C(5) : FOR I = 0 TO 5 : READ X : C(I) = X : NEXT : DATA 0,1,2,5,6,7
+
+5 HGR2
+
+10 FOR X = 0 TO 5 : FOR Y = 0 TO 5
+20 SX = INT(X / 6 * 279)
+: EX = INT((X+1) / 6 * 279)
+: SY = INT(Y / 6 * 190)
+: EY = INT((Y+1) / 6 * 190)
+30 FOR PY = SY TO EY
+: HCOLOR= C(X) : HPLOT SX,PY TO EX,PY : PY = PY + 1
+: HCOLOR= C(Y) : HPLOT SX,PY TO EX,PY 
+
+40 NEXT : NEXT : NEXT
