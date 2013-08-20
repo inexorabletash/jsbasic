@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <title>Applesoft BASIC Reference</title>
 <meta charset="UTF-8">
+<link rel="shortcut icon" href="favicon.ico">
 <style type="text/css">
 @import url(http://fonts.googleapis.com/css?family=Coustard);
 body { font-family: "Coustard"; }
@@ -38,6 +39,7 @@ This is intended as a quick reference for the <a href="index.htm">Applesoft BASI
   <li><a href="http://www.apple2.org/faq/FAQ.applesoft.html">Applesoft BASIC Frequently Asked Questions (FAQ)</a>
   <li><a href="http://www.lazilong.com/apple_II/bbros/">Beagle Bros. Peeks, Pokes & Pointers Chart (Colors, ASCII values, etc)</a>
   <li><a href="http://beagle.applearchives.com/posters.htm">More Beagle Bros. Posters - including Apple Commands Chart, in PDF format</a>
+  <li><a href="http://www.scribd.com/doc/232832/Applesoft-Basic-Programming-Reference-Manual">Applesoft Basic Programming Reference Manual</a>
 </ul>
 </section>
 
@@ -51,23 +53,24 @@ This is intended as a quick reference for the <a href="index.htm">Applesoft BASI
 <dl>
   <dt>CLEAR<dd>Clear all variables
   <dt>[LET] <var>var</var> = <var>expr</var><dd>Assign variable
-  <dt>DIM <var>var</var>( <var>size</var> [ , <var>size2</var> ...] ) [ , <var>var2</var>( <var>size</var> [ , <var>size2</var> ...] ) ...] <dd>Allocate array(s) with given dimension(s)
-  <dt>DEF FN <var>f</var>(<var>var</var> ) = <var>expr</var><dd>Define function of a single variable <a href="#def_fn_string">[1]</a>
+  <dt>DIM <var>var</var>( <var>size</var> [, <var>size</var> ...] ) [, <var>var</var>( <var>size</var> [, <var>size</var> ...] ) ...] <dd>Allocate array(s) with given dimension(s)
+  <dt>DEF FN <var>name</var>(<var>var</var>) = <var>aexpr</var><dd>Define function of a single variable <a href="#def_fn_string">[1]</a>
 </dl>
 </section>
 
 <section>
 <h3>Flow Control</h3>
 <dl>
-  <dt>GOTO <var>line</var><dd>Jump to line number
-  <dt>GOSUB <var>line</var><dd>Enter subroutine at line number
+  <dt>GOTO <var>linenum</var><dd>Jump to line number
+  <dt>GOSUB <var>linenum</var><dd>Enter subroutine at line number
   <dt>RETURN<dd>Return from subroutine
-  <dt>ON <var>expr</var> GOTO <var>line</var> [, <var>line2</var> ...]<dd>Branch based on index (value = 1, 2, ...)
-  <dt>ON <var>expr</var> GOSUB <var>line</var> [, <var>line2</var> ...]<dd>Subroutine branch based on index (value = 1, 2, ...)
+  <dt>ON <var>aexpr</var> GOTO <var>linenum</var> [, <var>linenum</var> ...]<dd>Branch based on index (value = 1, 2, ...)
+  <dt>ON <var>aexpr</var> GOSUB <var>linenum</var> [, <var>linenum</var> ...]<dd>Subroutine branch based on index (value = 1, 2, ...)
   <dt>POP<dd>Convert last <code>GOSUB</code> into a <code>GOTO</code>
-  <dt>FOR <var>var</var> = <var>start</var> TO <var>end</var> [ STEP <var>incr</var> ]<dd>Loop with counter variable
+  <dt>FOR <var>var</var> = <var>aexpr</var> TO <var>aexpr</var> [ STEP <var>aexpr</var> ]<dd>Loop with counter variable
   <dt>NEXT [<var>var</var> [, <var>var</var> ...] ]<dd>End of loop(s)
-  <dt>IF <var>expr</var> THEN <var>statement</var><br />IF <var>expr</var> GOTO <var>line</var><dd>Conditional; if <var>expr</var> is false, rest of line is skipped
+  <dt>IF <var>expr</var> THEN <var>statement</var>
+  <dt>IF <var>expr</var> GOTO <var>linenum</var><dd>Conditional; if <var>expr</var> is false, rest of line is skipped
   <dt>END<dd>Terminate program cleanly
   <dt>STOP<dd>Break, as if an error occurred
 </dl>
@@ -76,25 +79,56 @@ This is intended as a quick reference for the <a href="index.htm">Applesoft BASI
 <section>
 <h3>Error Handling</h3>
 <dl>
-  <dt>ONERR GOTO <var>line</var><dd>Set error hook
+  <dt>ONERR GOTO <var>linenum</var><dd>Set error hook
   <dt>RESUME<dd>Retry line that caused <code>ONERR GOTO</code>
 </dl>
 </section>
 
 <section>
-<h3>Input/Output</h3>
+<h3>Text Input/Output</h3>
 <dl>
-  <dt>PRINT <var>expr</var> [ [;,] <var>expr2</var> ... ] [;]<dd>Output text. <code>;</code> concatenates,
+  <dt>PRINT <var>expr</var> [ [;,] <var>expr</var> ... ] [;]<dd>Output text. <code>;</code> concatenates,
       <code>,</code> advances to next tab stop. A trailing <code>;</code> suppresses line break.
-  <dt>INPUT [<var>string</var> ;] <var>var</var> [, <var>var2</var> ...]<dd>Read line of comma-delimited input, with optional prompt
+  <dt>INPUT [<var>string</var> ;] <var>var</var> [, <var>var</var> ...]<dd>Read line of comma-delimited input, with optional prompt
   <dt>GET <var>var</var><dd>Read single key
   <dt>HOME<dd>Clear text display
-  <dt>HTAB <var>expr</var><dd>Position text cursor horizontally (1...40 or 1...80)
-  <dt>VTAB <var>expr</var><dd>Position text cursor vertically (1...24)
+  <dt>HTAB <var>aexpr</var><dd>Position text cursor horizontally (1...40 or 1...80)
+  <dt>VTAB <var>aexpr</var><dd>Position text cursor vertically (1...24)
   <dt>INVERSE<dd>Set output mode to black-on-white
   <dt>FLASH<dd>Set output mode to flashing
   <dt>NORMAL<dd>Set output mode to white-on-black
   <dt>TEXT<dd>Set display to text mode
+</dl>
+</section>
+
+<section>
+<h3>Lo-Res Graphics</h3>
+<dl>
+  <dt>GR<dd>Set display to mixed test/low resolution ("lores") graphics mode, clear screen to black
+  <dt>COLOR= <var>aexpr</var><dd>Set lores color (0...15)
+  <dt>PLOT <var>aexpr</var>, <var>aexpr</var><dd>Plot lores point (x = 0...39, y = 0...39/47)
+  <dt>HLIN <var>aexpr</var>, <var>aexpr</var> AT <var>aexpr</var><dd>Plot horizontal line (x1, x2 at y)
+  <dt>VLIN <var>aexpr</var>, <var>aexpr</var> AT <var>aexpr</var><dd>Plot vertical line (y1, y2 at x)
+</dl>
+</section>
+
+<section>
+<h3>Hi-Res Graphics</h3>
+<dl>
+  <dt>HGR<dd>Set display to mixed/high resolution ("hires") graphics mode, clear screen to black
+  <dt>HGR2<dd>Set display to full hires mode (page 2), clear screen to black
+  <dt>HPLOT [TO] <var>aexpr</var>, <var>aexpr</var> [ TO <var>aexpr</var>, <var>aexpr</var> ] ... <dd>Plot hires point/line (x=0...279, y=0...191)
+  <dt>HCOLOR= <var>aexpr</var><dd>Set hires color (0...7)
+</dl>
+</section>
+
+<section>
+<h3>Inline Data</h3>
+<dl>
+  <dt>DATA <var>value</var> [, <var>value</var> ...]<dd>Define inline data. Values
+can be literals (unquoted strings), strings, or numbers
+  <dt>READ <var>var</var> [, <var>var</var> ...]<dd>Read the next DATA value
+  <dt>RESTORE<dd>Restore the DATA pointer to the first value
 </dl>
 </section>
 
@@ -107,43 +141,13 @@ This is intended as a quick reference for the <a href="index.htm">Applesoft BASI
 </dl>
 </section>
 
-<section>
-<h3>Inline Data</h3>
-<dl>
-  <dt>DATA <var>value</var> [, <var>value2</var> ...]<dd>Define inline data
-  <dt>READ <var>var</var> [, <var>var2</var> ...]<dd>Read the next DATA value
-  <dt>RESTORE<dd>Restore the DATA pointer to the first value
-</dl>
-</section>
-
-<section>
-<h3>Lo-Res Graphics</h3>
-<dl>
-  <dt>GR<dd>Set display to mixed test/low resolution ("lores") graphics mode, clear screen to black
-  <dt>COLOR= <var>expr</var><dd>Set lores color (0...15)
-  <dt>PLOT <var>expr</var>, <var>expr</var><dd>Plot lores point (x = 0...39, y = 0...39/47)
-  <dt>HLIN <var>expr</var>, <var>expr</var> AT <var>expr</var><dd>Plot horizontal line (x1, x2 at y)
-  <dt>VLIN <var>expr</var>, <var>expr</var> AT <var>expr</var><dd>Plot vertical line (y1, y2 at x)
-</dl>
-</section>
-
-<section>
-<h3>Hi-Res Graphics</h3>
-<dl>
-  <dt>HGR<dd>Set display to mixed/high resolution ("hires") graphics mode, clear screen to black
-  <dt>HGR2<dd>Set display to full hires mode (page 2), clear screen to black
-  <dt>HPLOT [TO] <var>expr</var>, <var>expr</var> [ TO <var>expr</var>, <var>expr</var> ] ... <dd>Plot hires point/line (x=0...279, y=0...191)
-  <dt>HCOLOR= <var>expr</var><dd>Set hires color (0...7)
-</dl>
-</section>
-
 <section class="nyi">
 <h3>Hi-Res Shape Tables <var>- NOT IMPLEMENTED</var></h3>
 <dl>
-  <dt>ROT= <var>expr</var><dd>Set hires shape table rotation (0...63)
-  <dt>SCALE= <var>expr</var><dd>Set hires shape table scale (1...255)
-  <dt>DRAW <var>expr</var> [ AT <var>expr</var>, <var>expr</var> ]<dd>Draw hires shape table shape in color
-  <dt>XDRAW <var>expr</var> [ AT <var>expr</var>, <var>expr</var> ]<dd>Draw hires shape table shape with XOR
+  <dt>ROT= <var>aexpr</var><dd>Set hires shape table rotation (0...63)
+  <dt>SCALE= <var>aexpr</var><dd>Set hires shape table scale (1...255)
+  <dt>DRAW <var>aexpr</var> [ AT <var>aexpr</var>, <var>aexpr</var> ]<dd>Draw hires shape table shape in color
+  <dt>XDRAW <var>aexpr</var> [ AT <var>aexpr</var>, <var>aexpr</var> ]<dd>Draw hires shape table shape with XOR
 </dl>
 </section>
 
@@ -152,19 +156,19 @@ This is intended as a quick reference for the <a href="index.htm">Applesoft BASI
 <dl>
   <dt>CONT<dd>Continue from a STOP
   <dt>DEL<dd>Delete lines of program
-  <dt>LIST [ <var>expr</var> [, <var>expr</var> ] ]<dd>List lines of program
+  <dt>LIST [ <var>linenum</var> [, <var>linenum</var> ] ]<dd>List lines of program
   <dt>NEW<dd>Clear program and variables
-  <dt>RUN [ <var>expr</var> ]<dd>Start program execution at line
+  <dt>RUN [ <var>linenum</var> ]<dd>Start program execution at line
 </dl>
 </section>
 
 <section class="nyi">
 <h3>Native Platform Interaction <var>- NOT IMPLEMENTED</var></h3>
 <dl>
-  <dt>HIMEM: <var>expr</var><dd>Set upper address of variable memory
-  <dt>IN# <var>expr</var><dd>Direct input from slot
-  <dt>LOMEM: <var>expr</var><dd>Set lower address of variable memory
-  <dt>WAIT <var>expr</var>, <var>expr</var> [, <var>expr</var>]<dd>Wait until memory location masked by second argument equals third argument (or zero)
+  <dt>HIMEM: <var>aexpr</var><dd>Set upper address of variable memory
+  <dt>IN# <var>aexpr</var><dd>Direct input from slot
+  <dt>LOMEM: <var>aexpr</var><dd>Set lower address of variable memory
+  <dt>WAIT <var>aexpr</var>, <var>aexpr</var> [, <var>aexpr</var>]<dd>Wait until memory location masked by second argument equals third argument (or zero)
 </dl>
 </section>
 
@@ -182,8 +186,8 @@ This is intended as a quick reference for the <a href="index.htm">Applesoft BASI
 <section id="shims">
 <h3>Compatibility Shims</h3>
 <dl>
-  <dt>SPEED= <var>expr</var><dd>Set character output delay - <em>has no effect</em>
-  <dt>POKE <var>expr</var>, <var>expr</var><dd>Set memory location to value
+  <dt>SPEED= <var>aexpr</var><dd>Set character output delay - <em>has no effect</em>
+  <dt>POKE <var>aexpr</var>, <var>aexpr</var><dd>Set memory location to value
       <ul>
         <li><code>POKE 32,<var>n</var></code> - Text window left edge
         <li><code>POKE 33,<var>n</var></code> - Text window width
@@ -205,7 +209,7 @@ This is intended as a quick reference for the <a href="index.htm">Applesoft BASI
         <li><code>POKE 49239,0</code> - hires graphics mode
       </ul>
 
-  <dt>CALL <var>expr</var><dd>Call native routine
+  <dt>CALL <var>aexpr</var><dd>Call native routine
       <ul>
         <li><code>CALL -3100</code> - reveal hi-res page 1
         <li><code>CALL -3086</code> - clear current hi-res page to black
@@ -213,7 +217,7 @@ This is intended as a quick reference for the <a href="index.htm">Applesoft BASI
         <li><code>CALL 54951</code> - clear stack (cancel pending <code>FOR</code>-<code>NEXT</code> loops and <code>GOSUB</code>s)
       </ul>
 
-  <dt>PR# <var>expr</var><dd>Direct output to slot
+  <dt>PR# <var>aexpr</var><dd>Direct output to slot
       <ul>
         <li><code>PR#0</code> - set 40 column mode
         <li><code>PR#3</code> - set 80 column mode
@@ -230,49 +234,49 @@ This is intended as a quick reference for the <a href="index.htm">Applesoft BASI
 
 <h3>Numeric Functions</h3>
 <dl>
-  <dt>ABS( <var>expr</var> )<dd>Absolute value of number
-  <dt>ATN( <var>expr</var> )<dd>Arctangent of number
-  <dt>COS( <var>expr</var> )<dd>Cosine of number
-  <dt>EXP( <var>expr</var> )<dd>Raise e to number
-  <dt>INT( <var>expr</var> )<dd>Integer part of number
-  <dt>LOG( <var>expr</var> )<dd>Natural log of number
-  <dt>RND( <var>expr</var> )<dd>Pseudo-random number generator (0 repeats last, negative reseeds)
-  <dt>SGN( <var>expr</var> )<dd>Sign of number (-1,0,1)
-  <dt>SIN( <var>expr</var> )<dd>Sine of number
-  <dt>SQR( <var>expr</var> )<dd>Square root of number
-  <dt>TAN( <var>expr</var> )<dd>Tangent of number
+  <dt>ABS( <var>aexpr</var> )<dd>Absolute value of number
+  <dt>ATN( <var>aexpr</var> )<dd>Arctangent of number
+  <dt>COS( <var>aexpr</var> )<dd>Cosine of number
+  <dt>EXP( <var>aexpr</var> )<dd>Raise e to number
+  <dt>INT( <var>aexpr</var> )<dd>Integer part of number
+  <dt>LOG( <var>aexpr</var> )<dd>Natural log of number
+  <dt>RND( <var>aexpr</var> )<dd>Pseudo-random number generator (0 repeats last, negative reseeds)
+  <dt>SGN( <var>aexpr</var> )<dd>Sign of number (-1,0,1)
+  <dt>SIN( <var>aexpr</var> )<dd>Sine of number
+  <dt>SQR( <var>aexpr</var> )<dd>Square root of number
+  <dt>TAN( <var>aexpr</var> )<dd>Tangent of number
 </dl>
 <h3>String Functions</h3>
 <dl>
-  <dt>LEN( <var>expr</var> )<dd>Length of string
-  <dt>LEFT$( <var>expr</var>, <var>expr</var> )<dd>Left portion of (string, length)
-  <dt>MID$( <var>expr</var>, <var>expr</var> [, <var>expr</var>] )<dd>Substring of (string, start character, length)
-  <dt>RIGHT$( <var>expr</var>, <var>expr</var> )<dd>Right portion of (string, length)
+  <dt>LEN( <var>sexpr</var> )<dd>Length of string
+  <dt>LEFT$( <var>sexpr</var>, <var>aexpr</var> )<dd>Left portion of (string, length)
+  <dt>MID$( <var>sexpr</var>, <var>aexpr</var> [, <var>aexpr</var>] )<dd>Substring of (string, start character, length)
+  <dt>RIGHT$( <var>sexpr</var>, <var>aexpr</var> )<dd>Right portion of (string, length)
 </dl>
 <h3>Type Conversion Functions</h3>
 <dl>
-  <dt>ASC( <var>expr</var> )<dd>ASCII code for first character of string
-  <dt>CHR$( <var>expr</var> )<dd>Character at specified ASCII code point <a href="#chr_extras">[3]</a>
-  <dt>STR$( <var>expr</var> )<dd>String representation of number
-  <dt>VAL( <var>expr</var> )<dd>Parse string into number
+  <dt>ASC( <var>sexpr</var> )<dd>ASCII code for first character of string
+  <dt>CHR$( <var>aexpr</var> )<dd>Character at specified ASCII code point <a href="#chr_extras">[3]</a>
+  <dt>STR$( <var>aexpr</var> )<dd>String representation of number
+  <dt>VAL( <var>sexpr</var> )<dd>Parse string into number
 </dl>
 <h3>System Interaction Functions</h3>
 <dl>
-  <dt>FRE( <var>expr</var> )<dd>Garbage collect strings (returns 0)
-  <dt>PDL( <var>expr</var> )<dd>Paddle position (paddle number)
-  <dt>POS( <var>expr</var> )<dd>Horizontal cursor position
-  <dt>SCRN( <var>expr</var>, <var>expr</var> )<dd>Lores color at pixel (x,y)
-  <dt>HSCRN( <var>expr</var>, <var>expr</var> )<dd>Hires color at pixel (x,y) <a href="#hscrn">[4]</a>
-  <dt>USR( <var>expr</var> )<dd>Execute assembly code at address, return accumulator value <var>- NOT IMPLEMENTED</var>
+  <dt>FRE( <var>aexpr</var> )<dd>Garbage collect strings (returns 0)
+  <dt>PDL( <var>aexpr</var> )<dd>Paddle position (paddle number)
+  <dt>POS( <var>aexpr</var> )<dd>Horizontal cursor position
+  <dt>SCRN( <var>aexpr</var>, <var>aexpr</var> )<dd>Lores color at pixel (x,y)
+  <dt>HSCRN( <var>aexpr</var>, <var>aexpr</var> )<dd>Hires color at pixel (x,y) <a href="#hscrn">[4]</a>
+  <dt class="nyi">USR( <var>aexpr</var> )<dd class="nyi">Execute assembly code at address, return accumulator value <var>- NOT IMPLEMENTED</var>
 </dl>
 <h3>User Defined Functions</h3>
 <dl>
-  <dt>FN <var>f</var>( <var>expr</var> )<dd>Execute user defined function <a href="#def_fn_string">[1]</a>
+  <dt>FN <var>name</var>( <var>expr</var> )<dd>Execute user defined function <a href="#def_fn_string">[1]</a>
 </dl>
 
 <h3 id="function_shims">Function Compatibility Shims</h3>
 <dl>
-  <dt id="peek">PEEK( <var>expr</var> )<dd>Value at memory location
+  <dt id="peek">PEEK( <var>aexpr</var> )<dd>Value at memory location
       <ul>
         <li><code>PEEK(32)</code> - Text window left edge
         <li><code>PEEK(33)</code> - Text window width
@@ -509,7 +513,7 @@ object representing the program.</p>
   <code>reserved</code>,
   <code>identifier</code>,
   <code>string-literal</code>,
-  <code>number-literal</code>,
+  <code>number-literal</code> <a href="#hex">[5]</a>,
   <code>operator</code>,
   <code>line-number</code>,
   <code>separator</code>,
