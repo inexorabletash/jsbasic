@@ -18,7 +18,7 @@ limitations under the License.
 Sample files are Copyright (C) the original submitters
 
 
-The following files are Copyright (C) 2013 Far Future Enterprises:
+The following files are Copyright (C) 1977-2013 Far Future Enterprises:
 * samples/sample.sectorgen.txt
 * samples/sample.zhorelay.txt
 * samples/sample.readsector.txt
