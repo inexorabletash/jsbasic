@@ -1,5 +1,5 @@
 
-window.onload = function () {
+window.addEventListener('DOMContentLoaded', function () {
 
   var $ = function (s) { return document.querySelector(s); };
 
@@ -240,4 +240,4 @@ window.onload = function () {
   } else {
     loadFile('samples/sample.default.txt', setSource);
   }
-};
+});

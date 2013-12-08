@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<title>BasicScript demo</title>
+<h1>Something important</h1>
+
+<script src="script.js"></script>
+<script type="text/applesoft-basic">
+0 TEXT : HOME
+10 HTAB 1 : VTAB 1
+: PRINT "PDL(0): ";PDL(0);"   "
+: PRINT "PDL(1): ";PDL(1);"   "
+: PRINT "Button #0: "; PEEK(49249);"   "
+: PRINT "Button #1: "; PEEK(49250);"   "
+20 FOR I = 1 TO 100 : NEXT : GOTO 10
+</script>
+
+<script type="text/applesoft-basic">
+10 TEXT : HOME
+20 X = 1 : Y = 1
+25 HTAB X : VTAB Y
+30 GET A$
+40 IF A$ = CHR$(8) THEN X = X - 1 : GOTO 50
+41 IF A$ = CHR$(21) THEN X = X + 1 : GOTO 50
+42 IF A$ = CHR$(10) THEN Y = Y + 1 : GOTO 50
+43 IF A$ = CHR$(11) THEN Y = Y - 1 : GOTO 50
+44 PRINT A$; : GOTO 25
+
+50 IF X < 1 THEN X = 1
+51 IF X > 40 THEN X = 40
+52 IF Y < 1 THEN Y = 1
+53 IF Y > 24 THEN Y = 24
+54 GOTO 25
+
+</script>

@@ -141,7 +141,7 @@
   }
 
   window.addEventListener('load', function() {
-    [].forEach.call(document.querySelectorAll('script'), function(script) {
+    [].forEach.call($$('script'), function(script) {
       if (script.type === 'text/applesoft-basic') {
         var elem = createInstance(script.innerText);
         script.parentElement.insertBefore(elem, script.nextSibling);
