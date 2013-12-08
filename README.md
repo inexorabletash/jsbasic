@@ -1,15 +1,9 @@
 jsbasic - Applesoft BASIC in JavaScript
 =======================================
 
-This is hosted for playing with at http://calormen.com/applesoft/ 
+This is hosted for playing with at http://calormen.com/applesoft/
 
-For older browsers, the code depends on various [polyfills](http://github.com/inexorabletash/polyfill).
-For syntax highlighting, the editor optionally uses [CodeMirror](http://codemirror.net) and custom BASIC parser/styles.
-Clone these into sibling directories, so you end up with a structure like:
-
-    jsbasic/
-    polyfill/
-    CodeMirror/
+Use `git clone --recursive` to get [polyfill](http://github.com/inexorabletash/polyfill) for older browsers.
 
 Notes & Known Issues
 --------------------
@@ -35,4 +29,3 @@ You can run your basic programs from the command line (with only basic text inpu
 * Clone the repository locally
 * On Windows, run from a command prompt via: `cscript.exe cbasic.js your_program.txt`
 * On Mac/Linux, install Mozilla Rhino, run from the command prompt via: `java -jar PATH_TO/js.jar cbasic.js your_program.txt`
-

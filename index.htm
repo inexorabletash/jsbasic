@@ -6,16 +6,16 @@
 <link rel="stylesheet" href="styles.css" type="text/css">
 <meta http-equiv="X-UA-Compatible" content="IE=edge"> <!-- Suppress browser compat button -->
 
-<script type="text/javascript" src="../polyfill/polyfill.js?update=2012-02-08"></script>
-<script type="text/javascript">
+<script src="polyfill/polyfill.js?update=2012-02-08"></script>
+<script>
 (function () {
-  function load(url) { document.write('<script type="text/javascript" src="' + url + '"></' + 'script>'); }
-  if (!window.JSON) { load('../polyfill/json2.js'); }
-  if (!window.localStorage || !window.sessionStorage) { load('../polyfill/storage.js'); }
-  if (!('getContext' in document.createElement('canvas'))) { load('../polyfill/flashcanvas.js'); }
+  function load(url) { document.write('<script src="' + url + '"></' + 'script>'); }
+  if (!window.JSON) { load('polyfill/json2.js'); }
+  if (!window.localStorage || !window.sessionStorage) { load('polyfill/storage.js'); }
+  if (!('getContext' in document.createElement('canvas'))) { load('polyfill/flashcanvas.js'); }
 }());
 </script>
-<script type="text/javascript" src="../polyfill/keyboard.js"></script>
+<script src="polyfill/keyboard.js"></script>
 
 <h1>Applesoft BASIC in Javascript</h1>
 <p>
@@ -130,8 +130,8 @@ By <a href="mailto:inexorabletash@gmail.com">Joshua Bell</a>
 <div id="paper"></div>
 
 <!-- CodeMirror syntax highlighting - this is optional -->
-<script src="../CodeMirror/lib/codemirror.js"></script>
-<link rel="stylesheet" href="../CodeMirror/lib/codemirror.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/codemirror/3.20.0/codemirror.js"></script>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/codemirror/3.20.0/codemirror.css">
 <script src="cm/basic.js"></script>
 <link rel="stylesheet" href="cm/basic.css">
 <style type="text/css">
@@ -139,17 +139,17 @@ By <a href="mailto:inexorabletash@gmail.com">Joshua Bell</a>
 .CodeMirror-scroll { height: 100%; }
 </style>
 
-<script type="text/javascript" src="basic.js?2012-02-08"></script>
-<script type="text/javascript" src="bell.js"></script>
-<script type="text/javascript" src="tty.js"></script>
-<script type="text/javascript" src="lores.js"></script>
-<script type="text/javascript" src="hires.js"></script>
-<script type="text/javascript" src="dos.js"></script>
-<script type="text/javascript" src="printer.js"></script>
-<script type="text/javascript" src="index.js"></script>
+<script src="basic.js?2012-02-08"></script>
+<script src="bell.js"></script>
+<script src="tty.js"></script>
+<script src="lores.js"></script>
+<script src="hires.js"></script>
+<script src="dos.js"></script>
+<script src="printer.js"></script>
+<script src="index.js"></script>
 
 <!-- Google Analytics -->
-<script type="text/javascript">
+<script>
   var _gaq = _gaq || [];
   _gaq.push(['_setAccount', 'UA-18610679-3']);
   _gaq.push(['_trackPageview']);

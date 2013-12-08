@@ -7,15 +7,15 @@
 
   document.write('<link rel="stylesheet" href="' + baseURL + 'display.css">');
 
-  function load(url) { document.write('<script type="text/javascript" src="' + url + '"></script>'); }
-  load(baseURL + '../polyfill/polyfill.js');
-  load(baseURL + '../polyfill/keyboard.js');
-  load(baseURL + 'tty.js');
-  load(baseURL + 'lores.js');
-  load(baseURL + 'hires.js');
-  load(baseURL + 'bell.js');
-  load(baseURL + 'dos.js');
-  load(baseURL + 'basic.js');
+  function load(url) { document.write('<script src="' + baseURL + url + '"></script>'); }
+  load('polyfill/polyfill.js');
+  load('polyfill/keyboard.js');
+  load('tty.js');
+  load('lores.js');
+  load('hires.js');
+  load('bell.js');
+  load('dos.js');
+  load('basic.js');
 
   function createInstance(src) {
     function ce(element, attributes, children) {
