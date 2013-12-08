@@ -35,4 +35,3 @@ body.printout #paper { display: block; }
 #hide_paper { display: none; }
 body.printout #show_paper { display: none; }
 body.printout #hide_paper { display: inline-block; }
-
