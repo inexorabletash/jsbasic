@@ -615,7 +615,7 @@ function TTY(screenElement, keyboardElement, bell) {
       case 'Backspace': return 127;
       case 'Tab': return 9; // NOTE: Blocked elsewhere, for web page accessibility
       case 'Enter': return 13;
-      case 'Esc': return 27;
+      case 'Escape': return 27;
       case 'ArrowLeft': return 8;
       case 'ArrowUp': return 11;
       case 'ArrowRight': return 21;
@@ -704,7 +704,7 @@ function TTY(screenElement, keyboardElement, bell) {
       case 'Minus': return e.ctrlKey ? 31 : e.shiftKey ? ord('_') : ord('-');
       case 'Period': return e.shiftKey ? ord('>') : ord('.');
       case 'Slash': return e.shiftKey ? ord('?') : ord('/');
-      case 'BackQuote': return e.shiftKey ? ord('~') : ord('`');
+      case 'Backquote': return e.shiftKey ? ord('~') : ord('`');
       case 'BracketLeft': return e.ctrlKey ? 27 : e.shiftKey ? ord('{') : ord('[');
       case 'Backslash': return e.ctrlKey ? 28 : e.shiftKey ? ord('|') : ord('\\');
       case 'BracketRight': return e.ctrlKey ? 29 : e.shiftKey ? ord('}') : ord(']');
@@ -883,5 +883,3 @@ function TTY(screenElement, keyboardElement, bell) {
     window.getClassList(styleElem).toggle('jsb-flash');
   }, 250);
 }
-
-
