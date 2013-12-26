@@ -434,20 +434,20 @@ this.basic = (function() {
       0x00E6: function(v) { if (env.display) { env.display.hires_plotting_page = (v === 64 ? 2 : 1); } },
 
       // Keyboard strobe
-      0xC010: function(v) { if (env.tty.clearKeyboardStrobe) { env.tty.clearKeyboardStrobe(); } },
+      0xC010: function() { if (env.tty.clearKeyboardStrobe) { env.tty.clearKeyboardStrobe(); } },
 
       // Display switches
-      0xC050: function(v) { if (env.display) { env.display.setState("graphics", true); } }, // Graphics
-      0xC051: function(v) { if (env.display) { env.display.setState("graphics", false); } }, // Text
-      0xC052: function(v) { if (env.display) { env.display.setState("full", true); } }, // Full Graphics
-      0xC053: function(v) { if (env.display) { env.display.setState("full", false); } }, // Split Screen
-      0xC054: function(v) { if (env.display) { env.display.setState("page1", true); } }, // Page 1
-      0xC055: function(v) { if (env.display) { env.display.setState("page1", false); } }, // Page 2
-      0xC056: function(v) { if (env.display) { env.display.setState("lores", true); } }, // Lo-Res
-      0xC057: function(v) { if (env.display) { env.display.setState("lores", false); } }, // Hi-Res
+      0xC050: function() { if (env.display) { env.display.setState("graphics", true); } }, // Graphics
+      0xC051: function() { if (env.display) { env.display.setState("graphics", false); } }, // Text
+      0xC052: function() { if (env.display) { env.display.setState("full", true); } }, // Full Graphics
+      0xC053: function() { if (env.display) { env.display.setState("full", false); } }, // Split Screen
+      0xC054: function() { if (env.display) { env.display.setState("page1", true); } }, // Page 1
+      0xC055: function() { if (env.display) { env.display.setState("page1", false); } }, // Page 2
+      0xC056: function() { if (env.display) { env.display.setState("lores", true); } }, // Lo-Res
+      0xC057: function() { if (env.display) { env.display.setState("lores", false); } }, // Hi-Res
 
       // Speaker toggle
-      0xC030: function(v) { } // no-op
+      0xC030: function() { } // no-op
     };
 
     call_table = {
@@ -503,7 +503,7 @@ this.basic = (function() {
         throw new GoToLine(line);
       },
 
-      'on_goto': function ON_GOTO(index, line1, line2 /* ... */) {
+      'on_goto': function ON_GOTO(index /* , ...lines */) {
         index = (index - 1) >> 0;
         var lines = Array.prototype.slice.call(arguments, 1);
 
@@ -521,7 +521,7 @@ this.basic = (function() {
         throw new GoToLine(line);
       },
 
-      'on_gosub': function ON_GOSUB(index, line1, line2 /* ... */) {
+      'on_gosub': function ON_GOSUB(index /* , ...lines */) {
         index = (index - 1) >> 0;
         var lines = Array.prototype.slice.call(arguments, 1);
         if (index < 0 || index >= lines.length) {
@@ -570,7 +570,7 @@ this.basic = (function() {
         });
       },
 
-      'next': function NEXT(var1, var2 /* ... */) {
+      'next': function NEXT(/* ...varnames */) {
         var varnames = Array.prototype.slice.call(arguments),
                     varname, stack_record, value;
         do {
@@ -640,7 +640,7 @@ this.basic = (function() {
       },
 
       // PERF: optimize by turning into a function, e.g. "state.parsevar(name, lib.read())"
-      'read': function READ(lvalue1, lvalue2 /* ... */) {
+      'read': function READ(/* ...lvalues */) {
         var lvalues = Array.prototype.slice.call(arguments);
         while (lvalues.length) {
           if (state.data_index >= state.data.length) {
@@ -657,7 +657,7 @@ this.basic = (function() {
       //
       //////////////////////////////////////////////////////////////////////
 
-      'print': function PRINT(string1, string2 /* ... */) {
+      'print': function PRINT(/* ...strings */) {
         var args = Array.prototype.slice.call(arguments), arg;
         while (args.length) {
           arg = args.shift();
@@ -711,7 +711,7 @@ this.basic = (function() {
         throw new BlockingInput(im, ih);
       },
 
-      'input': function INPUT(prompt, var1, var2 /* ... */) {
+      'input': function INPUT(prompt /* , ...varlist */) {
         var varlist = Array.prototype.slice.call(arguments, 1); // copy for closure
         var im, ih;
         im = function(cb) { return env.tty.readLine(cb, prompt); };
@@ -906,7 +906,7 @@ this.basic = (function() {
         if (env.hires2) { env.hires2.setColor(n); }
       },
 
-      'hplot': function HPLOT(x1, y1, x2, y2 /* ...  */) {
+      'hplot': function HPLOT(/* ...coords */) {
         var hires = env.display.hires_plotting_page === 2 ? env.hires2 : env.hires;
         if (!hires) { runtime_error('Hires graphics not supported'); }
 
@@ -932,7 +932,7 @@ this.basic = (function() {
         }
       },
 
-      'hplot_to': function HPLOT_TO(x1, y1, x2, y2 /* ...  */) {
+      'hplot_to': function HPLOT_TO(/* ...coords */) {
         var hires = env.display.hires_plotting_page === 2 ? env.hires2 : env.hires;
         if (!hires) { runtime_error('Hires graphics not supported'); }
 
@@ -1032,7 +1032,7 @@ this.basic = (function() {
     };
 
     // Apply a signature [return_type, arg0_type, arg1_type, ...] to a function
-    function funcsign(func, return_type, arg0_type, arg1_type /* ... */) {
+    function funcsign(func /*, return_type, ...arg_types */) {
       func.signature = Array.prototype.slice.call(arguments, 1);
       return func;
     }
@@ -1166,7 +1166,7 @@ this.basic = (function() {
       (function(source) {
         function munge(kw) {
           // Escape special characters
-          function escape(c) { return /[\[\]\\\^\$\.\|\?\*\+\(\)]/.test(c) ? '\\' + c : c; }
+          function escape(c) { return (/[\[\]\\\^\$\.\|\?\*\+\(\)]/).test(c) ? '\\' + c : c; }
           // Allow linear whitespace between characters
           //return kw.split('').map(escape).join('[ \\t]*');
 
@@ -1670,7 +1670,7 @@ this.basic = (function() {
 
       function parseCommand() {
 
-        function slib(name, arg0, arg1 /* ... */) {
+        function slib(name /* , ...args */) {
           var args = Array.prototype.slice.call(arguments, 1);
           return 'lib[' + quote(name) + '](' + args.join(',') + ');';
         }
@@ -1705,10 +1705,9 @@ this.basic = (function() {
             if (!subscripts) {
               identifiers.variables[name] = true;
               return 'state.variables[' + quote(name) + '] = ' + expr;
-            } else {
-              identifiers.arrays[name] = true;
-              return 'state.arrays[' + quote(name) + '].set([' + subscripts + '], ' + expr + ')';
             }
+            identifiers.arrays[name] = true;
+            return 'state.arrays[' + quote(name) + '].set([' + subscripts + '], ' + expr + ')';
 
           case kws.DIM:
             js = '';
@@ -1732,9 +1731,8 @@ this.basic = (function() {
               throw parse_error("DEF FN function type and argument type must match");
             }
 
-            expr = vartype(name) === 'string'
-                            ? parseStringExpression()
-                            : parseNumericExpression();
+            expr = vartype(name) === 'string' ?
+              parseStringExpression() : parseNumericExpression();
 
             return slib('def', quote(name),
                             'function (arg){' +
@@ -1820,10 +1818,9 @@ this.basic = (function() {
             if (test('number')) {
               // IF expr THEN linenum
               return js + slib('goto', match('number'));
-            } else {
-              // IF expr THEN statement
-              return js + parseCommand(); // recurse
             }
+            // IF expr THEN statement
+            return js + parseCommand(); // recurse
 
           case kws.END:  // End program
             return slib('end');
