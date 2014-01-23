@@ -167,8 +167,8 @@ function TTY(screenElement, keyboardElement, bell) {
     tbody = document.createElement('tbody');
     styleElem = tbody;
 
-    getClassList(styleElem).add(screenWidth === 40 ? 'jsb-40col' : 'jsb-80col');
-    if (firmwareActive) { getClassList(styleElem).add('jsb-active'); }
+    styleElem.classList.add(screenWidth === 40 ? 'jsb-40col' : 'jsb-80col');
+    if (firmwareActive) { styleElem.classList.add('jsb-active'); }
 
     for (y = 0; y < screenHeight; y += 1) {
       tr = document.createElement('tr');
@@ -732,11 +732,8 @@ function TTY(screenElement, keyboardElement, bell) {
 
   // Internal
   function handleKeyDown(e) {
-    identifyKey(e);
-
-    if (!e.code || isBrowserKey(e)) {
+    if (!e.code || isBrowserKey(e))
       return true;
-    }
 
     var handled = false, code;
 
@@ -780,14 +777,11 @@ function TTY(screenElement, keyboardElement, bell) {
 
   // Internal
   function handleKeyUp(e) {
-    identifyKey(e);
-
-    if (!e.code || isBrowserKey(e)) {
+    if (!e.code || isBrowserKey(e))
       return true;
-    }
 
     var handled = false,
-            code;
+        code;
 
     switch (e.code) {
 
@@ -876,10 +870,10 @@ function TTY(screenElement, keyboardElement, bell) {
 
   init(false, 24, 40);
 
-  window.addEvent(keyboardElement, 'keydown', handleKeyDown);
-  window.addEvent(keyboardElement, 'keyup', handleKeyUp);
+  keyboardElement.addEventListener('keydown', handleKeyDown);
+  keyboardElement.addEventListener('keyup', handleKeyUp);
 
   setInterval(function blinkFlash() {
-    window.getClassList(styleElem).toggle('jsb-flash');
+    styleElem.classList.toggle('jsb-flash');
   }, 250);
 }

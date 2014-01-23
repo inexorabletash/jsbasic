@@ -86,7 +86,7 @@ window.addEventListener('DOMContentLoaded', function () {
   }
 
   var program;
-  addEvent($('#btn_run'), 'click', function () {
+  $('#btn_run').addEventListener('click', function () {
     dos.reset();
     tty.reset();
     tty.autoScroll = true;
@@ -117,22 +117,22 @@ window.addEventListener('DOMContentLoaded', function () {
     setTimeout(driver, 0);
   });
 
-  addEvent($('#btn_stop'), 'click', function () {
+  $('#btn_stop').addEventListener('click', function () {
     tty.reset(); // cancel any blocking input
     stopped = true;
     updateUI();
   });
 
-  addEvent($('#lb_files'), 'change', function () {
+  $('#lb_files').addEventListener('change', function () {
     var sel = $('#lb_files');
     loadFile('samples/' + sel.value + ".txt", setSource);
   });
 
-  addEvent($('#btn_save'), 'click', function () {
+  $('#btn_save').addEventListener('click', function () {
     window.localStorage.setItem("save_program", getSource());
     $('#btn_load').disabled = false;
   });
-  addEvent($('#btn_load'), 'click', function () {
+  $('#btn_load').addEventListener('click', function () {
     setSource(window.localStorage.getItem("save_program"));
   });
   $('#btn_load').disabled = (window.localStorage.getItem("save_program") === null);
@@ -140,19 +140,19 @@ window.addEventListener('DOMContentLoaded', function () {
   // Add a "printer" on demand
   var printer = null;
   var paper = $('#paper');
-  addEvent($('#show_paper'), 'click', function () {
-    window.getClassList(document.body).add('printout');
+  $('#show_paper').addEventListener('click', function () {
+    document.body.classList.add('printout');
     printer = new Printer(tty, paper);
   });
-  addEvent($('#hide_paper'), 'click', function () {
-    window.getClassList(document.body).remove('printout');
+  $('#hide_paper').addEventListener('click', function () {
+    document.body.classList.remove('printout');
     printer.close();
     printer = null;
   });
 
   // Mouse-as-Joystick
   var wrapper = $('#screen-wrapper');
-  addEvent(wrapper, 'mousemove', function (e) {
+  wrapper.addEventListener('mousemove', function (e) {
     var rect = wrapper.getBoundingClientRect(),
         x = e.clientX - rect.left, y = e.clientY - rect.top;
     function clamp(n, min, max) { return n < min ? min : n > max ? max : n; }

@@ -74,7 +74,7 @@
     var pdl = [0, 0, 0, 0];
 
     // Mouse-as-Joystick
-    addEvent(wrapper_elem, 'mousemove', function (e) {
+    wrapper_elem.addEventListener('mousemove', function (e) {
       var rect = wrapper_elem.getBoundingClientRect(),
           x = e.clientX - rect.left, y = e.clientY - rect.top;
       function clamp(n, min, max) { return n < min ? min : n > max ? max : n; }
