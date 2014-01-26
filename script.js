@@ -143,7 +143,8 @@
   window.addEventListener('load', function() {
     [].forEach.call($$('script'), function(script) {
       if (script.type === 'text/applesoft-basic') {
-        var elem = createInstance(script.innerText);
+        var source = script.innerText || script.textContent;
+        var elem = createInstance(source);
         script.parentElement.insertBefore(elem, script.nextSibling);
       }
     });
