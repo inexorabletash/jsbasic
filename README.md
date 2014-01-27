@@ -1,7 +1,7 @@
 jsbasic - Applesoft BASIC in JavaScript
 =======================================
 
-This is hosted for playing with at http://calormen.com/applesoft/
+This is hosted for playing with at http://inexorabletash.github.io/jsbasic/
 
 Use `git clone --recursive` to get [polyfill](http://github.com/inexorabletash/polyfill) for older browsers.
 
