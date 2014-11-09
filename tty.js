@@ -6,6 +6,12 @@
 //
 //   tty = new TTY( screen_element, keyboard_element, bell );
 //   tty.clearScreen()
+//   tty.clearEOL()
+//   tty.clearEOS()
+//   tty.cursorLeft()
+//   tty.cursorRight()
+//   tty.cursorUp()
+//   tty.cursorDown()
 //   tty.scrollScreen()
 //   tty.setTextStyle( textStyle )
 //   { width: w, height: h } = tty.getScreenSize()
@@ -216,6 +222,18 @@ function TTY(screenElement, keyboardElement, bell) {
     }
   };
 
+  // Clears from the cursor position to the end of the window
+  this.clearEOS = function clearEOS() {
+    var x, y;
+    for (x = cursorX; x < self.textWindow.left + self.textWindow.width; x += 1) {
+      setCellChar(x, cursorY, 0x20);
+    }
+    for (y = cursorY + 1; y < self.textWindow.top + self.textWindow.height; y += 1) {
+      for (x = self.textWindow.left; x < self.textWindow.left + self.textWindow.width; x += 1) {
+        setCellChar(x, y, 0x20);
+      }
+    }
+  };
 
   this.setFirmwareActive = function setFirmwareActive(active) {
     init(active, 24, active ? 80 : 40);
@@ -276,32 +294,46 @@ function TTY(screenElement, keyboardElement, bell) {
     }
   }
 
-  // Internal
-  function lineFeed() {
+  this.cursorDown = function cursorDown() {
     cursorY += 1;
     if (cursorY >= self.textWindow.top + self.textWindow.height) {
       cursorY = self.textWindow.top + self.textWindow.height - 1;
-
       if (self.autoScroll) {
         self.scrollScreen();
       }
     }
-
     updateCursor();
-  }
+  };
 
-  // Internal
-  function advanceCursor() {
-    // Advance the cursor
+  this.cursorLeft = function cursorLeft() {
+    cursorX -= 1;
+    if (cursorX < self.textWindow.left) {
+      cursorX += self.textWindow.width;
+      cursorY -= 1;
+      if (cursorY < self.textWindow.top) {
+        cursorY = self.textWindow.top;
+      }
+    }
+    updateCursor();
+  };
+
+  this.cursorUp = function cursorUp() {
+    cursorY -= 1;
+    if (cursorY < self.textWindow.top) {
+      cursorY = self.textWindow.top;
+    }
+    updateCursor();
+  };
+
+
+  this.cursorRight = function cursorRight() {
     cursorX += 1;
-
     if (cursorX >= self.textWindow.left + self.textWindow.width) {
       cursorX = self.textWindow.left;
-      lineFeed();
+      self.cursorDown();
     }
-
     updateCursor();
-  }
+  };
 
   // Hookable
   this.writeChar = function writeChar(c) {
@@ -326,34 +358,19 @@ function TTY(screenElement, keyboardElement, bell) {
         break;
 
       case 8: // (BS) backspace
-        cursorX -= 1;
-        if (cursorX < self.textWindow.left) {
-          cursorX += self.textWindow.width;
-          cursorY -= 1;
-          if (cursorY < self.textWindow.top) {
-            cursorY = self.textWindow.top;
-          }
-        }
+        self.cursorLeft();
         break;
 
       case 9:
         break;
 
       case 10: // (LF) line feed
-        lineFeed();
+        self.cursorDown();
         break;
 
       case 11: // (VT) clear EOS
         if (firmwareActive) {
-          // Clears from the cursor position to the end of the window
-          for (x = cursorX; x < self.textWindow.left + self.textWindow.width; x += 1) {
-            setCellChar(x, cursorY, 0x20);
-          }
-          for (y = cursorY + 1; y < self.textWindow.top + self.textWindow.height; y += 1) {
-            for (x = self.textWindow.left; x < self.textWindow.left + self.textWindow.width; x += 1) {
-              setCellChar(x, y, 0x20);
-            }
-          }
+          self.clearEOS();
         }
         break;
 
@@ -366,7 +383,7 @@ function TTY(screenElement, keyboardElement, bell) {
 
       case 13: // (CR) return
         cursorX = self.textWindow.left;
-        lineFeed();
+        self.cursorDown();
         break;
 
       case 14: // (SO) normal
@@ -482,7 +499,7 @@ function TTY(screenElement, keyboardElement, bell) {
 
       default:
         setCellChar(cursorX, cursorY, code);
-        advanceCursor();
+        self.cursorRight();
         break;
     }
   };

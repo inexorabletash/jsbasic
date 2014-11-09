@@ -468,6 +468,21 @@ this.basic = (function() {
       0xD683: function() { // Clear stack
         state.stack = [];
       },
+      0xFBF4: function() { // Move cursor right
+        if (env.tty.cursorRight) { env.tty.cursorRight(); }
+      },
+      0xFC10: function() { // Move cursor left
+        if (env.tty.cursorLeft) { env.tty.cursorLeft(); }
+      },
+      0xFC1A: function() { // Move cursor up
+        if (env.tty.cursorUp) { env.tty.cursorUp(); }
+      },
+      0xFC42: function() { // Clear text from cursor to bottom
+        if (env.tty.clearEOS) { env.tty.clearEOS(); }
+      },
+      0xFC66: function() { // Move cursor down
+        if (env.tty.cursorDown) { env.tty.cursorDown(); }
+      },
       0xFC9C: function() { // Clear from cursor to right
         if (env.tty.clearEOL) { env.tty.clearEOL(); }
       }
