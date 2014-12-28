@@ -211,10 +211,11 @@ can be literals (unquoted strings), strings, or numbers
 
   <dt>CALL <var>aexpr</var><dd>Call native routine
       <ul>
+        <li><code>CALL -3288</code> - pop <code>ONERR</code>/<code>RESUME</code> entry from stack
         <li><code>CALL -3100</code> - reveal hi-res page 1
         <li><code>CALL -3086</code> - clear current hi-res page to black
         <li><code>CALL -3082</code> - clear current hi-res page to current color
-        <li><code>CALL 54951</code> - clear stack (cancel pending <code>FOR</code>-<code>NEXT</code> loops and <code>GOSUB</code>s)
+        <li><code>CALL 54951</code> - clear stack (pop all <code>FOR</code>/<code>NEXT</code>, <code>GOSUB</code>/<code>RETURN</code>, and <code>ONERR</code>/<code>RESUME</code> entries)
         <li><code>CALL -1036</code> - move cursor right
         <li><code>CALL -1008</code> - move cursor left
         <li><code>CALL -998</code> - move cursor up

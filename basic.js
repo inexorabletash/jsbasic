@@ -451,6 +451,16 @@ this.basic = (function() {
     };
 
     call_table = {
+      0xD683: function() { // Clear stack
+        state.stack = [];
+      },
+      0xF328: function() { // Pop error entry off stack
+        var stack_record = state.stack.pop();
+        if (!{}.hasOwnProperty.call(stack_record, 'resume_stmt_index')) {
+          runtime_error(ERRORS.SYNTAX_ERROR);
+          return;
+        }
+      },
       0xF3E4: function() { // Reveal hi-res page 1
         if (!env.hires) { runtime_error('Hires graphics not supported'); }
         env.display.setState('graphics', true, 'full', true, 'page1', true, 'lores', false);
@@ -464,9 +474,6 @@ this.basic = (function() {
         var hires = env.display.hires_plotting_page === 2 ? env.hires2 : env.hires;
         if (!hires) { runtime_error('Hires graphics not supported'); }
         hires.clear(hires.color);
-      },
-      0xD683: function() { // Clear stack
-        state.stack = [];
       },
       0xFBF4: function() { // Move cursor right
         if (env.tty.cursorRight) { env.tty.cursorRight(); }
@@ -563,14 +570,11 @@ this.basic = (function() {
       },
 
       'pop': function POP() {
-        var stack_record;
-        while (state.stack.length) {
-          stack_record = state.stack.pop();
-          if ({}.hasOwnProperty.call(stack_record, 'gosub_return')) {
-            return;
-          }
+        var stack_record = state.stack.pop();
+        if (!{}.hasOwnProperty.call(stack_record, 'gosub_return')) {
+          runtime_error(ERRORS.RETURN_WITHOUT_GOSUB);
+          return;
         }
-        runtime_error(ERRORS.RETURN_WITHOUT_GOSUB);
       },
 
       'for': function FOR(varname, from, to, step) {
@@ -640,8 +644,13 @@ this.basic = (function() {
       },
 
       'resume': function RESUME() {
-        state.stmt_index = state.resume_stmt_index;
-        state.line_number = state.resume_line_number;
+        var stack_record = state.stack.pop();
+        if (!{}.hasOwnProperty.call(stack_record, 'resume_stmt_index')) {
+          runtime_error(ERRORS.SYNTAX_ERROR);
+          return;
+        }
+        state.line_number = stack_record.resume_line_number;
+        state.stmt_index = stack_record.resume_stmt_index;
       },
 
       //////////////////////////////////////////////////////////////////////
@@ -2175,8 +2184,6 @@ this.basic = (function() {
 
         onerr_code: 255,
         onerr_handler: void 0,
-        resume_stmt_index: 0,
-        resume_line_number: 0,
         trace_mode: false,
 
         input_continuation: null,
@@ -2319,8 +2326,10 @@ this.basic = (function() {
         if (rte instanceof basic.RuntimeError) {
           state.onerr_code = rte.code || 0;
           if (state.onerr_handler !== void 0) {
-            state.resume_stmt_index = state.stmt_index;
-            state.resume_line_number = state.line_number;
+            state.stack.push({
+              resume_stmt_index: state.stmt_index,
+              resume_line_number: state.line_number
+            });
             gotoline(state.onerr_handler);
             return basic.STATE_RUNNING;
           } else if (rte.code === ERRORS.REENTER[0]) {

@@ -242,6 +242,17 @@
 : T = 2
 3261 S = (T=1) AND (PEEK(222)=255) : GOSUB 1
 
+3270 T$ = "CALL-3288" :
+: T = 1 : ONERR GOTO 3274
+3271 GOSUB 3272
+: T = T + 1
+: GOTO 3275
+3272 X = FN UF(0)
+: T = 10
+3274 CALL -3288
+: T = T + 1
+: RETURN
+3275 S = (T=3) : GOSUB 1
 
 
 3999 POKE 216,0 : REM Disable ONERR handler
@@ -791,13 +802,13 @@
 
 18060 T$ = "Array Lower Bounds"
 : T = 1 : ONERR GOTO 18061
-: X = A2(-1) : 
+: X = A2(-1) :
 : T = 2
 18061 S = (T=1) AND (PEEK(222)=53) : GOSUB 1 : POKE 216,0
 
 18070 T$ = "Array Upper Bounds"
 : T = 1 : ONERR GOTO 18071
-: X = A2(11) : 
+: X = A2(11) :
 : T = 2
 18071 S = (T=1) AND (PEEK(222)=107) : GOSUB 1 : POKE 216,0
 
@@ -808,5 +819,3 @@
 20010 PRINT "Successful tests: "; TS
 20019 IF F THEN INVERSE
 20020 PRINT "Failed tests: "; F; : NORMAL
-
-
