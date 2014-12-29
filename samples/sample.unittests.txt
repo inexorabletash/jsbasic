@@ -325,8 +325,8 @@
 
 6000 PRINT : PRINT "Inline Data ";
 
-6010 DATA 1,2,3
-6011 DATA "A","B","C"
+6001 DATA 1,2,3
+6002 DATA "A","B","C"
 
 6010 T$ = "READ"
 : RESTORE
@@ -349,7 +349,7 @@
 7010 REM Test GR as part of I/O (sets cursor to window bottom)
 7010 REM ************************************************************
 
-7010 POKE 49232,0 : POKE 49234,0 : POKE 49238,0
+7011 POKE 49232,0 : POKE 49234,0 : POKE 49238,0
 
 7020 T$ = "COLOR="
 : T = 0 : U = 0 : FOR I = 0 TO 15 : COLOR= I : PLOT 0,0 : T = T + I : U = U + SCRN(0,0) : NEXT
@@ -748,9 +748,9 @@
 17040 T$ = "Sequential Access/ONERR"
 : PRINT CHR$(4)"OPEN JABBERWOCKY"
 : PRINT CHR$(4)"READ JABBERWOCKY"
-: ONERR GOTO 10742 : N = 0
+: ONERR GOTO 17042 : N = 0
 : FOR N = 0 TO 10 : INPUT A$ : NEXT
-10742 POKE 216,0 : PRINT CHR$(4)"CLOSE" : S = (N = 4) : GOSUB 1
+17042 POKE 216,0 : PRINT CHR$(4)"CLOSE" : S = (N = 4) : GOSUB 1
 
 17050 T$ = "RENAME"
 : PRINT CHR$(4)"OPEN TESTDATA"
@@ -812,8 +812,16 @@
 : T = 2
 18071 S = (T=1) AND (PEEK(222)=107) : GOSUB 1 : POKE 216,0
 
+18080 T$ = "Duplicate Lines"
+18081 T = 1
+18082 T = T + 1 : REM Should be overwritten
+18082 T = T + 1
+18083 S = (T = 2) : GOSUB 1
 
-
+18090 T$ = "Line Ordering"
+18092 T = 2
+18091 T = 1
+18093 S = (T = 2) : GOSUB 1
 
 20000 PRINT : PRINT : PRINT "Executed tests: "; TE
 20010 PRINT "Successful tests: "; TS

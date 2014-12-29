@@ -10,7 +10,6 @@ Notes & Known Issues
 * The BASIC program is compiled to JavaScript before execution. Syntax errors are therefore detected at compile-time rather than at run-time as on a traditional interpreter. For example, the following program would run without errors on an Apple since the erroneous second statement is never reached. `10 END : CHR$(PRINT)`
 * Handling of BASIC code that does not match the canonical `LIST` output format may not behave as on an Apple:
   * Keyword parsing differs from Applesoft command line. For example `FOR I = S TO P` doesn't collapse into `FOR I = STOP`.
-  * The interpreter doesn't actually care about line numbers for statement ordering (just for `GOTO/GOSUB` targets and `IF` statements). So `20 PRINT "A"`, `10 PRINT "B"` will just print `A`, then `B`
 * Limitations:
   * Floating point overflow is only detected on variable assignment.
   * Only a subset of DOS 3.3 and ProDOS useful for basic file I/O are implemented.

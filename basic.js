@@ -2132,24 +2132,48 @@ this.basic = (function() {
         function parseStatement() {
           if (test('data')) {
             program.data = program.data.concat(match('data'));
-            return;
+            return undefined;
           } else if (test('remark', void 0, true)) {
-            return;
+            return undefined;
           } else if (test('reserved') || test('identifier')) {
-            program.statements.push(mkfun(parseCommand()));
+            return mkfun(parseCommand());
           } else {
             // So TRACE output is correct
-            program.statements.push(empty_statement);
+            return empty_statement;
           }
         }
 
         // Line = line-number Statement { separator Statement }
         function parseLine() {
-          program.statements.push(match('lineNumber'));
-          parseStatement();
+          var num = match('lineNumber');
+          var statements = [];
+          var statement = parseStatement();
+          if (statement) statements.push(statement);
           while (test('separator', ':', true)) {
-            parseStatement();
+            statement = parseStatement();
+            if (statement) statements.push(statement);
           }
+          insertLine(num, statements);
+        }
+
+        function insertLine(number, statements) {
+          var remove = 0;
+          for (var i = 0, len = program.statements.length; i < len; ++i) {
+            if (typeof program.statements[i] !== 'number')
+              continue;
+            if (program.statements[i] < number)
+              continue;
+            if (program.statements[i] === number) {
+              var n = i;
+              do {
+                ++n;
+                ++remove;
+              } while (n < len && typeof program.statements[n] !== 'number');
+            }
+            break;
+          }
+          var args = [i, remove, number].concat(statements);
+          program.statements.splice.apply(program.statements, args);
         }
 
         // Program = Line { Line }
