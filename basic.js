@@ -1199,18 +1199,24 @@ this.basic = (function() {
         }
 
         var RESERVED_WORDS = [
-          kws.ABS, kws.AND, kws.ASC, kws.ATN, kws.AT, kws.CALL, kws.CHR$, kws.CLEAR, kws.COLOR, kws.CONT, kws.COS,
-          /*kws.DATA,*/
-          kws.DEF, kws.DEL, kws.DIM, kws.DRAW, kws.END, kws.EXP, kws.FLASH, kws.FN, kws.FOR, kws.FRE, kws.GET,
-          kws.GOSUB, kws.GOTO, kws.GR, kws.HCOLOR, kws.HGR2, kws.HGR, kws.HIMEM, kws.HLIN, kws.HOME, kws.HPLOT,
-          kws.HTAB, kws.IF, kws.IN, kws.INPUT, kws.INT, kws.INVERSE, kws.LEFT$, kws.LEN, kws.LET, kws.LIST,
-          kws.LOAD, kws.LOG, kws.LOMEM, kws.MID$, kws.NEW, kws.NEXT, kws.NORMAL, kws.NOTRACE, kws.NOT, kws.ONERR,
-          kws.ON, kws.OR, kws.PDL, kws.PEEK, kws.PLOT, kws.POKE, kws.POP, kws.POS, kws.PRINT, kws.PR, kws.READ,
-          kws.RECALL, /*kws.REM,*/ kws.RESTORE, kws.RESUME, kws.RETURN, kws.RIGHT$, kws.RND, kws.ROT, kws.RUN,
-          kws.SAVE, kws.SCALE, kws.SCRN, kws.SGN, kws.SHLOAD, kws.SIN, kws.SPC, kws.SPEED, kws.SQR, kws.STEP,
-          kws.STOP, kws.STORE, kws.STR$, kws.TAB, kws.TAN, kws.TEXT, kws.THEN, kws.TO, kws.TRACE, kws.USR, kws.VAL,
-          kws.VLIN, kws.VTAB, kws.WAIT, kws.XDRAW, kws.AMPERSAND, kws.QUESTION,
-          kws.HSCRN
+          kws.ABS, kws.AND, kws.ASC, kws.ATN, kws.AT, kws.CALL,
+          kws.CHR$, kws.CLEAR, kws.COLOR, kws.CONT, kws.COS,
+          /*kws.DATA,*/ kws.DEF, kws.DEL, kws.DIM, kws.DRAW, kws.END,
+          kws.EXP, kws.FLASH, kws.FN, kws.FOR, kws.FRE, kws.GET,
+          kws.GOSUB, kws.GOTO, kws.GR, kws.HCOLOR, kws.HGR2, kws.HGR,
+          kws.HIMEM, kws.HLIN, kws.HOME, kws.HPLOT, kws.HTAB, kws.IF,
+          kws.IN, kws.INPUT, kws.INT, kws.INVERSE, kws.LEFT$, kws.LEN,
+          kws.LET, kws.LIST, kws.LOAD, kws.LOG, kws.LOMEM, kws.MID$,
+          kws.NEW, kws.NEXT, kws.NORMAL, kws.NOTRACE, kws.NOT,
+          kws.ONERR, kws.ON, kws.OR, kws.PDL, kws.PEEK, kws.PLOT,
+          kws.POKE, kws.POP, kws.POS, kws.PRINT, kws.PR, kws.READ,
+          kws.RECALL, /*kws.REM,*/ kws.RESTORE, kws.RESUME,
+          kws.RETURN, kws.RIGHT$, kws.RND, kws.ROT, kws.RUN, kws.SAVE,
+          kws.SCALE, kws.SCRN, kws.SGN, kws.SHLOAD, kws.SIN, kws.SPC,
+          kws.SPEED, kws.SQR, kws.STEP, kws.STOP, kws.STORE, kws.STR$,
+          kws.TAB, kws.TAN, kws.TEXT, kws.THEN, kws.TO, kws.TRACE,
+          kws.USR, kws.VAL, kws.VLIN, kws.VTAB, kws.WAIT, kws.XDRAW,
+          kws.AMPERSAND, kws.QUESTION, kws.HSCRN
         ];
         // NOTE: keywords that are stems of other words need to go after (e.g. "NOTRACE", "NOT)
         RESERVED_WORDS.sort();
