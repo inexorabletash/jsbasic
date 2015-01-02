@@ -12,7 +12,21 @@ window.addEventListener('DOMContentLoaded', function () {
 
 
   var frame = $('#frame');
-  var tty = new TTY($('#screen'), frame, bell);
+
+  var keyboard = frame;
+  if (/iPod|iPad|iPhone/.test(navigator.platform)) {
+    keyboard = document.createElement('input');
+    keyboard.type = 'text';
+    keyboard.style.width = keyboard.style.height = '1px';
+    keyboard.style.border = 'none';
+    keyboard.style.position = 'absolute';
+    keyboard.style.left = keyboard.style.top = '-100px';
+    frame.removeAttribute('tabIndex');
+    frame.addEventListener('click', function() { keyboard.focus(); });
+    frame.parentNode.insertBefore(keyboard, frame);
+  }
+
+  var tty = new TTY($('#screen'), keyboard, bell);
   var dos = new DOS(tty);
 
   var lores = new LoRes($('#lores'), 40, 48);
