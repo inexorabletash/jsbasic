@@ -1,21 +1,26 @@
 <!DOCTYPE html>
 <title>Applesoft BASIC in JavaScript</title>
 <meta charset="UTF-8">
-<link rel="shortcut icon" href="favicon.ico">
-<link rel="alternate" type="application/atom+xml" href="https://github.com/inexorabletash/jsbasic/commits/master.atom">
-<link rel="stylesheet" href="styles.css" type="text/css">
 <meta http-equiv="X-UA-Compatible" content="IE=edge"> <!-- Suppress browser compat button -->
 
+<link rel="shortcut icon" href="favicon.ico">
+<link rel="alternate" type="application/atom+xml" href="https://github.com/inexorabletash/jsbasic/commits/master.atom">
+
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="display.css">
+
 <script src="polyfill/polyfill.js?update=2012-02-08"></script>
-<script>
-(function () {
-  function load(url) { document.write('<script src="' + url + '"></' + 'script>'); }
-  if (!window.JSON) { load('polyfill/json2.js'); }
-  if (!window.localStorage || !window.sessionStorage) { load('polyfill/storage.js'); }
-  if (!('getContext' in document.createElement('canvas'))) { load('polyfill/flashcanvas.js'); }
-}());
-</script>
 <script src="polyfill/keyboard.js"></script>
+
+<!-- CodeMirror syntax highlighting - this is optional -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/codemirror/4.7.0/codemirror.min.js"></script>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/codemirror/4.7.0/codemirror.css">
+<script src="cm/basic.js"></script>
+<link rel="stylesheet" href="cm/basic.css">
+<style>
+.CodeMirror { border: solid 1px black; width: 598px; height: 384px; background-color: white; }
+.CodeMirror-scroll { height: 100%; }
+</style>
 
 <h1>Applesoft BASIC in Javascript</h1>
 <p>
@@ -29,10 +34,9 @@ By <a href="mailto:inexorabletash@gmail.com">Joshua Bell</a>
  | <a href="http://calormen.com/vnIIc">Streaming video to an Apple II - vnIIc</a>
 </p>
 
-<br clear="left">
+<br style="clear: both;">
 
 <!-- Screen -->
-<link rel="stylesheet" href="display.css" type="text/css">
 <div id="frame" class="jsb-frame" style="float: left; margin: 5px;" tabIndex="0">
   <div id="screen-wrapper" class="jsb-wrapper">
     <div id="lores" class="jsb-lores"></div>
@@ -116,7 +120,7 @@ By <a href="mailto:inexorabletash@gmail.com">Joshua Bell</a>
 
 </div>
 
-<br clear="left">
+<br style="clear: both;">
 
 <h3 id="links">Links</h3>
 <ul>
@@ -137,15 +141,6 @@ By <a href="mailto:inexorabletash@gmail.com">Joshua Bell</a>
 
 <div id="paper"></div>
 
-<!-- CodeMirror syntax highlighting - this is optional -->
-<script src="//cdnjs.cloudflare.com/ajax/libs/codemirror/4.7.0/codemirror.min.js"></script>
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/codemirror/4.7.0/codemirror.css">
-<script src="cm/basic.js"></script>
-<link rel="stylesheet" href="cm/basic.css">
-<style type="text/css">
-.CodeMirror { border: solid 1px black; width: 598px; height: 384px; background-color: white; }
-.CodeMirror-scroll { height: 100%; }
-</style>
 
 <script src="basic.js?2012-02-08"></script>
 <script src="bell.js"></script>
