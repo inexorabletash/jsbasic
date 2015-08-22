@@ -607,7 +607,7 @@ function which implements the logic for walking over the array.<p>
   var html = [];
   el.innerHTML = "";
 
-  var level = 1, unique = 10000;
+  var level = 1, unique = 1;
   [].forEach.call(document.querySelectorAll('h2, h3'), function(c) {
     var newLevel = parseInt(c.nodeName.charAt(1), 10);
     if (newLevel > level) {
@@ -617,11 +617,18 @@ function which implements the logic for walking over the array.<p>
     }
     level = newLevel;
 
-    var key = 'key_' + unique++;
+    function makeID(string) {
+      var id = String(string).replace(/[^a-zA-Z0-9]/g, '-');
+      while (document.getElementById(id))
+        id += '_' + unique++;
+      id = id.replace(/-+/g, '-');
+      return id;
+    }
+    var key = makeID(c.textContent);
 
     html.push('<li><a href="#' + key + '">' + c.innerHTML + '</a>');
 
-    c.setAttribute('id', key);
+    c.id = key;
 
   });
 
