@@ -247,7 +247,10 @@ can be literals (unquoted strings), strings, or numbers
   <dt>EXP( <var>aexpr</var> )<dd>Raise e to number
   <dt>INT( <var>aexpr</var> )<dd>Integer part of number
   <dt>LOG( <var>aexpr</var> )<dd>Natural log of number
-  <dt>RND( <var>aexpr</var> )<dd>Pseudo-random number generator (0 repeats last, negative reseeds)
+  <dt>RND( <var>aexpr</var> )<dd>Pseudo-random number generator.
+    If <var>aexpr</var> is positive, returns a random number from 0 to 0.999....
+    If <var>aexpr</var> is zero, repeats the last result.
+    If <var>aexpr</var> is negative, reseeds the generator.
   <dt>SGN( <var>aexpr</var> )<dd>Sign of number (-1, 0, 1)
   <dt>SIN( <var>aexpr</var> )<dd>Sine of number
   <dt>SQR( <var>aexpr</var> )<dd>Square root of number
