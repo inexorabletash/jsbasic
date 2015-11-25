@@ -4,7 +4,7 @@
 
 // Usage:
 //
-//   tty = new TTY( screen_element, keyboard_element, bell );
+//   tty = new TTY( screen_element, keyboard_element );
 //   tty.clearScreen()
 //   tty.clearEOL()
 //   tty.clearEOS()
@@ -34,7 +34,7 @@
 //   tty.TEXT_STYLE_INVERSE = 1
 //   tty.TEXT_STYLE_FLASH   = 2
 
-function TTY(screenElement, keyboardElement, bell) {
+function TTY(screenElement, keyboardElement) {
 
   // Constants
 
@@ -348,13 +348,8 @@ function TTY(screenElement, keyboardElement, bell) {
       case 4: // DOS hook takes care of CHR$(4)
       case 5:
       case 6:
+      case 7: // (BEL) bell - handled by index hook
         // no-op
-        break;
-
-      case 7: // (BEL) bell
-        if (bell) {
-          bell();
-        }
         break;
 
       case 8: // (BS) backspace

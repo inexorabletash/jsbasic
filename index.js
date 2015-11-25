@@ -5,12 +5,6 @@ window.addEventListener('DOMContentLoaded', function () {
 
   $('#lb_files').selectedIndex = 0;
 
-  var bell = (function () {
-    var b = new Bell(/^.*\/|/.exec(window.location)[0]);
-    return function () { b.play(); };
-  } ());
-
-
   var frame = $('#frame');
 
   var keyboard = frame;
@@ -26,7 +20,18 @@ window.addEventListener('DOMContentLoaded', function () {
     frame.parentNode.insertBefore(keyboard, frame);
   }
 
-  var tty = new TTY($('#screen'), keyboard, bell);
+  var tty = new TTY($('#screen'), keyboard);
+  (function() {
+    // Install output hook for bell
+    var b = new Bell(/^.*\/|/.exec(window.location)[0]);
+    var orig = tty.writeChar;
+    tty.writeChar = function index_writeChar(c) {
+      if (c.charCodeAt(0) === 7)
+        b.play();
+      else
+        orig(c);
+    };
+  }());
   var dos = new DOS(tty);
 
   var lores = new LoRes($('#lores'), 40, 48);
