@@ -124,6 +124,7 @@ window.addEventListener('DOMContentLoaded', function () {
 
     stopped = false;
     updateUI();
+    $('#btn_stop').focus();
 
     program.init({
       tty: tty,
@@ -147,14 +148,33 @@ window.addEventListener('DOMContentLoaded', function () {
     loadFile('samples/' + sel.value + ".txt", setSource);
   });
 
-  $('#btn_save').addEventListener('click', function () {
-    window.localStorage.setItem("save_program", getSource());
-    $('#btn_load').disabled = false;
+  var current_file_name;
+  $('#btn_save').addEventListener('click', function(e) {
+    e.preventDefault();
+    var a = document.createElement('a');
+    a.download = current_file_name || 'basic_program.txt';
+    a.href = 'data:text/plain;base64,' + window.btoa(getSource());
+    document.body.appendChild(a);
+    a.click();
+    a.parentElement.removeChild(a);
   });
-  $('#btn_load').addEventListener('click', function () {
-    setSource(window.localStorage.getItem("save_program"));
+  $('#btn_load').addEventListener('click', function(e) {
+    e.preventDefault();
+    var input = document.createElement('input');
+    input.type = 'file';
+    input.addEventListener('change', function(e) {
+      var file = e.target.files[0];
+      current_file_name = file.name;
+      var reader = new FileReader();
+      reader.addEventListener('load', function() {
+        setSource(reader.result);
+      });
+      reader.readAsText(file);
+    });
+    document.body.appendChild(input);
+    input.click();
+    input.parentElement.removeChild(input);
   });
-  $('#btn_load').disabled = (window.localStorage.getItem("save_program") === null);
 
   // Add a "printer" on demand
   var printer = null;
@@ -181,12 +201,14 @@ window.addEventListener('DOMContentLoaded', function () {
 
   var stopped = true;
   function updateUI() {
+    var btnFocus = (document.activeElement === $("#btn_run") ||
+                    document.activeElement === $("#btn_stop"));
     $("#btn_stop").disabled = stopped ? "disabled" : "";
     $("#btn_run").disabled = stopped ? "" : "disabled";
     $("#lb_files").disabled = stopped ? "" : "disabled";
 
-    if (stopped) {
-      $("#btn_run").focus();
+    if (btnFocus) {
+      $(stopped ? "#btn_run" : "#btn_stop").focus();
     } else {
       tty.focus();
     }
