@@ -207,7 +207,7 @@ window.addEventListener('DOMContentLoaded', function () {
     $("#btn_run").disabled = stopped ? "" : "disabled";
     $("#lb_files").disabled = stopped ? "" : "disabled";
 
-    if (btnFocus) {
+    if (btnFocus || stopped) {
       $(stopped ? "#btn_run" : "#btn_stop").focus();
     } else {
       tty.focus();
