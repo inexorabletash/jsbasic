@@ -632,7 +632,6 @@ this.basic = (function() {
         throw new EndProgram();
       },
 
-
       //////////////////////////////////////////////////////////////////////
       //
       // Error Handling Statements
@@ -641,6 +640,7 @@ this.basic = (function() {
 
       'onerr_goto': function ONERR_GOTO(line) {
         state.onerr_handler = line;
+        throw new NextLine();
       },
 
       'resume': function RESUME() {
