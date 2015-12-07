@@ -1,7 +1,7 @@
 
-window.addEventListener('DOMContentLoaded', function () {
+window.addEventListener('DOMContentLoaded', function() {
 
-  var $ = function (s) { return document.querySelector(s); };
+  var $ = function(s) { return document.querySelector(s); };
 
   $('#lb_files').selectedIndex = 0;
 
@@ -39,7 +39,7 @@ window.addEventListener('DOMContentLoaded', function () {
   var hires2 = new HiRes($('#hires2'), 280, 192);
   var display = {
     state: { graphics: false, full: true, page1: true, lores: true },
-    setState: function (state, value /* ... */) {
+    setState: function(state, value /* ... */) {
       var args = Array.prototype.slice.call(arguments);
       while (args.length) {
         state = args.shift();
@@ -72,26 +72,26 @@ window.addEventListener('DOMContentLoaded', function () {
       height: '100%'
     });
   } else {
-    editor = (function () {
+    editor = (function() {
       var textArea = document.createElement('textarea');
       $('#editorframe').appendChild(textArea);
       textArea.style.width = '598px';
       textArea.style.height = '384px';
       return {
-        getValue: function () {
+        getValue: function() {
           return textArea.value;
         },
-        setValue: function (value) {
+        setValue: function(value) {
           textArea.value = value;
         },
-        setCursor: function (line, column) {
+        setCursor: function(line, column) {
           // TODO: Implement me!
         }
       };
     }());
   }
 
-  $('#btn_share').onclick = function () {
+  $('#btn_share').onclick = function(e) {
     // Load up the hidden text area with the current source
     $('#source').value = getSource();
   };
@@ -105,7 +105,9 @@ window.addEventListener('DOMContentLoaded', function () {
   }
 
   var program;
-  $('#btn_run').addEventListener('click', function () {
+  $('#btn_run').addEventListener('click', function(e) {
+    e.preventDefault();
+
     dos.reset();
     tty.reset();
     tty.autoScroll = true;
@@ -132,18 +134,20 @@ window.addEventListener('DOMContentLoaded', function () {
       hires2: hires2,
       lores: lores,
       display: display,
-      paddle: function (n) { return pdl[n]; }
+      paddle: function(n) { return pdl[n]; }
     });
     setTimeout(driver, 0);
   });
 
-  $('#btn_stop').addEventListener('click', function () {
+  $('#btn_stop').addEventListener('click', function(e) {
+    e.preventDefault();
+
     tty.reset(); // cancel any blocking input
     stopped = true;
     updateUI();
   });
 
-  $('#lb_files').addEventListener('change', function () {
+  $('#lb_files').addEventListener('change', function() {
     var sel = $('#lb_files');
     loadFile('samples/' + sel.value + ".txt", setSource);
   });
@@ -179,11 +183,13 @@ window.addEventListener('DOMContentLoaded', function () {
   // Add a "printer" on demand
   var printer = null;
   var paper = $('#paper');
-  $('#show_paper').addEventListener('click', function () {
+  $('#show_paper').addEventListener('click', function(e) {
+    e.preventDefault();
     document.body.classList.add('printout');
     printer = new Printer(tty, paper);
   });
-  $('#hide_paper').addEventListener('click', function () {
+  $('#hide_paper').addEventListener('click', function(e) {
+    e.preventDefault();
     document.body.classList.remove('printout');
     printer.close();
     printer = null;
@@ -191,7 +197,7 @@ window.addEventListener('DOMContentLoaded', function () {
 
   // Mouse-as-Joystick
   var wrapper = $('#screen-wrapper');
-  wrapper.addEventListener('mousemove', function (e) {
+  wrapper.addEventListener('mousemove', function(e) {
     var rect = wrapper.getBoundingClientRect(),
         x = e.clientX - rect.left, y = e.clientY - rect.top;
     function clamp(n, min, max) { return n < min ? min : n > max ? max : n; }
@@ -264,7 +270,7 @@ window.addEventListener('DOMContentLoaded', function () {
     var url = encodeURI(filename); // not encodeURIComponent, so paths can be specified
     var async = true;
     req.open("GET", url, async);
-    req.onreadystatechange = function () {
+    req.onreadystatechange = function() {
       if (req.readyState === XMLHttpRequest.DONE) {
         if (req.status === 200 || req.status === 0) {
           callback(req.responseText);
