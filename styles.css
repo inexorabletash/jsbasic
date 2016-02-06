@@ -21,7 +21,7 @@ h1, h2, h3, p, ul { margin-bottom: 0; margin-top: 0; }
   overflow-y: scroll;
   font-family: Courier, Monospace;
   background-color: #ffffff;
-  background-image: url('lpt.jpg');
+  background-image: url('res/lpt.jpg');
   background-repeat: repeat-y;
   background-attachment: local;
   color: #000000;

@@ -14,10 +14,10 @@
 .jsb-tty .jsb-chr-cursor { position: relative; display: inline-block; }
 
 /* 40 Column Text */
-.jsb-40col .jsb-chr { background-image: url(font-40col.png); width: 14px; }
+.jsb-40col .jsb-chr { background-image: url('res/font-40col.png'); width: 14px; }
 
 /* 80 Column Text */
-.jsb-80col .jsb-chr { background-image: url(font-80col.png); width: 7px; }
+.jsb-80col .jsb-chr { background-image: url('res/font-80col.png'); width: 7px; }
 
 /* Lo-Res Graphics */
 
