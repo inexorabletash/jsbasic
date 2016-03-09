@@ -28,9 +28,6 @@
 //    // driver will also be called after input is unblocked
 //    // driver may want to yield via setTimeout() after N steps
 
-// ES6 polyfill:
-if (!String.prototype.repeat) { String.prototype.repeat = function(n){return Array(n+1).join(this); }; }
-
 this.basic = (function() {
 
   var basic = {

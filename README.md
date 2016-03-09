@@ -3,8 +3,6 @@ jsbasic - Applesoft BASIC in JavaScript
 
 This is hosted for playing with at http://inexorabletash.github.io/jsbasic/
 
-Use `git clone --recursive` to get [polyfill](http://github.com/inexorabletash/polyfill) for older browsers.
-
 Notes & Known Issues
 --------------------
 * The BASIC program is compiled to JavaScript before execution. Syntax errors are therefore detected at compile-time rather than at run-time as on a traditional interpreter. For example, the following program would run without errors on an Apple since the erroneous second statement is never reached. `10 END : CHR$(PRINT)`
@@ -23,8 +21,3 @@ Notes & Known Issues
   * `CHR$()` values > 255 do interesting things
   * `HSCRN(x, y)` allows probing the hi-res screen
   * hexadecimal literals e.g. `$C010` can be used as numbers
-
-You can run your basic programs from the command line (with only basic text input and output, and no graphics or DOS commands):
-* Clone the repository locally
-* On Windows, run from a command prompt via: `cscript.exe cbasic.js your_program.txt`
-* On Mac/Linux, install Mozilla Rhino, run from the command prompt via: `java -jar PATH_TO/js.jar cbasic.js your_program.txt`
