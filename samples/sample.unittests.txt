@@ -69,57 +69,100 @@
 2031 T = T + 1
 2032 T = T + 1
 2033 T = T + 1
-2039 S = (T=3) : GOSUB 1
+2034 S = (T=3) : GOSUB 1
+2035 T$ = "ON GOTO (EDGE CASE: 0)" : T = 1
+: ON 0 GOTO 2036, 2037 : T = T + 3
+2036 T = T + 1
+2037 T = T + 1
+2038 S = (T=6) : GOSUB 1
+2039 T$ = "ON GOTO (EDGE CASE: -0.1)" : T = 1 : ONERR GOTO 2043
+2040 ON -0.1 GOTO 2041, 2042 : T = T + 3
+2041 T = T + 1
+2042 T = T + 1
+2043 S = (T=1) AND (PEEK(222)=53): GOSUB 1
+2044 T$ = "ON GOTO (EDGE CASE: 255.2)" : T = 1
+: ON 255.2 GOTO 2045, 2046 : T = T + 3
+2045 T = T + 1
+2046 T = T + 1
+2047 S = (T=6) : GOSUB 1
+2048 T$ = "ON GOTO (EDGE CASE: 256)" : T = 1 : ONERR GOTO 2052
+2049 ON -0.1 GOTO 2050, 2051 : T = T + 3
+2050 T = T + 1
+2051 T = T + 1
+2052 S = (T=1) AND (PEEK(222)=53): GOSUB 1
 
-2040 T$ = "ON GOSUB" : T = 1 : ON 2 GOSUB 2041, 2042, 2043 : GOTO 2049
-2041 T = T + 1 : RETURN
-2042 T = T + 2 : RETURN
-2043 T = T + 3 : RETURN
-2049 S = (T=3) : GOSUB 1
 
-2050 T$ = "POP" : T = 1 : GOSUB 2055 : T = T + 1 : GOTO 2059
-2055 T = T + 1 : GOSUB 2056 : T = T + 5
-2056 POP : T = T + 1 : RETURN
-2059 S = (T=4) : GOSUB 1
+2060 T$ = "ON GOSUB" : T = 1 : ON 2 GOSUB 2061, 2062, 2063 : GOTO 2064
+2061 T = T + 1 : RETURN
+2062 T = T + 2 : RETURN
+2063 T = T + 3 : RETURN
+2064 S = (T=3) : GOSUB 1
+2065 T$ = "ON GOSUB (EDGE CASE: 0)" : T = 1
+: ON 0 GOSUB 2066, 2067, 2068 : GOTO 2069
+2066 T = T + 1 : RETURN
+2067 T = T + 2 : RETURN
+2068 T = T + 3 : RETURN
+2069 S = (T=1) : GOSUB 1
+2070 T$ = "ON GOSUB (EDGE CASE: -0.1)" : T = 1 : ONERR GOTO 2074
+2071 ON -0.1 GOSUB 2072, 2073 : T = T + 5 : GOTO 2074
+2072 T = T + 2 : RETURN
+2073 T = T + 3 : RETURN
+2074 S = (T=1) AND (PEEK(222)=53): GOSUB 1
+2075 T$ = "ON GOSUB (EDGE CASE: 255.2)" : T = 1
+: ON 255.2 GOSUB 2076, 2077, 2078 : GOTO 2079
+2076 T = T + 1 : RETURN
+2077 T = T + 2 : RETURN
+2078 T = T + 3 : RETURN
+2079 S = (T=1) : GOSUB 1
+2080 T$ = "ON GOSUB (EDGE CASE: 256)" : T = 1 : ONERR GOTO 2084
+2081 ON 256 GOSUB 2082, 2083 : T = T + 5 : GOTO 2084
+2082 T = T + 2 : RETURN
+2083 T = T + 3 : RETURN
+2084 S = (T=1) AND (PEEK(222)=53): GOSUB 1
 
-2060 T$ = "FOR"
+2150 T$ = "POP" : T = 1 : GOSUB 2155 : T = T + 1 : GOTO 2159
+2155 T = T + 1 : GOSUB 2156 : T = T + 5
+2156 POP : T = T + 1 : RETURN
+2159 S = (T=4) : GOSUB 1
+
+2160 T$ = "FOR"
 : T = 0 : FOR I = 1 TO 10 : T = T + I : NEXT
 : S = (T = 55) : GOSUB 1
-2061 T$ = "FOR STEP"
+2161 T$ = "FOR STEP"
 : T = 0 : FOR I = 1 TO 10 STEP 2 : T = T + I : NEXT
 : S = (T = 25) : GOSUB 1
-2062 T$ = "FOR STEP"
+2162 T$ = "FOR STEP"
 : T = 0 : FOR I = 10 TO 1 STEP -1 : T = T + I : NEXT
 : S = (T = 55) : GOSUB 1
-2063 T$ = "FOR STEP"
+2163 T$ = "FOR STEP"
 : T = 0 : FOR I = 10 TO 1 : T = T + I : NEXT
 : S = (T = 10) : GOSUB 1
 
-2070 T$ = "NEXT"
+2170 T$ = "NEXT"
 : T = 0 : FOR I = 1 TO 10 : FOR J = 1 TO 10 : FOR K = 1 TO 10 : T = T + 1 : NEXT J, I
 : S = (T=100) : GOSUB 1
 
-2080 T$ = "IF THEN"
+2180 T$ = "IF THEN"
 : T = 1 : IF 0 THEN T = 2
-2081 S = (T=1) : GOSUB 1
+2181 S = (T=1) : GOSUB 1
 : T = 1 : IF 1 THEN T = 2 : T = 3
-2082 S = (T=3) : GOSUB 1
+2182 S = (T=3) : GOSUB 1
 
-2090 T$ = "IF GOTO"
-: T = 1 : IF 0 GOTO 2092 : T = 2
-2091 T = 3
-2092 S = (T=3) : GOSUB 1
-: T = 1 : IF 1 GOTO 2094 : T = 2
-2093 T = 3
-2094 S = (T=1) : GOSUB 1
+2190 T$ = "IF GOTO"
+: T = 1 : IF 0 GOTO 2192 : T = 2
+2191 T = 3
+2192 S = (T=3) : GOSUB 1
+: T = 1 : IF 1 GOTO 2194 : T = 2
+2193 T = 3
+2194 S = (T=1) : GOSUB 1
 
-2100 T$ = "Empty String is False"
+2200 T$ = "Empty String is False"
 : T = 1 : IF "" THEN T = 2
-2101 S = (T=1) : GOSUB 1
+2201 S = (T=1) : GOSUB 1
 
-2110 T$ = "Non-Empty String is True"
+2210 T$ = "Non-Empty String is True"
 : T = 1 : IF "abc" THEN T = 2
-2111 S = (T=2) : GOSUB 1
+2211 S = (T=2) : GOSUB 1
 
 
 3000 PRINT : PRINT "Error Handling ";
