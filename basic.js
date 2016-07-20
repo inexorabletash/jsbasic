@@ -523,10 +523,11 @@ this.basic = (function() {
       },
 
       'on_goto': function ON_GOTO(index /* , ...lines */) {
+        index = Math.floor(index)
         if (index < 0 || index > 255) {
           runtime_error(ERRORS.ILLEGAL_QUANTITY);
         }
-        index = (index - 1) >> 0;
+        --index;
         var lines = Array.prototype.slice.call(arguments, 1);
 
         if (index >= 0 && index < lines.length) {
@@ -543,10 +544,11 @@ this.basic = (function() {
       },
 
       'on_gosub': function ON_GOSUB(index /* , ...lines */) {
+        index = Math.floor(index)
         if (index < 0 || index > 255) {
           runtime_error(ERRORS.ILLEGAL_QUANTITY);
         }
-        index = (index - 1) >> 0;
+        --index;
         var lines = Array.prototype.slice.call(arguments, 1);
         if (index >= 0 && index < lines.length) {
           state.stack.push({
