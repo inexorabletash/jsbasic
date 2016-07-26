@@ -523,13 +523,16 @@ this.basic = (function() {
       },
 
       'on_goto': function ON_GOTO(index /* , ...lines */) {
-        index = (index - 1) >> 0;
-        var lines = Array.prototype.slice.call(arguments, 1);
-
-        if (index < 0 || index >= lines.length) {
+        index = Math.floor(index)
+        if (index < 0 || index > 255) {
           runtime_error(ERRORS.ILLEGAL_QUANTITY);
         }
-        throw new GoToLine(lines[index]);
+        --index;
+        var lines = Array.prototype.slice.call(arguments, 1);
+
+        if (index >= 0 && index < lines.length) {
+          throw new GoToLine(lines[index]);
+        }
       },
 
       'gosub': function GOSUB(line) {
@@ -541,16 +544,19 @@ this.basic = (function() {
       },
 
       'on_gosub': function ON_GOSUB(index /* , ...lines */) {
-        index = (index - 1) >> 0;
-        var lines = Array.prototype.slice.call(arguments, 1);
-        if (index < 0 || index >= lines.length) {
+        index = Math.floor(index)
+        if (index < 0 || index > 255) {
           runtime_error(ERRORS.ILLEGAL_QUANTITY);
         }
-        state.stack.push({
-          gosub_return: state.stmt_index,
-          line_number: state.line_number
-        });
-        throw new GoToLine(lines[index]);
+        --index;
+        var lines = Array.prototype.slice.call(arguments, 1);
+        if (index >= 0 && index < lines.length) {
+          state.stack.push({
+            gosub_return: state.stmt_index,
+            line_number: state.line_number
+          });
+          throw new GoToLine(lines[index]);
+        }
       },
 
       'return': function RETURN() {
