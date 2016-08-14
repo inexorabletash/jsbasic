@@ -8,8 +8,8 @@
   document.write('<link rel="stylesheet" href="' + baseURL + 'display.css">');
 
   function load(url) { document.write('<script src="' + baseURL + url + '"></script>'); }
-  load('https://cdn.rawgit.com/inexorabletash/polyfill/v0.1.16/polyfill.min.js');
-  load('https://cdn.rawgit.com/inexorabletash/polyfill/v0.1.16/keyboard.js');
+  load('https://cdn.rawgit.com/inexorabletash/polyfill/v0.1.25/polyfill.min.js');
+  load('https://cdn.rawgit.com/inexorabletash/polyfill/v0.1.25/keyboard.js');
   load('tty.js');
   load('lores.js');
   load('hires.js');
