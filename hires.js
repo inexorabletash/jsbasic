@@ -9,7 +9,7 @@
 
 // Usage:
 //
-//   var hires = new LoRes( element, width, height )
+//   var hires = new HiRes( element, width, height )
 //   hires.clear( [color_index] )
 //   hires.setColor( color_index )
 //   hires.plot( x, y )
@@ -69,7 +69,7 @@ function HiRes(element, width, height) {
   function drawPixel(x, y) {
     var sx = element.width / width,
         sy = element.height / height;
-    context.fillRect(x * sx, y * sy, sx, sy);
+    context.fillRect((x * sx)|0, (y * sy)|0, sx|0, sy|0);
     pixels[x + y * width] = color;
   }
 
