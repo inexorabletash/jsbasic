@@ -21,7 +21,10 @@ function DOS(tty) {
     NO_BUFFERS_AVAILABLE: [12, 'No buffers available'],
     FILE_TYPE_MISMATCH: [13, 'File type mismatch'],
     PROGRAM_TOO_LARGE: [14, 'Program too large'],
-    NOT_DIRECT_COMMAND: [15, 'Not direct command']
+    NOT_DIRECT_COMMAND: [15, 'Not direct command'],
+
+    // Re-used
+    SYNTAX_ERROR: [16, "Syntax error"]
   },
 
       STORAGE_PREFIX = 'vfs/',
@@ -368,7 +371,7 @@ function DOS(tty) {
       activebuffer = null;
       mode = "";
     } else {
-      doserror(DOSErrors.INVALID_OPTION);
+      doserror(DOSErrors.SYNTAX_ERROR);
     }
   }
 

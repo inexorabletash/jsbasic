@@ -881,7 +881,7 @@
 18091 T = 1
 18093 S = (T = 2) : GOSUB 1
 
-18100 T$ = "Output Hook Precedence
+18100 T$ = "Output Hook Precedence"
 : A$ = "abc" + CHR$(7) + "xyz"
 : PRINT CHR$(4)"OPEN TESTDATA"
 : PRINT CHR$(4)"WRITE TESTDATA"
@@ -892,6 +892,12 @@
 : INPUT B$
 : PRINT CHR$(4)"CLOSE TESTDATA"
 : S = (A$ = B$) : GOSUB 1
+
+18110 T$ = "Invalid DOS Command"
+: T = 1 : ONERR GOTO 18112
+18111 PRINT CHR$(4);CHR$(5)
+: T = 2
+18112 S = (T=1) AND (PEEK(222)=16) : GOSUB 1
 
 20000 PRINT : PRINT : PRINT "Executed tests: "; TE
 20010 PRINT "Successful tests: "; TS
