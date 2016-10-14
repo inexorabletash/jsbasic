@@ -57,6 +57,7 @@ function DOS(tty) {
 
   // Internal - crack arguments e.g. ",S6,D1"
   function parseArgs(str, opts) {
+    str = str || '';
     opts = opts || '';
 
     // Set these to zero so they're always defined when passed into command handlers
@@ -73,12 +74,13 @@ function DOS(tty) {
       O: undefined  // Echo Output
     };
 
-    while (str.match(/^,?\s*([VDSLRBACIO])\s*([0-9]+|\$[0-9A-Fa-f]+)?\s*([\x20-\x7E]*)/)) {
-      if (opts.indexOf(RegExp.$1) === -1) {
+    var m;
+    while ((m = str.match(/^,?\s*([VDSLRBACIO])\s*([0-9]+|\$[0-9A-Fa-f]+)?\s*([\x20-\x7E]*)/))) {
+      if (opts.indexOf(m[1]) === -1) {
         doserror(DOSErrors.INVALID_OPTION);
       }
-      args[RegExp.$1] = Number(RegExp.$2);
-      str = RegExp.$3;
+      args[m[1]] = Number(m[2]);
+      str = m[3];
     }
 
     if (str.length > 0) {
@@ -288,9 +290,10 @@ function DOS(tty) {
       tty.writeString(command + "\r");
     }
 
-    if (command.match(/^MON([\x20-\x7E]*)/)) {
+    var m;
+    if ((m = command.match(/^MON([\x20-\x7E]*)/))) {
       // MON[,C][,I][,O]                 Traces DOS 3.3 commands ('Commands', 'Input' and 'Output')
-      args = parseArgs(RegExp.$1, 'ICO');
+      args = parseArgs(m[1], 'ICO');
 
       if (args.I !== undefined) {
         monico |= MON_I;
@@ -302,9 +305,9 @@ function DOS(tty) {
         monico |= MON_O;
       }
 
-    } else if (command.match(/^NOMON([\x20-\x7E]*)/)) {
+    } else if ((m = command.match(/^NOMON([\x20-\x7E]*)/))) {
       // NOMON[,C][,I][,O]               Cancels tracing of DOS 3.3 commands ('Commands', 'Input' and 'Output')
-      args = parseArgs(RegExp.$1, 'ICO');
+      args = parseArgs(m[1], 'ICO');
       if (args.I !== undefined) {
         monico &= ~MON_I;
       }
@@ -314,50 +317,50 @@ function DOS(tty) {
       if (args.O !== undefined) {
         monico &= ~MON_O;
       }
-    } else if (command.match(/^OPEN\s*([\x20-\x2B\x2D-\x7E]+)(,[\x20-\x7E]*)?/)) {
+    } else if ((m = command.match(/^OPEN\s*([\x20-\x2B\x2D-\x7E]+)(,[\x20-\x7E]*)?/))) {
       // OPEN filename[,Llen]            Opens a text file.
-      filename = RegExp.$1;
-      args = parseArgs(RegExp.$2, 'L');
+      filename = m[1];
+      args = parseArgs(m[2], 'L');
       open(filename, args.L);
-    } else if (command.match(/^APPEND\s*([\x20-\x2B\x2D-\x7E]+)(,[\x20-\x7E]*)?/)) {
+    } else if ((m = command.match(/^APPEND\s*([\x20-\x2B\x2D-\x7E]+)(,[\x20-\x7E]*)?/))) {
       // APPEND filename                 Appends to a text file.
-      filename = RegExp.$1;
-      args = parseArgs(RegExp.$2);
+      filename = m[1];
+      args = parseArgs(m[2]);
       append(filename, args.L);
-    } else if (command.match(/^CLOSE\s*([\x20-\x2B\x2D-\x7E]+)?(,[\x20-\x7E]*)?/)) {
+    } else if ((m = command.match(/^CLOSE\s*([\x20-\x2B\x2D-\x7E]+)?(,[\x20-\x7E]*)?/))) {
       // CLOSE [filename]                Closes specified (or all) open text files.
-      filename = RegExp.$1;
+      filename = m[1];
       close(filename);
-    } else if (command.match(/^POSITION\s*([\x20-\x2B\x2D-\x7E]+)(,[\x20-\x7E]*)?/)) {
+    } else if ((m = command.match(/^POSITION\s*([\x20-\x2B\x2D-\x7E]+)(,[\x20-\x7E]*)?/))) {
       // POSITION filename[,Rnum]        Advances position in text file.
-      filename = RegExp.$1;
-      args = parseArgs(RegExp.$2, 'R');
+      filename = m[1];
+      args = parseArgs(m[2], 'R');
       position(filename, args.R);
-    } else if (command.match(/^READ\s*([\x20-\x2B\x2D-\x7E]+)(,[\x20-\x7E]*)?/)) {
+    } else if ((m = command.match(/^READ\s*([\x20-\x2B\x2D-\x7E]+)(,[\x20-\x7E]*)?/))) {
       // READ filename[,Rnum][,Bbyte]    Reads from a text file.
-      filename = RegExp.$1;
-      args = parseArgs(RegExp.$2, 'RB');
+      filename = m[1];
+      args = parseArgs(m[2], 'RB');
       read(filename, args.R, args.B);
-    } else if (command.match(/^WRITE\s*([\x20-\x2B\x2D-\x7E]+)(,[\x20-\x7E]*)?/)) {
+    } else if ((m = command.match(/^WRITE\s*([\x20-\x2B\x2D-\x7E]+)(,[\x20-\x7E]*)?/))) {
       // WRITE filename[,Rnum][,Bbyte]   Writes to a text file.
-      filename = RegExp.$1;
-      args = parseArgs(RegExp.$2, 'RB');
+      filename = m[1];
+      args = parseArgs(m[2], 'RB');
       write(filename, args.R, args.B);
-    } else if (command.match(/^DELETE\s*([\x20-\x2B\x2D-\x7E]+)(,[\x20-\x7E]*)?/)) {
+    } else if ((m = command.match(/^DELETE\s*([\x20-\x2B\x2D-\x7E]+)(,[\x20-\x7E]*)?/))) {
       // DELETE filename                 Delete a file
-      filename = RegExp.$1;
-      args = parseArgs(RegExp.$2);
+      filename = m[1];
+      args = parseArgs(m[2]);
       unlink(filename);
-    } else if (command.match(/^RENAME\s*([\x20-\x2B\x2D-\x7E]+),\s*([\x20-\x2B\x2D-\x7E]+)(,[\x20-\x7E]*)?/)) {
+    } else if ((m = command.match(/^RENAME\s*([\x20-\x2B\x2D-\x7E]+),\s*([\x20-\x2B\x2D-\x7E]+)(,[\x20-\x7E]*)?/))) {
       // RENAME filename,filename        Rename a file
-      filename = RegExp.$1;
-      filename2 = RegExp.$2;
-      args = parseArgs(RegExp.$3);
+      filename = m[1];
+      filename2 = m[2];
+      args = parseArgs(m[3]);
       rename(filename, filename2);
-    } else if (command.match(/^PR#\s*([\x20-\x2B\x2D-\x7E]+)(,[\x20-\x7E]*)?/)) {
+    } else if ((m = command.match(/^PR#\s*([\x20-\x2B\x2D-\x7E]+)(,[\x20-\x7E]*)?/))) {
       // PR# slot                        Direct output to slot
-      slot = Number(RegExp.$1);
-      args = parseArgs(RegExp.$2);
+      slot = Number(m[1]);
+      args = parseArgs(m[2]);
       if (slot === 0) {
         if (tty.setFirmwareActive) { tty.setFirmwareActive(false); }
       } else if (slot === 3) {
@@ -365,7 +368,7 @@ function DOS(tty) {
       } else {
         doserror(DOSErrors.RANGE_ERROR);
       }
-    } else if (command.match(/^$/)) {
+    } else if ((m = command.match(/^$/))) {
       // Null command - terminates a READ/WRITE, but doesn't CLOSE
       // (leaves record length intact on open buffer)
       activebuffer = null;
