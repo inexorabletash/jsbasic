@@ -5,7 +5,7 @@
  50 VTAB 18 : HTAB 6 : PRINT "Left & Right Arrow Keys move"
  60 VTAB 19 : HTAB 7 : PRINT "any other key goes straight"
  70 VTAB 21 : PRINT "Press any key to play"
- 80 GET KEY : TEXT : HOME : REM wait for keypress then clear screen and begin
+ 80 GET KEY$ : TEXT : HOME : REM wait for keypress then clear screen and begin
  90 DIM RL(13) : DIM RR(13) : FOR X = 1 TO 13 : RL(X) = 1 : RR(X) = 35 : NEXT : REM Set default road width
  100 REM left & right arrow keys, any other straight
  110 W = (W = 0) * 10 + W - .01 + (W < 0) : REM determine width of road
@@ -24,4 +24,3 @@
  240 FOR MY = 1 TO 1000 : NEXT MY : REM Slow the emulator down some
  250 IF C = 0 THEN 100 : REM check if still on the road
  260 HOME : PRINT "YOUR SCORE WAS:"T : REM And you're done
- 
