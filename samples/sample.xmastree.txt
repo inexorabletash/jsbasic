@@ -1,0 +1,31 @@
+ 10 TEXT : HOME : REM Clear the screen
+ 20 VTAB 4 : HTAB 14 : PRINT "Christmas Tree"
+ 30 VTAB 10 : HTAB 1 : PRINT "By Gregg Buntin and Rich Orde (1983ish)"
+ 40 VTAB 12 : HTAB 5 : PRINT "Adapted for JSBasic Dec 2, 2016"
+ 50 VTAB 19 : PRINT "Press any key to continue"
+ 60 GET NUM$ : REM read input
+ 200 DIM X(20),Y(20)
+ 210 HGR : POKE  - 16302,0: HCOLOR= 1 : REM Set Hires, full screen, color green
+ 220 FOR I = 40 TO 140 STEP 10: FOR J = 0 TO 9 : REM Loops for Tree
+ 230 HPLOT 140 - J * 1.4 + 20 - I / 2,I + J TO 140 + J * 1.4 - 20 + I / 2,I + J: NEXT : NEXT : REM Draw Tree
+ 240 HCOLOR= 0: HPLOT 100,149 TO 180,149: HPLOT 105,148 TO 175,148: HPLOT 125,147 TO 155,147 : REM Bottom of tree
+ 250 HCOLOR= 5: FOR I = 147 TO 160: HPLOT 132,I TO 148,I: NEXT : REM Tree Trunk
+ 260 HCOLOR= 2 : FOR I = 161 TO 163: HPLOT 0,I TO 279,I: NEXT : REM Ground
+ 270 HCOLOR= 6: HPLOT 140,30 TO 140,40: HPLOT 133,35 TO 147,35: HPLOT 135,30 TO 145,40: HPLOT 135,40 TO 145,30 : REM Star
+ 280 DATA 140,50,135,95,145,135,110,100,160,111 : REM Data for ornaments
+ 290 DATA 102,135,127,120,128,75,150,85,170,133 : REM Data for ornaments
+ 300 HCOLOR= 2: FOR I = 1 TO 10 : REM 10 purple ornaments
+ 310 READ X,Y: HPLOT X + 1,Y TO X + 3,Y: HPLOT X + 1,Y + 4 TO X + 3,Y + 4 : REM top & bottom of ornaments
+ 320 FOR J = Y + 1 TO Y + 3: HPLOT X,J TO X + 4,J: NEXT : NEXT : REM middle of Ornaments
+ 315 REM Start with 'random' snow
+ 330 DATA 20,20,70,50,30,100,60,130,10,60   
+ 340 DATA  25,25,75,55,35,95,65,125,15,65
+ 350 DATA 210,50,270,60,220,130,255,100,240,20 
+ 360 DATA  215,55,275,65,225,135,260,105,245,25
+ 370 FOR I = 1 TO 20: READ X(I),Y(I): NEXT : REM get snow starting locations
+ 380 FOR I = 1 TO 20: HCOLOR= 0: HPLOT X(I),Y(I) TO X(I) + 1,Y(I):Y(I) = Y(I) + 5: IF Y(I) > 158 THEN 400
+ 390 HCOLOR= 3: HPLOT X(I),Y(I) TO X(I) + 1,Y(I): NEXT : GOTO 380
+ 400 HCOLOR= 3: HPLOT X(I),160 TO X(I) + 1,160
+ 410 Y(I) = 0: IF X(I) > 140 THEN X(I) =  INT ( RND (1) * 75) + 204
+ 420 IF X(I) < 140 THEN X(I) =  INT ( RND (1) * 80)
+ 430 GOTO 390
