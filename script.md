@@ -12,7 +12,7 @@ Like this:
 <title>My BASIC example</title>
 <h1>Look what I did!</h1>
 
-<script src="http://inexorabletash.github.io/jsbasic/script.js"></script>
+<script src="https://inexorabletash.github.io/jsbasic/script.js"></script>
 <script type="text/applesoft-basic">
 
 10 REM Your BASIC program goes here
