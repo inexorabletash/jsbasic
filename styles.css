@@ -9,14 +9,13 @@ h1, h2, h3, p, ul { margin-bottom: 0; margin-top: 0; }
 
 /* "Paper" (for copying output) */
 #paper {
-  display: none;
   margin: 0;
   position: fixed;
   z-index: 100;
   left: 0;
   right: 0;
   bottom: 0;
-  top: 560px;
+  height: 0;
   overflow-x: hidden;
   overflow-y: scroll;
   font-family: Courier, Monospace;
@@ -28,10 +27,10 @@ h1, h2, h3, p, ul { margin-bottom: 0; margin-top: 0; }
   padding-left: 50px;
   white-space: pre;
   box-shadow: inset 0 5px 10px black;
+  transition: height 0.5s ease;
 }
 
-body.printout #paper { display: block; }
-#show_paper { display: inline-block; }
-#hide_paper { display: none; }
+body.printout #paper, #paper-spacer { height: 200px; }
+
+body:not(.printout) #hide_paper { display: none; }
 body.printout #show_paper { display: none; }
-body.printout #hide_paper { display: inline-block; }

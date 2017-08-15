@@ -489,6 +489,15 @@ this.basic = (function() {
       },
       0xFC9C: function() { // Clear from cursor to right
         if (env.tty.clearEOL) { env.tty.clearEOL(); }
+      },
+      0xFD0C: function() { // Wait for key press
+        throw new BlockingInput(env.tty.readChar, function(_){});
+      },
+      0xFE84: function() { // Normal
+        if (env.tty.setTextStyle) { env.tty.setTextStyle(env.tty.TEXT_STYLE_NORMAL); }
+      },
+      0xFE80: function() { // Inverse
+        if (env.tty.setTextStyle) { env.tty.setTextStyle(env.tty.TEXT_STYLE_INVERSE); }
       }
     };
 
@@ -731,20 +740,15 @@ this.basic = (function() {
       },
 
       'get': function GET(lvalue) {
-        var im = env.tty.readChar,
-                    ih = function(entry) {
-                      lvalue(entry);
-                    };
-        throw new BlockingInput(im, ih);
+        throw new BlockingInput(env.tty.readChar, function(entry) { lvalue(entry); });
       },
 
       'input': function INPUT(prompt /* , ...varlist */) {
         var varlist = Array.prototype.slice.call(arguments, 1); // copy for closure
-        var im, ih;
-        im = function(cb) { return env.tty.readLine(cb, prompt); };
-        ih = function(entry) {
+        var im = function(cb) { return env.tty.readLine(cb, prompt); };
+        var ih = function(entry) {
           var parts = [],
-                        stream = new Stream(entry);
+              stream = new Stream(entry);
 
           parseDataInput(stream, parts);
 
@@ -753,7 +757,7 @@ this.basic = (function() {
               varlist.shift()(parts.shift());
             } catch (e) {
               if (e instanceof basic.RuntimeError &&
-                                e.code === ERRORS.TYPE_MISMATCH[0]) {
+                  e.code === ERRORS.TYPE_MISMATCH[0]) {
                 e.code = ERRORS.REENTER[0];
                 e.message = ERRORS.REENTER[1];
               }
@@ -964,7 +968,7 @@ this.basic = (function() {
         if (!hires) { runtime_error('Hires graphics not supported'); }
 
         var coords = Array.prototype.slice.call(arguments),
-                    size = hires.getScreenSize(), x, y;
+            size = hires.getScreenSize(), x, y;
 
         while (coords.length) {
           x = coords.shift() >> 0;
@@ -1181,8 +1185,8 @@ this.basic = (function() {
       //////////////////////////////////////////////////////////////////////
 
       var match, test, endOfStatement, endOfProgram,
-                currLine = 0, currColumn = 0,
-                currLineNumber = 0;
+          currLine = 0, currColumn = 0,
+          currLineNumber = 0;
 
       function parse_error(msg) {
         return new basic.ParseError(msg + " in line " + currLineNumber,
@@ -1253,7 +1257,7 @@ this.basic = (function() {
         //    data          - DATA blah,"blah",blah
 
         var start = true,
-                    stream = new Stream(source);
+            stream = new Stream(source);
 
         function nextToken() {
           var token = {}, newline = start, ws;
@@ -1375,24 +1379,8 @@ this.basic = (function() {
       //////////////////////////////////////////////////////////////////////
 
       function quote(string) {
-        // From json2.js (http://www.json.org/js.html)
-        var escapable = /[\\"\x00-\x1f\x7f-\x9f\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g,
-                    meta = {    // table of character substitutions
-                      '\b': '\\b',
-                      '\t': '\\t',
-                      '\n': '\\n',
-                      '\f': '\\f',
-                      '\r': '\\r',
-                      '"': '\\"',
-                      '\\': '\\\\'
-                    };
-
-        return '"' + string.replace(escapable, function(a) {
-          var c = meta[a];
-          return c ? c : '\\u' + ('0000' + a.charCodeAt(0).toString(16)).slice(-4);
-        }) + '"';
+        return JSON.stringify(string);
       }
-
 
       //////////////////////////////////////////////////////////////////////
       //
@@ -1453,7 +1441,7 @@ this.basic = (function() {
 
       function parsePValue() {
         var name = match('identifier'),
-                    subscripts = parseSubscripts();
+            subscripts = parseSubscripts();
 
         if (subscripts) {
           identifiers.arrays[name] = true;
@@ -1476,8 +1464,8 @@ this.basic = (function() {
 
         function parseUserfunction() {
           var name = match('identifier'),
-                        type = vartype(name) === 'string' ? 'string' : 'number',
-                        expr;
+              type = vartype(name) === 'string' ? 'string' : 'number',
+              expr;
 
           // FUTURE: Allow differing argument type and return type
           // (may require runtime type checks)
@@ -1499,10 +1487,10 @@ this.basic = (function() {
           match("operator", "(");
 
           var func = funlib[name],
-                        funcdesc = func.signature.slice(),
-                        rtype = funcdesc.shift(),
-                        args = [],
-                        atype;
+              funcdesc = func.signature.slice(),
+              rtype = funcdesc.shift(),
+              args = [],
+              atype;
 
           while (funcdesc.length) {
             atype = funcdesc.shift();
@@ -1543,8 +1531,8 @@ this.basic = (function() {
             return parsefunction(match('reserved'));
           } else if (test('identifier')) {
             var name = match('identifier'),
-                            type = vartype(name) === 'string' ? 'string' : 'number',
-                            subscripts = parseSubscripts();
+                type = vartype(name) === 'string' ? 'string' : 'number',
+                subscripts = parseSubscripts();
             if (subscripts) {
               identifiers.arrays[name] = true;
               return { source: 'state.arrays[' + quote(name) + '].get([' + subscripts + '])', type: type };
@@ -1709,7 +1697,7 @@ this.basic = (function() {
         }
 
         var keyword = test('identifier') ? kws.LET : match('reserved'),
-                    name, type, subscripts, is_to, expr, param, args, prompt, trailing, js;
+            name, type, subscripts, is_to, expr, param, args, prompt, trailing, js;
 
         switch (keyword) {
           //////////////////////////////////////////////////////////////////////
