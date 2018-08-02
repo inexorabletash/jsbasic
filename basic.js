@@ -532,7 +532,7 @@ this.basic = (function() {
       },
 
       'on_goto': function ON_GOTO(index /* , ...lines */) {
-        index = Math.floor(index)
+        index = Math.floor(index);
         if (index < 0 || index > 255) {
           runtime_error(ERRORS.ILLEGAL_QUANTITY);
         }
@@ -553,7 +553,7 @@ this.basic = (function() {
       },
 
       'on_gosub': function ON_GOSUB(index /* , ...lines */) {
-        index = Math.floor(index)
+        index = Math.floor(index);
         if (index < 0 || index > 255) {
           runtime_error(ERRORS.ILLEGAL_QUANTITY);
         }
