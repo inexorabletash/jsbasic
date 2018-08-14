@@ -1,7 +1,7 @@
 jsbasic - Applesoft BASIC in JavaScript
 =======================================
 
-This is hosted for playing with at http://inexorabletash.github.io/jsbasic/
+This is hosted for playing with at https://inexorabletash.github.io/jsbasic/
 
 Notes & Known Issues
 --------------------
