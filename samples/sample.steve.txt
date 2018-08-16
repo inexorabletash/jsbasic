@@ -1,7 +1,7 @@
 1 REM In honor of Steve Jobs passing I went
 2 REM back to my Apple BASIC roots. I learned
 3 REM on an Apple IIe in my library and over
-4 REM the summer at summer school. 
+4 REM the summer at summer school.
 5 REM It was then that I learned I wasnt a coder
 6 REM and still am not today but it was my start
 7 REM in learning technology outside of the slide
@@ -11,7 +11,7 @@
 11 REM something more exciting.
 12
 13 REM You can run this program via the URL below
-14 REM http://www.calormen.com/Applesoft/.
+14 REM https://www.calormen.com/jsbasic/.
 16 REM
 18 HOME
 19 HGR

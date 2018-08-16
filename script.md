@@ -3,7 +3,7 @@ Web Page Embedding
 
 Want to show off your BASIC creation on your own web site? Now you can with just a tiny bit of HTML.
 There are two parts:
- 1. Insert `<script src="http://inexorabletash.github.io/jsbasic/script.js"></script>` on your page to enable it
+ 1. Insert `<script src="https://inexorabletash.github.io/jsbasic/script.js"></script>` on your page to enable it
  2. Add `<script type="text/applesoft-basic">` then your BASIC program then `</script>`
 
 Like this:
