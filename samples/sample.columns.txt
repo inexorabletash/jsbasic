@@ -1,0 +1,356 @@
+10 rem Columns for Applesoft BASIC
+20 rem Programed by Arthur Allen
+30 rem Based on Columns by Jay Geertsen
+
+
+60 dim array(50, 50), erase(25)
+70 dim shape(2), nshape(3), check(50, 50)
+
+90 gosub 2830: rem Interactive pre-screen
+
+350 home
+360 rem Fill in borders in array
+370 rem Fill bottom row
+380 for fill = 0 to width + 6
+390 array(fill, height+1) = 15
+400 next fill
+
+410 rem Fill left and right sides
+420 for fill = 0 to height + 3
+430 array(left, fill) = 15
+440 array(left+width+1, fill) = 15
+450 next fill
+455 if renew then vtab 21 : htab left + int(width/2) + 1 : print "^" : rem print only if replay selected
+
+
+460 rem Prefill board
+465 gosub 4320 : rem blank out part of screen above prefill
+470 guess = 1
+
+480 if rows = 0 goto 720 : rem Skip if rows = 0, otherwise loop will still execute once
+540 for i = 3 to width + 2
+550 for j = height - rows to height
+555 cycle = 0
+
+570 rem Top of while flag loop
+580 flag = 0
+583 rem Set i back by one if a stable cell (one that won't trip a three in a row) isn't found in 10 attempts.  Set i to 3 if i is less than 3
+585 cycle = cycle + 1
+587 if cycle > 10 then guess = guess + 1 : vtab 22 : print "Attempt: "; guess; ", x pos: "; i; "  " : i = i - 1 : if i < 3 then i = 3
+
+590 candidate = 1 + int (symbols * rnd(sd))
+
+600 rem Proximity checking
+610 if array(i - 1, j) = candidate then if array(i - 2, j) = candidate then flag = 1 : rem same symbol horz left
+620 if array(i, j - 1) = candidate then if array(i, j - 2) = candidate then flag = 1 : rem same symbol up
+630 if array(i - 1, j - 1) = candidate then if array(i - 2, j - 2) = candidate then flag = 1 : rem same symbol diag left & up
+640 if array(i - 1, j + 1) = candidate then if array(i - 2, j + 2) = candidate then flag = 1 : rem same symbol diag left & down 
+660 if flag then goto 570 : rem Back to top of while flag loop
+
+670 array(i, j) = candidate
+680 color= candidate
+690 plot i, j
+700 next j
+710 next i
+
+720 rem Pick piece for initial Next window
+730 rem Pick shape
+740 for s = 0 to 2
+750 nshape(s) = 1 + int (symbols * rnd(sd))
+780 next s
+
+790 rem Make turn
+800 x = 2 + int(width/2)
+810 y = 0 
+820 rem Copy Next to current shape
+830 for s = 0 to 2
+840 shape(s) = nshape(s)
+850 next s
+
+890 rem pick next Next
+900 for s = 0 to 2
+910 nshape(s) = 1 + int (symbols * rnd(sd))
+920 color= nshape(s)
+930 plot width + 5  , y+s
+940 next s
+
+
+1020 t1 = time
+1050 bot = 0
+1060 drop = 0
+
+1120 rem Check for end of play
+1130 rem Check for conflict
+1140 if array(x, y) or  array(x, y+1) or array(x, y+3) then goto 90 : rem end of game, go to front end
+
+1150 rem Make move loop
+1160 if drop then t1 = 1
+1170 for clock = 0 to t1
+1180 if peek (49152) > 127 then gosub 1320 : rem Process input if input detected
+1190 next clock
+
+1200 y1 = y : x1 = x 
+1210 y = y + 1
+1220 cfl = 0
+1240 if not bot then gosub 1630 : rem Move piece
+1260 if cfl then goto 2060 : rem Add to shape & check for complete three in a row
+1270 if not bot then 1150 : rem Back to top of Make move loop, else force to bottom
+1280 y = y - 1 : xdr = 1
+1290 gosub 1920 : rem Draw shape (erase)
+1300 y = y + 1 : xdr = 0
+1310 goto 1530  : rem Send piece to bottom
+
+
+1320 rem Process input
+1330 a = PEEK (49152)
+1340 get g$
+1350 if g$ = " " then gosub 1960 : return : rem Check for rotate
+1360 if g$ = "J" or a = 136 then gosub 1430 : return : rem Check for move left
+1370 if g$ = "K" or a = 149 then gosub 1480 : return : rem Check for move right
+1380 if g$ = "D" or a = 138 then gosub 1580 : return : rem Force down
+1390 if g$ = "M" then bot = 1 : return : rem Send piece to bottom
+1400 if g$ = "S" then drop = 1 : rem Speed up piece
+1410 if g$ = "P" then gosub 2580 : return : rem Pause game
+1415 if g$ = "R" then goto 460 : rem restart at prefill
+1420 return
+
+1430 rem Check for move left
+1440 x1 = x : y1 = y 
+1450 x = x - 1
+1460 gosub 1630 : rem Move piece
+1470 return
+
+1480 rem Check for move right
+1490 x1 = x : y1 = y
+1500 x = x + 1
+1510 gosub 1630 : rem Move piece
+1520 return
+
+
+1530 rem Send piece to bottom
+1540 y = y + 1
+1545 cfl = 0
+1550 if array(x, y+2) then cfl = 1 : rem Check for conflict
+1560 if cfl then y = y - 1 : gosub 2010 : goto 2060  : rem Draw, then Add to bottom
+1570 goto 1530
+
+1580 rem Force piece down
+1590 y1 = y : x1 = x 
+1600 y = y + 1
+1610 gosub 1630 : rem Move piece
+1620 return
+
+
+1630 rem move piece
+1670 cfl = 0
+1680 if array(x, y) or  array(x, y+1) or array(x, y+2) then cfl = 1 : rem Check for conflict
+1700 if cfl then gosub 1820 : return : rem Return old values
+1710 color= 0
+1720 vlin  y1, y1+2 at x1
+1730 for s = 0 to 2
+1740 color= shape(s)
+1750 plot x, y+s
+1760 next s
+1770 return
+
+1820 rem Return old values
+1880 x = x1
+1890 y = y1
+1910 return
+
+1920 rem Erase piece
+1930 color=0
+1940 vlin  y, y+2 at x
+1950 return
+
+1960 rem Rotate
+1970 swap = shape (2)
+1980 shape (2) = shape (1)
+1990 shape (1) = shape (0)
+2000 shape (0) = swap
+2010 for s = 0 to 2 : rem Draw shape, called from 1560
+2020 color= shape(s)
+2030 plot x, y+s
+2040 next s
+2050 return
+
+2060 rem Check field
+
+2070 rem Add shape to board
+2080 for s = 0 to 2
+2090 array(x, y + s) = shape(s)
+2100 next s
+
+2110 rem While found (contol at line 2340.  End of loop at 2560)
+2120 found = 0
+
+2130 rem Initialize array
+2140 for i = 3 to width + 3
+2150 for j = 0 to height
+2160 check(i, j) = 0
+2170 next j
+2180 next i
+
+2190 rem Start checking for three in a row
+2200 for j = 2 to height
+2210 for i = 3 to width + 2
+2220 if array(i, j) = 0 then goto 2310 : rem Skip dead cells
+
+2230 rem Check horizontal
+2240 if array(i, j) = array(i - 1, j) and array(i, j) = array(i + 1, j) then check(i - 1, j) = 1 : check(i, j) = 1 : check(i + 1, j) =1 : found = 1
+
+2250 rem Check vertical
+2260 if array(i, j) = array(i, j - 1) and array(i, j) = array(i, j + 1) then check(i, j - 1) = 1 : check(i, j) = 1 : check(i, j + 1) = 1 : found = 1 : rem vtab 21 : htab 1 : print "2260 found vertical, j+1 = ";  j+1; : rem temp code
+
+
+2270 rem Check diagonal left
+2280 if array(i, j) = array(i - 1, j - 1) and array(i, j) = array(i + 1, j + 1) then check(i - 1, j - 1) = 1 : check(i, j) = 1 : check(i + 1, j + 1) = 1 : found = 1
+
+2290 rem Check diagonal right
+2300 if array(i, j) = array(i + 1, j - 1) and array(i, j) = array(i - 1, j + 1) then check(i + 1, j - 1) = 1 : check(i, j) = 1 : check(i - 1, j + 1) = 1 : found = 1
+
+2310 rem End if skip dead cells
+2320 next i
+2330 next j
+
+2335 gosub 2740 : rem Count cells to be removed. 
+
+2357 rem while not found control:
+2340 if not found then goto 790 : rem Goto Make turn
+
+2350 rem Flash cells
+2355 rem gosub 2610 : rem Draw parallel field of check cells
+2360 for blink = 0 to 1
+
+2370 color= 0
+2380 for j = 2 to height
+2390 for i = 3 to width + 2
+2400 if check(i, j) then plot i, j
+2410 next i
+2420 next j
+
+2430 for j = 2 to height 
+2440 for i = 3 to width + 2
+2450 if check(i, j) then color= array(i, j) : plot i, j
+2460 next i
+2470 next j
+2480 next blink
+
+2490 rem Remove cells from board
+2500 for i = 3 to width + 2
+2505 offset = 0 
+2510 for j = height to 0 step -1
+2520 if not check(i,j) then array(i, j + offset) = array(i, j) : color= array(i, j): plot i, j + offset
+2530 if check(i, j) then offset = offset + 1  
+2540 next j
+2550 next i
+
+2555 if renew then if rows > 0 then if check(left + int(width/2) ,height) then goto 460 : rem end of screen, go to prefill board
+
+
+2560 goto 2110 : rem To top of while found loop
+2570 rem End of Check field subroutine
+
+2580 rem Pause game
+2590 if peek (49152) = 141 then get g$ : null = peek (49168) : return
+2600 goto 2580
+
+2740 rem Count deleted cells
+2745 nowdead = 0
+2750 for j = 2 to height
+2760 for i = 3 to width + 2
+2770 if check (i, j) then dead = dead + 1: nowdead = nowdead + 1
+2780 next i
+2790 next j
+2800 vtab 22 : htab 1 : print "Cleared: "; nowdead; "                       "
+2810 vtab 23 : htab 1 : print "Total:   "; dead
+2820 return
+
+2830 rem Front end screen
+
+2840 rem gosub ? : rem Future animated splash screen
+
+2860 rem setup default values and screen
+2870 rows = 20 : rem Prefill rows
+2880 width = 6
+2890 symbols = 5
+2900 renew = 1 : rem replay value (yes = 1/no = 0)
+2905 choice = 21 : rem vtab position of menu choice
+
+2910 time = 500
+2920 height = 39 : rem Full GR screen with text window. Cannot be larger than 47
+2930 left = 2
+
+2935 rem End of game gosubs to here, past splash screen and default values
+
+2940 gr
+2950 home
+2970 color= 15 : rem Draw white borders
+2980 vlin 0, height at left 
+2990 vlin 0, height at left + width + 1
+2995 gosub 4240 : rem draw top line to indicate height.
+
+3000 vtab 21 : print "    Replay on cleared cell above ^ "; 
+3003 if renew then print "YES"
+3005 if not renew then print "NO "
+3007 if rows = 0 then vtab 21 : htab 36 : print "N/A"
+3010 print "    Width (3 - 34) "; width; : print " [ENTER] to start"
+3020 print "    Prefill (0 - 30) "; rows
+3030 print "    Colors (3 - 14) "; symbols;
+3035 vtab choice : htab 1 : print "-->"; : rem draw arrow
+
+3040 rem Combine the random number seed with a loop that polls for input for game options
+3050 for sd = 0 to 32767
+
+3060 if peek (49152) > 127 then goto 4000 : rem Process input if input detected
+3070 a = rnd (sd * -1) : rem Dummy variable, just used to increment random number
+
+3080 next sd
+
+3090 goto 3050 : REM Return to top of sd to begin poll again
+
+4000 rem Process Input
+4010 a = PEEK (49152)
+4020 get g$
+
+4030 if g$ = "J" or a = 136 then gosub 4120 : rem left option
+4040 if g$ = "K" or a = 149 then gosub 4180: rem right option 
+4050 if g$ = "D" or g$ = "M" or a = 138 then choice = choice + 1: rem down
+4060 if g$ = "I" or a = 139 then choice = choice - 1: rem up
+4070 if a = 141 then return : rem enter/return to start the game.  This is why Process Input is not a subroutine
+
+4080 if choice < 21 then choice = 24
+4090 if choice > 24 then choice = 21
+
+4110 goto 2940 : rem redraw screen
+
+4120 rem Left Choice
+4130 if choice = 21 then renew = 1 + renew * (-1): rem toggle Renew
+4140 if choice = 22 then if width > 3 then width = width - 1: rem width
+4150 if choice = 23 then if rows > 0 then rows = rows - 1 : rem prefill height
+4160 if choice = 24 then if symbols > 3 then symbols = symbols - 1 : rem colors
+4170 return
+
+4180 rem Right Choice
+4190 if choice = 21 then renew = 1 + renew * (-1): rem toggle Renew
+4200 if choice = 22 then if width < 34 then width = width + 1: rem width
+4210 if choice = 23 then if rows < 30 then rows = rows + 1 : rem prefill height
+4220 if choice = 24 then if symbols < 14 then symbols = symbols + 1 : rem colors
+4230 return
+
+4240 rem Draw top line to indicate prefill height.
+4250 if rows = 0 then return
+4260 for i = 3 to width + 2
+4270 candidate = 1 + int (symbols * rnd(sd))
+4280 color= candidate
+4290 plot i, 39 - rows
+4300 next i
+4310 return
+
+4320 rem Blank out the part of screen above prefill.  Called at start of every screen, and on an "R" press
+4330 color = 0 : rem black
+4340 for j = left + 1 to width + 2
+4350 vlin 0, height - rows - 1 at j
+4560 next j
+4570 return
+
