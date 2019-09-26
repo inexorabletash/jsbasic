@@ -113,7 +113,10 @@ window.addEventListener('DOMContentLoaded', function() {
     tty.autoScroll = true;
 
     try {
-      program = basic.compile(getSource());
+      var source = getSource()
+      source = AutomaticNumbering(source)
+
+      program = basic.compile(source);
     } catch (e) {
       if (e instanceof basic.ParseError) {
         editor.setCursor({ line: e.line - 1, ch: e.column - 1 });
