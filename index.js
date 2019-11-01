@@ -114,7 +114,12 @@ window.addEventListener('DOMContentLoaded', function() {
 
     try {
       var source = getSource()
-      source = AutomaticNumbering(source)
+
+      $('output').innerText = ''
+      if ($('#autonum').checked) {
+        source = AutomaticNumbering(source)
+        $('output').innerText = source
+      }
 
       program = basic.compile(source);
     } catch (e) {
