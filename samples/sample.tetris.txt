@@ -1,0 +1,507 @@
+10 rem Tetris code
+90 gosub 4550 : rem Title screen and random number seed
+100 time = 500
+110 height = 39 : rem Cannot be larger than 47
+120 left = 0
+130 width = 9
+140 dim array(width + 1, height + 1), erase(height)
+145 dim sh(7), tl(4)
+150 gr
+160 home
+170 if height > 39 then poke - 16302,0 : rem Extend graphics screen past text window if height is too large
+175 gosub 1850 : rem Set up shapes at bottom of screen
+177 gosub 4240 : rem Set up total line labels
+180 color= 15 : rem Draw borders
+190 vlin 0, height at left
+200 vlin 0, height at left + width + 1
+
+210 rem Fill in borders in array
+215 rem Fill bottom row
+220 for fill = 0 to width + 1
+230 array(fill, height+1) = 15
+240 next fill
+
+245 rem Fill left and right sides
+250 for fill = 0 to height + 1
+260 array(0, fill) = 15
+270 array(left+width+1, fill) = 15
+280 next fill
+
+285 eg=0
+290 gosub 3250: rem Choose piece
+295 lshape = shape
+
+300 rem Start playing
+310 Gosub 2020: rem Make turn
+320 if not eg then 310
+330 end
+
+340 rem Shape routines
+345 rem Suggestion for shape definitions with improved lookup speed.  Format an array as DN(shape, rot, coord, block) where coord is either the x or y corrdinate, and block is an element (1 - 4) in the shape.  This function will return a value of -2, -1, 0, +1 or +2 as an offset of the current x, y position.
+
+350 rem Shape 1, rot 1; straight piece vertical
+360 a1 = x - 2 : b1 = y
+370 a2 = x - 1 : b2 = y
+380 a3 = x : b3 = y
+390 a4 = x + 1 : b4 = y
+400 return
+
+410 rem Shape 1, rot 2; straight piece horizontal
+420 a1 = x : b1 = y - 1
+430 a2 = x : b2 = y
+440 a3 = x : b3 = y + 1
+450 a4 = x : b4 = y + 2
+460 return
+
+470 rem Shape 2, rot 1; L shape vertical
+480 a1 = x - 1 : b1 = y
+490 a2 = x : b2 = y
+500 a3 = x + 1 : b3 = y
+510 a4 = x + 1 : b4 = y - 1
+520 return
+
+530 rem Shape 2, rot 2; L shape horizontal
+540 a1 = x - 1 : b1 = y - 1
+550 a2 = x : b2 = y - 1
+560 a3 = x : b3 = y
+570 a4 = x : b4 = y + 1
+580 return
+
+590 rem Shape 2, rot 3
+600 a1 = x - 1 : b1 = y + 1
+610 a2 = x - 1 : b2 = y
+620 a3 = x : b3 = y
+630 a4 = x + 1 : b4 = y
+640 return
+
+650 rem Shape 2, rot 4
+660 a1 = x : b1 = y - 1
+670 a2 = x : b2 = y
+680 a3 = x : b3 = y + 1
+690 a4 = x + 1 : b4 = y + 1
+700 return
+
+710 rem shape 3, rot 1; Reverse L shape
+720 a1 = x - 1 : b1 = y
+730 a2 = x : b2 = y
+740 a3 = x + 1 : b3 = y
+750 a4 = x + 1 : b4 = y + 1
+760 return
+
+770 rem shape 3, rot 4
+780 a1 = x : b1 = y - 1
+790 a2 = x : b2 = y
+800 a3 = x : b3 = y + 1
+810 a4 = x - 1 : b4 = y + 1
+820 return
+
+830 rem shape 3, rot 3
+840 a1 = x - 1 : b1 = y - 1
+850 a2 = x - 1 : b2 = y
+860 a3 = x : b3 = y
+870 a4 = x + 1 : b4 = y
+880 return
+
+890 rem shape 3, rot 2
+900 a1 = x + 1 : b1 = y - 1
+910 a2 = x : b2 = y - 1
+920 a3 = x : b3 = y
+930 a4 = x : b4 = y + 1
+940 return
+
+950 rem shape 4, rot 1; T shape
+960 a1 = x : b1 = y - 1
+970 a2 = x - 1 : b2 = y
+980 a3 = x : b3 = y
+990 a4 = x + 1 : b4 = y
+1000 return
+
+1010 rem shape 4, rot 2
+1020 a1 = x : b1 = y - 1
+1030 a2 = x - 1 : b2 = y
+1040 a3 = x : b3 = y
+1050 a4 = x : b4 = y + 1
+1060 return
+
+1070 rem shape 4, rot 3
+1080 a1 = x - 1 : b1 = y
+1090 a2 = x : b2 = y
+1100 a3 = x + 1 : b3 = y
+1120 a4 = x : b4 = y + 1
+1130 return
+
+1140 rem shape 4, rot 4
+1150 a1 = x : b1 = y - 1
+1160 a2 = x : b2 = y
+1170 a3 = x + 1 : b3 = y
+1180 a4 = x : b4 = y + 1
+1190 return
+
+1200 rem shape 5; square
+1210 a1 = x : b1 = y - 1
+1220 a2 = x + 1 : b2 = y - 1
+1230 a3 = x : b3 = y
+1240 a4 = x + 1 : b4 = y
+1250 return
+
+1260 rem shape 6, rot 1; S shape
+1270 a1 = x : b1 = y
+1280 a2 = x + 1 : b2 = y
+1290 a3 = x - 1 : b3 = y + 1
+1300 a4 = x : b4 = y + 1
+1310 return
+
+1320 rem shape 6, rot 2
+1330 a1 = x : b1 = y - 1
+1340 a2 = x : b2 = y
+1350 a3 = x + 1 : b3 = y
+1360 a4 = x + 1 : b4 = y + 1
+1370 return
+
+1380 rem shape 7, rot 1; Z shape
+1390 a1 = x - 1 : b1 = y - 1
+1400 a2 = x : b2 = y - 1
+1410 a3 = x : b3 = y
+1420 a4 = x + 1 : b4 = y
+1430 return
+
+1440 rem shape 7, rot 2
+1450 a1 = x : b1 = y - 1
+1460 a2 = x - 1 : b2 = y
+1470 a3 = x : b3 = y
+1480 a4 = x - 1 : b4 = y + 1
+1490 return
+
+1500 rem Shape directory
+
+1510 if shape <> 1 then 1570 : return
+1520 if rt = 1 then gosub 350
+1525 if rt = 2 then gosub 410
+1560 return
+
+1570 if shape <> 2 then 1620 
+1580 if rt = 1 then gosub 470 : return
+1590 if rt = 2 then gosub 530 : return
+1600 if rt = 3 then gosub 590 : return
+1605 if rt = 4 then gosub 650
+1610 return
+
+1620 if shape <> 3 then 1670
+1630 if rt = 1 then gosub 710 : return
+1640 if rt = 2 then gosub 890 : return
+1650 if rt = 3 then gosub 830 : return
+1655 if rt = 4 then gosub 770 : return
+1660 return
+
+1670 if shape <> 4 then 1710
+1680 if rt = 1 then gosub 950 : return
+1690 if rt = 2 then gosub 1010 : return
+1700 if rt = 3 then gosub 1070 : return
+1705 if rt = 4 then gosub 1140 : return
+
+1710 if shape = 5 then gosub 1200 : return
+
+1720 if shape <> 6 then 1740
+1730 if rt = 1 then gosub 1260 : return
+1733 if rt = 2 then gosub 1320
+1735 return
+
+1740 if shape <> 7 then 1760
+1750 if rt = 1 then gosub 1380 : return
+1755 if rt = 2 then gosub 1440
+1760 return
+
+1770 rem Draw shape
+1780 color= shape
+1785 if xdr then color= 0
+1790 gosub 1500 : rem get shape from directory
+1800 plot a1, b1
+1810 plot a2, b2
+1820 plot a3, b3
+1830 plot a4, b4
+1840 return
+
+1850 rem Set up shapes at bottom of screen
+1860 rt = 1
+1870 y = 37
+1880 x = 14
+1890 for shape = 1 to 7
+1900 gosub 1770 : rem Draw shape
+1910 x = x + 4
+1920 next shape
+1930 return
+
+1940 rem Check conflict
+1945 rem Called from 4450 (Send piece to bottom) and 4790 (Move piece)
+1950 cfl = 0
+1960 gosub 1500 : rem Shape directory
+1965 if a1 < 0 or b1 < 0 or a2 < 0 or b2 < 0 or a3 < 0 or b3 < 0 or a4 < 0 or b4 < 0 then cfl = 1 : return
+1970 if array(a1, b1) then cfl = 1 : return 
+1980 if array(a2, b2) then cfl = 1 : return
+1990 if array(a3, b3) then cfl = 1 : return
+2000 if array(a4, b4) then cfl = 1 : return
+2010 return
+
+2020 rem Make turn
+2023 null = peek (49168) : rem Reset keyboard strobe
+2025 t1 = time
+2030 y = 1
+2033 bot = 0
+2035 drop = 0
+2040 x = 1 + left + width + 4 : rem Offset shape for drawing in Next window
+2050 rt = 1
+2055 shape = lshape
+2060 xdr = 1 : rem Set variable for erasing shape in last "next" window
+2070 gosub 1770 : rem Draw (erase) shape
+2080 xdr = 0
+2090 ns = lshape
+2100 gosub 3250 : rem Pick shape
+2110 gosub 1770 : rem Draw shape in "next" window
+2120 lshape = shape
+2130 shape = ns
+2135 gosub 4160 : rem Calculate & print total shapes picked
+2140 rem (Arbitrary numbering shift to 3000s due to typo)
+3140 x = 1 + int(width/2) : rem Set x to middle of field for start of round
+
+3150 rem Check for end of play
+3160 gosub 1940 : rem Check for conflict
+3170 if cfl then eg = 1 : return
+3175 gosub 1770 : rem Draw shape
+
+3180 rem Make move loop
+3185 if drop then t1 = 1
+3187 for clock = 0 to t1
+3190 if peek (49152) > 127 then gosub 3280 : rem Process input if input detected
+3200 next clock
+
+3205 y1 = y : x1 = x : r1 = rt
+3210 y = y + 1
+3215 cfl = 0
+3220 if not bot then gosub 4740 : rem Move piece
+3230 if cfl then gosub 3660 : return : rem Add to shape & check for complete line
+3233 if not bot then 3180 : rem Back to top of Make move loop, else force to bottom
+3235 y = y - 1 : xdr = 1
+3239 gosub 1770 : rem Draw shape (erase)
+3242 y = y + 1 : xdr = 0
+3245 gosub 4430 : return : rem Send piece to bottom
+
+3250 rem Pick shape
+3260 shape = 1 + int (7 * rnd(sd))
+3270 return
+
+3280 rem Process input
+3285 a = PEEK (49152)
+3290 get g$
+3300 if g$ = " " then gosub 3470 : return : rem Check for rotate
+3310 if g$ = "J" or a = 136 then gosub 3350 : return : rem Check for move left
+3320 if g$ = "K" or a = 149 then gosub 3410 : return : rem Check for move right
+3325 if g$ = "D" or a = 138 then gosub 4480 : return : rem Force down
+3330 if g$ = "M" then bot = 1 : return : rem Send piece to bottom
+3335 if g$ = "S" then drop = 1 : rem Speed up piece
+3337 if g$ = "P" then gosub 4700 : return : rem Pause game
+3340 return
+
+3350 rem Check for move left
+3360 x1 = x : y1 = y : r1 = rt
+3370 x = x - 1
+3380 gosub 4740 : rem Move piece
+3400 return
+
+3410 rem Check for move right
+3420 x1 = x : y1 = y : r1 = rt
+3430 x = x + 1
+3450 gosub 4740 : rem Move piece
+3460 return
+
+3470 rem Check for rotate
+3480 r1 = rt : x1 = x : y1 = y
+3490 gosub 3530 : rem Rotate directory
+3510 gosub 4740 : rem Move piece
+3520 return
+
+3530 rem Rotate directory
+3540 if shape = 1 or shape = 7 or shape = 6 then gosub 3570 : return : rem Two way rotate
+3550 if shape = 2 or shape = 3 or shape = 4 then gosub 3600 : return : rem Four way rotate
+3560 return
+
+3570 rem Two way rotate
+3580 if rt = 1 then rt = 2 : return
+3585 if rt = 2 then rt = 1
+3590 return
+
+3600 rem Four way rotate
+3610 if rt = 1 then rt = 2 : return
+3620 if rt = 2 then rt = 3 : return
+3630 if rt = 3 then rt = 4 : return
+3640 rt = 1
+3650 return
+
+3660 rem Check for complete line
+3665 gosub 3770 : rem Add piece to board
+3670 line = 0
+3673 if y + 2 < height then dw = y + 2
+3677 if y + 2 = > height then dw = height
+3680 for row = y - 1 to dw
+3690 hit = 0
+3700 for c = left + 1 to width + left
+3710 if not array (c, row) then hit = 1
+3720 next c
+3730 if not hit then erase(row) = 1 : line = line + 1
+3740 next row
+3750 if line then gosub 3850 : rem Blink & erase lines
+3760 return
+
+3770 rem Add to board
+3790 gosub 1500 : rem Shape directory
+3800 array (a1, b1) = shape
+3810 array (a2, b2) = shape
+3820 array (a3, b3) = shape
+3830 array (a4, b4) = shape
+3840 return
+
+3850 rem Blink & erase lines
+3853 gosub 4310 : rem Calculate & print total lines cleared
+3860 for blink = 0 to 3
+3865 color= 0
+3870 for row = y - 1 to dw
+3880 if erase (row) then hlin left + 1, left + width at row
+3890 next row
+3895 for zz = 0 to 300 : next zz : rem Time delay
+3900 for row = y - 1 to dw
+3910 if erase(row) then gosub 3950 : rem redraw line
+3920 next row
+3925 for zz = 0 to 300 : next zz : rem Time delay
+3930 next blink
+3933 gosub 4020 : rem Restack shape
+3940 return
+
+3950 rem Redraw line
+3960 for c = left + 1 to left + width
+3980 color= array(c, row)
+3990 plot c, row
+4000 next c
+4010 return
+
+4020 rem Restack shape
+4025 l1 = 0
+4030 sh = 0
+4040 row = dw
+4043 rem Top of loop
+4044 if row < 0 then gosub 4980 : goto 4060 : rem Clear top of shape
+4045 if not erase (row) then gosub 4080 : goto 4060 : rem Shift row
+4050 if erase (row) then sh = sh + 1 : erase (row) = 0
+4060 row = row - 1
+4065 if row + sh > 0 then 4043
+4070 return
+
+4080 rem Shift row
+4085 hit = 0
+4090 for c = 1 to width
+4095 if array (c, row) then hit = 1 :rem If there is an active cell, it's not a completely blank line.
+4100 array (c, row + sh) = array (c, row)
+4110 color= array (c, row)
+4120 plot c, row + sh
+4130 next c
+4135 if not hit then l1 = l1 + 1 : rem If the line is completely blank
+4140 if l1 > line then row = -4
+4150 return
+
+4160 rem calculate & print total shapes picked
+4170 sp (shape) = sp (shape) + 1
+4190 vtab 21
+4200 htab 10 + (shape * 4)
+4210 print sp(shape);
+4230 return
+
+4240 rem set up total line labels
+4245 htab 1
+4250 vtab 21 : print "SIN"
+4255 htab 1
+4260 vtab 22 : print "DOU"
+4265 htab 1
+4270 vtab 23 : print "TRI"
+4275 htab 1
+4280 vtab 24 : print "TET";
+4285 htab 24
+4290 htab 10 : print "TOT";
+4300 return
+
+4310 rem calculate & print total lines cleared
+4320 tl (line) = tl (line) + 1 : tt = tt + line
+4350 htab 7
+4360 vtab 20 + line 
+4370 print tl (line);
+4390 htab 15
+4400 vtab 24
+4410 print tt;
+4420 return
+
+4430 rem Send piece to bottom
+4440 y = y + 1
+4450 gosub 1940 : rem Check for conflict
+4460 if cfl then y = y - 1 : gosub 1770 : gosub 3660 : return : rem Draw, Add to bottom
+4470 goto 4440
+
+4480 rem Force piece down
+4490 y1 = y : x1 = x : r1 = rt
+4500 y = y + 1
+4510 gosub 4740 : rem Move piece
+4540 return
+
+4550 rem Title screen and random number seed
+4555 pr#0
+4560 text : home
+4570 print "Tetris for Applesoft BASIC"
+4580 print "Programed by Arthur Allen"
+4590 print "Based on Tetris by Alexey Pajitnov"
+4680 print
+4690 print "Press Enter to begin"
+
+4700 for sd = 0 to 9999999
+4710 if peek (49152) = 141 then get g$ : null = peek (49168) : return
+4712 null = peek (49168) : rem Reset keyboard strobe
+4715 a = rnd (sd)
+4720 next sd
+4730 goto 4700
+
+4740 rem move piece
+4750 c1 = a1 : d1 = b1
+4760 c2 = a2 : d2 = b2
+4770 c3 = a3 : d3 = b3
+4780 c4 = a4 : d4 = b4
+4790 gosub 1940 : rem Check for conflict
+4795 rem vtab 21 : htab 1 : print "4795 Move piece: x, y , g$, cfl ";  x;  " ";  y; " "; g$; cfl; : rem temp code
+4796 rem if y = 40 then vtab 22 : htab 1 : print "4796 y=40, cfl = "; cfl
+4800 if cfl then gosub 4890 : return : rem Return old values
+4805 color= 0
+4810 plot c1, d1
+4820 plot c2, d2
+4830 plot c3, d3
+4840 plot c4, d4
+4845 color= shape
+4850 plot a1, b1
+4860 plot a2, b2
+4870 plot a3, b3
+4880 plot a4, b4
+4885 return
+
+4890 rem Return old values
+4900 a1 = c1 : b1 = d1
+4910 a2 = c2 : b2 = d2
+4920 a3 = c3 : b3 = d3
+4930 a4 = c4 : b4 = d4
+4940 rt = r1
+4950 x = x1
+4960 y = y1
+4965 gosub 1500 : rem Shape directory
+4970 return
+
+4980 rem Clear top of shape
+4990 color= 0
+5000 hlin 1, width at row + sh
+5010 for c = 1 to width
+5020 array (c, row + sh) = 0
+5030 next c
+5040 return
+
+5050 rem End of listing
