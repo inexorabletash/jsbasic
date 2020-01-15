@@ -1,0 +1,61 @@
+1  rem Physics Pendulum Simulation by Golden Child
+2  rem A simple demo to show double buffering
+3  rem GOSUB 5000 to initialize
+4  rem GOSUB 5100 to draw a line
+5  rem GOSUB 5500 to switch pages
+10  text:home:PRINT "Hello - Pendulum Simulation"
+15  print "Double Buffering Demo by Golden Child" :
+20  fi=fi+1 : if fi>1 then home  : rem first run don't clear screen
+25  vtab 23: print "Enter Gravity "+chr$(13)+"(between 0.1 and 2 work best) ";:input g : if g=0 then g=1
+26  print"GRAVITY=";g ", press a key for new gravity:"
+100 gosub 5000
+200 xv=0 : yv=0:x1=140:x2=140+80*cos(10/180*3.14)::y1=0:y2=sin(10/180*3.14)*80
+210 xa=0 : ya=+10.5:ya=g : if peek(49152)>128 then goto 20
+215 xd=x1-x2: yd=y1-y2 : al=sqr(xa^2+ya^2):dl=sqr(xd^2+yd^2):dp=(xd*xa+yd*ya)/dl:el=sqr(xv^2+yv^2):ep=(xd*xv+yd*yv)/dl
+216 rem ? "al="al" dl="dl" dp="dp " xa="xa" ya="ya" xd="xd" yd="yd" xv="xv" yv="yv
+217 xz=xd/dl*(dp):yz=yd/dl*(dp): xx=xa-xz:yx=ya-yz
+218  xv=xv+xx-xd/dl*ep*2
+219  yv=yv+yx-yd/dl*ep*2  : rem my physics routines are terrible, why *2 here?
+230 co=3:gosub 5100 :
+231 x3=x1:y3=y1:x1=x2+50*xv/sqr(xv^2+yv^2):
+232        co=5:y1=y2+50*yv/sqr(xv^2+yv^2):gosub 5100:x1=x3:y1=y3 : rem orange
+233 x3=x1:y3=y1:x1=x2+50*xa/sqr(xa^2+ya^2):
+234        co=6:y1=y2+50*ya/sqr(xa^2+ya^2):gosub 5100:x1=x3:y1=y3 : rem blue
+235 x3=x1:y3=y1:x1=x2-50*xz/sqr(xz^2+yz^2):
+236        co=1:y1=y2-50*yz/sqr(xz^2+yz^2):gosub 5100:x1=x3:y1=y3  : rem green
+237 x3=x1:y3=y1:x1=x2+50*xx/sqr(xx^2+yx^2):
+238        co=2:y1=y2+50*yx/sqr(xx^2+yx^2):gosub 5100:x1=x3:y1=y3 : rem  purple
+240 gosub 5500
+241 x2=x2+xv:y2=y2+yv
+242 ct=ct+1:if ct>150 then ct=1:? dl  : rem every 150 frames show length of pendulum
+250 goto 210
+
+5000 rem init display list   :  rem SC = screen to draw
+5001 IF NOT (dk) then dim dl(2,100,5) : dk=1
+5002 hgr2:hgr
+5003 SC=0 : DL(0,0,0)=0 : DL(1,0,0)=0  :gosub 5500: rem DL(X,0,0) = NUM OF POINTS
+5004 return
+
+5100 rem draw line on other screen
+5110 poke 230,(SC+1) * 32
+5111 if not(x1>=0 and x1 <=279 and x2 >=0 and x2<=279 and y1>=0 and y1 <=159 and y2>=0 and y2<=159) then return
+5120 SP = DL(SC,0,0) + 1 : DL(SC,0,0)=SP : rem  ? sp
+5130 DL(SC,SP,0)=CO
+5131 DL(SC,SP,1)=X1
+5132 DL(SC,SP,2)=Y1
+5133 DL(SC,SP,3)=X2
+5134 DL(SC,SP,4)=Y2
+5140 HCOLOR=CO : HPLOT X1,Y1 TO X2,Y2
+5190 RETURN
+
+5400 rem erase lines
+5410 for SP = 1 TO DL(SC,0,0) : HCOLOR=0
+5411 HPLOT DL(SC,SP,1),DL(SC,SP,2) TO DL(SC,SP,3),DL(SC,SP,4) : NEXT
+5412 DL(SC,0,0)=0  : rem clear the list after erasing
+5420 RETURN
+
+5500 rem swap screens
+5510 SC = NOT SC
+5511 POKE 49236+(NOT SC),0   : rem select visible page that we're not drawing to
+5515 poke 230,32*(sc+1):gosub 5400  : rem switch drawing page and erase lines
+5520 RETURN

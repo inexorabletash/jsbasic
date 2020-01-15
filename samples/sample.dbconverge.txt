@@ -1,0 +1,49 @@
+10 rem Converge on a value demo
+15 rem Testing a routine that will smoothly converge on a value, easing into a stop
+20 rem by Golden Child
+100 hgr
+110 c=0:d=100 :gosub 5000 : ct=0
+120 co=3:x1=c:y1=0:x2=cl:y2=50:gosub 5100:x1=c2:y1=100:gosub 5100:gosub 5500 :c2=cl::c2=cl:cl=c:gosub 9000
+125 if abs(c-d)<.1 then ? "DIST="di" FRAMES="ct:d=rnd(1)*279 : ct=0 : di=d-c:?d,c,di
+130 ct=ct+1:goto 120
+
+9000 rem converge   c=cur value, d=desired value, mr=max rate, md=max dist, ch=change, cd=dist to go
+9010 mr=10:md=100
+9020 cd=d-c
+9030 if cd>md then cd=md
+9040 if abs(cd)<0.1 then c=d
+9045 ch = cd/md*mr
+9050 c=c+ch: rem ?"c="c" d="d" ch="ch" ct="ct
+9051 if abs(ch)<0.1 then c=d
+9060 return
+
+5000 rem init display list   :  rem SC = screen to draw
+5001 dim dl(2,100,5):hgr2:hgr
+5002 SC=0 : DL(0,0,0)=0 : DL(1,0,0)=0  :gosub 5500: rem DL(X,0,0) = NUM OF POINTS
+5003 return
+
+5100 rem draw line on other screen
+5110 poke 230,(SC+1) * 32  : rem forgot the +1 part
+5111 if not(x1>=0 and x1 <=279 and x2 >=0 and x2<=279 and y1>=0 and y1 <=159 and y2>=0 and y2<=159) then return
+5120 rem bug should be DL SP = DL(SC,0,0) + 1 : SL(SC,0,0)=SP : ? sp
+5120 SP = DL(SC,0,0) + 1 : DL(SC,0,0)=SP : rem  ? sp
+5130 DL(SC,SP,0)=CO
+5131 DL(SC,SP,1)=X1
+5132 DL(SC,SP,2)=Y1
+5133 DL(SC,SP,3)=X2
+5134 DL(SC,SP,4)=Y2
+5140 HCOLOR=CO : HPLOT X1,Y1 TO X2,Y2
+5190 RETURN
+
+5400 rem erase lines
+5410 for SP = 1 TO DL(SC,0,0) : HCOLOR=0 : rem ? "erase" sc ,sp
+5411 HPLOT DL(SC,SP,1),DL(SC,SP,2) TO DL(SC,SP,3),DL(SC,SP,4) : NEXT
+5412 DL(SC,0,0)=0  : rem clear the list after erasing
+5420 RETURN
+
+5500 rem swap screens
+5510 SC = NOT SC
+5511 POKE 49236+(NOT SC),0   : rem select page that we're drawing to
+5514 rem ? "SC="sc
+5515 poke 230,32*(sc+1):gosub 5400  : rem forgot to switch the drawing page
+5520 RETURN

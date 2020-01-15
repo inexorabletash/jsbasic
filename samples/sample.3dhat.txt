@@ -1,0 +1,29 @@
+1 rem MTU 80 Column 3D HAT Program
+2 REM Micro, the 6502 magazine, may 1981 page 2
+3 REM http://archive.6502.org/publications/micro/micro_36_may_1981.pdf
+4 rem https://archive.org/details/creativecomputing-1981-05/page/n67
+ 10 HGR2 : HCOLOR=3
+ 20 P=140 : Q=100  : rem original was 160 but 140 is centered on Apple II
+ 30 XP=120:XR=1.5*3.1415927
+ 40 YP=56:YR=1:ZP=64
+ 50 XF=XR/XP:YF=YP/YR:ZF=XR/ZP
+ 60 FOR ZI=-Q TO Q-1
+ 70 IF ZI<-ZP OR ZI>ZP GOTO 150
+ 80 ZT=ZI*XP/ZP:ZZ=ZI
+ 90 XL=INT(.5+SQR(XP*XP-ZT*ZT))
+ 100 FOR XI=-XL TO XL
+ 110 XT=SQR(XI*XI+ZT*ZT)*XF:XX=XI
+ 120 YY=(SIN(XT)+.4*SIN(3*XT))*YF
+ 130 GOSUB 170
+ 140 NEXT XI
+ 150 NEXT ZI
+ 160 END
+ 170 X1=XX+ZZ+P
+ 180 Y1=YY-ZZ+Q
+ 181 IF Y1<1 THEN Y1=1  : REM MUST BE 1 OR ERROR IN 210
+ 182 IF Y1>191 THEN Y1=191
+ 183 IF X1<0 THEN X1=0
+ 184 IF X1>279 THEN X1=279
+ 190 HCOLOR=3:HPLOT X1,191-Y1
+ 210 HCOLOR=0:HPLOT X1,191-(Y1-1) TO X1,191-0
+ 220 RETURN
