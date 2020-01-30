@@ -1,0 +1,52 @@
+10 rem Function Graphing
+20 rem by Golden Child
+25 rem
+30 rem Use Basic as your graphing calculator
+31 rem
+35 rem To graph a function, have a loop that iterates over every x on screen
+36 rem calculate the x coordinate from the x screen coordinate
+37 rem calculate y (your function value), set color and gosub 500
+38 rem
+40 rem  for sx=0 to wx-1      : rem for screenx = 0 to 279
+50 rem  x=(sx-cx)/(wx/2)*rx   : rem calculate x for screenx
+60 rem  y = x^2               : rem calculate y (here we calc x^2)
+70 rem  hcolor=1:gosub 500    : rem set color and draw
+80 rem  next sx
+
+90 hgr
+100 wx=280:wy=140     : rem windowx windowy (screen size)
+120 cx=wx/2:cy=wy/2   : rem centerx centery (screen center point)
+130 hcolor=6:hplot cx,cy : rem draw centerpoint
+
+140 rx=4:ry=rx/2   : rem rangex and rangey
+141 gx=1:gy=gx      : rem gridx and gridy spacing
+
+142 for x=int(-rx) to int(rx) step gx  : rem draw grid
+143 for y=int(-ry) to int(ry) step gy
+144 sx=cx+x*(wx/2)/rx:hcolor=6:gosub 500 : ? x,y
+145 next:next
+
+150 for sx=0 to wx-1      : rem for screenx = 0 to 279
+160 x=(sx-cx)/(wx/2)*rx   : rem calculate x for screenx
+200 y = x^2               : rem calculate y
+201 hcolor=1:gosub 500    : rem set hcolor, gosub 500 (calculate screeny and plot)
+205 y = sin(x*2)          : rem can draw as many functions as you like
+260 hcolor=3:gosub 500    : rem just calc y, set hcolor, gosub 500
+265 y=sin(x*3)
+270 hcolor=2:gosub 500
+271 y=0:hcolor=5:gosub 500 : rem draw x axis, set y=0, gosub 500
+
+272 if (4-x^2)>=0 then y=sqr(4-x^2):gosub 500: y=-sqr(4-x^2):gosub 500:rem circle
+
+273 rem tangent line to x^2 at x=1 : derivative=2x so slope = m = 2x
+274 rem manually calculated formula for tangent line at x=1
+275 y=1+(x-1)*(2) : gosub 500
+276 rem calculating tangent line from x1 coordinate
+277 x1=-1 : y1=x1^2 : m=2*x1 : y=y1 + (x-x1)*m : hcolor=1:gosub 500
+400 next sx
+
+499 print "end" : END
+500 sy=cy-y*(wy/2)/ry    : rem calculate screeny
+505 print sx,sy
+510 if sy>=0 and sy<=159 and sx>=0 and sx<=279 then hplot sx,sy
+520 return
