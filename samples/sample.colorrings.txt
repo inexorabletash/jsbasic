@@ -1,0 +1,17 @@
+210 hgr2
+212 hcolor=1
+240 A = 65
+250 B = 10
+260 R = 80
+290 for sq=80to0 step -3.14159
+292 u=360
+293 co=int(rnd(1)*7)+1
+295 if co=4 then goto 293
+296 hcolor=co
+300 FOR ALPHA = 0 TO 360 step 1
+301 u=u+3.1411
+310 X1 = INT(R-sq * COS(ALPHA-u) + 0.5)
+320 Y1 = INT(R+sq * SIN(ALPHA+u) - 0.5)
+330 HPLOT  A + X1, B + Y1
+340 NEXT ALPHA
+350 next sq
