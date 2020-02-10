@@ -1,0 +1,2 @@
+1 HOME:FORG=1TO6:READG$(G):NEXT:FORQ=1TO16:FORI=1TO40:FORG=1TO6:VTABG+Q:HTABI:PRINTG$(G):NEXT:K=PEEK(49200):VTAB1:HTAB12:?"CHUGGA CHUGGA":NEXT:VTAB1:HTAB12:?"  TOOT TOOT  ":?CHR$(7):FORJ=1TO150:NEXT:?CHR$(7):NEXT
+2 DATA "          (   @","         /-\   @","        !  ( !-I!"," NIBBLE  \_/ !:O!"," ------ ---- !--!\"," 0-00-0 0--0 0--0_\"

@@ -1,0 +1,29 @@
+1 normal
+10 home: gr
+11 Print "You Will Dye"
+12 for t = 1 to 3000 : next t
+13 Print "No I will colour in the screen
+14 for t = 1 to 3000 : next t
+15 Print "Not If I rub You Out"
+19 color = 0
+20 plot 10,10
+30 x = 3: y = 3: dx = 1: dy = 1
+35 a = 3: b = 3: da = 1: db = 1
+40 x = x + dx: y = y + dy
+41 if rnd(1) < 0.8 then dx = -dx
+50 if x > 35 then dx = -1
+51 if x < 5 then dx = 1
+52 if y > 35 then dy = -1
+53 if y < 5 then dy = 1
+55 color = 14: plot x,y
+58 color = rnd(1)*10: : plot x,y
+140 a = a + da: b = b + db
+141 if rnd(1) < 0.01 then da = -da
+150 if a > 35 then da = -1
+151 if a < 5 then da = 1
+152 if b > 35 then db = -1
+153 if b < 5 then db = 1
+155 color = 2: plot a,b
+156 for t = 1 to 200: next t
+158 color = 0: : plot a,b
+170 goto 40

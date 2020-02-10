@@ -1,0 +1,9 @@
+990 print "ENTER A NUMBER AND SEE IF IT'S PRIME"
+1000 input n
+1002 if n<>int(n) then print "ENTER AN INTEGER":GOTO 1000
+1004 if n<2 then print "ENTER AN INTEGER GREATER THAN 1":GOTO 1000
+1010 for d=2 to n-1
+1020 if n/d = int(n/d) then print "NOT PRIME; MULTIPLE OF "; d:GOTO 1000
+1030 next d
+1040 print n; " IS PRIME"
+1050 goto 1000

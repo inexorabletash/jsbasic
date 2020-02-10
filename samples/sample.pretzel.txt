@@ -1,0 +1,5 @@
+0 GR:y=10:x=0
+6 COLOR = int(RND(1) * 6) + 2
+7 sp = int(20 + (10* sin(x* 3.14159 / 180 ) )) / 2
+8 y=y + 1: IF y > 25 then y = 10
+10 PLOT y,sp:x=x + 15:goto 6

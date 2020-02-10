@@ -1,0 +1,51 @@
+10 PRINT "V,D,T"
+
+20 INPUT "What do you want to solve? ( V,D,T,)"; A$
+
+30 IF A$ = "V" THEN GOTO 60
+
+40 IF A$ = "D" THEN GOTO 70
+
+50 IF A$ = "T" THEN GOTO 80
+
+60 PRINT " V= D/T"
+
+61 PRINT "Distance=": INPUT D
+
+62 PRINT "Time =":INPUT T
+
+63 LET V = D/T
+
+64 PRINT "Velocity ="
+
+65 PRINT V
+
+66 END
+
+70 PRINT " D= V*T"
+
+71 PRINT "Velocity=": INPUT V
+
+72 PRINT "Time =":INPUT T
+
+73 LET D = V*T
+
+74 PRINT "Distance ="
+
+75 PRINT D
+
+76 END
+
+80 PRINT " T= D/V"
+
+81 PRINT "Distance=": INPUT D
+
+82 PRINT "Velocity=":INPUT V
+
+83 LET T = D/V
+
+84 PRINT "Time ="
+
+85 PRINT T
+
+86 END

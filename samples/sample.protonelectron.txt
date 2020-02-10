@@ -1,0 +1,94 @@
+101 count = 0
+105 for i = 0 to 20
+106 print
+107 next i
+110 Dim x2(7),sign(7), dx(7)
+120 Rem Init some vars
+125 aminerr=1000
+130 rem res = 8.5e-17
+132 res = 1e-4
+200 xpi=3.14159265358979323846
+250 rem 8 coefs here
+255 Rem elementary charge (e)-0
+260 x2(0)=1.60217662e-19
+265 Rem Planck's constant (h)-1
+300 x2(1)=6.62607004e-34
+350 rem eletron mass (Me)-2
+400 x2(2)=9.109383560899034e-31
+450 Rem Proton radius (Rp)-3
+500 x2(3)=8.41235640479985e-16
+550 Rem Rydberg Constant (R_H or R_{\infty})-4
+600 x2(4)=10973731.5685083
+610 Rem Permittivity of free space (e0)-5
+620 x2(5)=8.854187817e-12
+701 Rem Speed of Light (c)-6
+702 x2(6)=299792458.0
+703 Rem Proton mass (Mp)-7
+704 x2(7)=1.672621898209999e-27
+710 For i = 0 to 6
+720 sign(i)=0
+730 dx(i) = 0.01*res*(x2(i))
+740 next i
+750 Rem define bit to be twiddled here
+755 sign(0)=1
+760 sign(1)=1
+770 sign(2)=1
+780 sign(3)=1
+790 sign(4)=1
+795 sign(5)=1
+797 sign(6)=1
+1000 rem starting error
+1010 xerr1=x2(2)*x2(0)^4/(8*x2(6)*x2(5)^2*x2(1)^3*x2(4))
+1015 yerr2=-xpi*x2(3)*x2(6)*x2(2)/(2*x2(1))
+1017 err = xerr1 + yerr2 - 1.0
+1020 digits=int(-log(abs(yerr+0.00001))/log(10)+0.5)
+1030 Print "Starting err is: ";err
+1032 Print "Starting xerr1 is: ";xerr1
+1034 Print "Starting yerr2 is: ";yerr2
+1040 print "Digits resolution ";digits
+1050 print "aminerr error is: ";aminerr
+1060 for i = 0 to 6
+1061 print "i= ";i, x2(i)
+1062 next i
+1100 print "pi= ";xpi
+1111 rem end 
+2000 Rem Main Loop
+2010 For i = 0 to 6
+2020 x2(i)=x2(i)+sign(i)*dx(i)
+2030 xerr1=x2(2)*x2(0)^4/(8*x2(6)*x2(5)^2*x2(1)^3*x2(4))
+2032 yerr2=-xpi*x2(3)*x2(6)*x2(2)/(2*x2(1))-1.0
+2034 err=abs(xerr1+yerr2)
+2035 if err>aminerr then sign(i)=-1*sign(i)
+2037 if err<aminerr then aminerr = err
+2040 next i
+2050 if err < 1.5*res then goto 5000
+2055 print "Working ";err
+2058 count = count+1
+2060 goto 2000
+5000 Rem
+5001 xresstop=2e-15
+5002 if res > xresstop then res = res/10.0
+5010 For i = 0 to 6
+5030 dx(i) = 0.01*res*(x2(i))
+5040 next i
+5100 if res > xresstop then goto 2000
+5106 Print "Done."
+5107 print "Coef "
+5109 for i = 0 to 7
+5110 print x2(i);" "
+5120 next i
+6000 rem Final error
+6010 xerr1=(x2(2)*x2(0)^4)/(8*x2(6)*x2(5)^2*x2(1)^3*x2(4)) 
+6012 yerr2=-xpi*x2(3)*x2(6)*x2(2)/(2*x2(1)) - 1.0
+6014 err=abs(xerr1+yerr2)
+6020 digits=int(-log(abs(err+1e-16))/log(10)+0.5)
+6030 Print "Starting err is: ";err
+6040 print "Digits resolution ";digits
+6050 print "Final error is: ";aminerr
+6060 print "Iterations= ";count
+6070 print xpi;" <-ideal"
+6080 print xpi+err;" <-calc'd
+6085 print "Calc'd proton mass= ";2*x2(1)/(xpi*x2(3)*x2(6))
+6087 print "Input proton mass= ";x2(7)
+6090 print "Proton/electron mass ratio=";x2(7)/x2(2)
+6100 end
