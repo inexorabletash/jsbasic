@@ -411,6 +411,10 @@
 7020 T$ = "COLOR="
 : T = 0 : U = 0 : FOR I = 0 TO 15 : COLOR= I : PLOT 0,0 : T = T + I : U = U + SCRN(0,0) : NEXT
 : S = (T=U) : GOSUB 1
+: T = 1 : ONERR GOTO 7022
+7021 COLOR=256
+: T = 2
+7022 S = (T=1) AND (PEEK(222)=53) : GOSUB 1
 
 7030 T$ = "PLOT"
 : COLOR= 5 : PLOT 0,0 : PLOT 39,0 : PLOT 0,47 : PLOT 39,47

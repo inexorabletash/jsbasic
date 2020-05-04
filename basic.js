@@ -856,7 +856,7 @@ this.basic = (function() {
         if (!env.lores) { runtime_error('Lores graphics not supported'); }
 
         n = n >> 0;
-        if (n < 0) { runtime_error(ERRORS.ILLEGAL_QUANTITY); }
+        if (n < 0 || n > 255) { runtime_error(ERRORS.ILLEGAL_QUANTITY); }
 
         env.lores.setColor(n);
       },
