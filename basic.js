@@ -412,7 +412,15 @@ this.basic = (function() {
       0xC060: function() { return env.tty.getButtonState ? env.tty.getButtonState(3) : 0; },
       0xC061: function() { return env.tty.getButtonState ? env.tty.getButtonState(0) : 0; },
       0xC062: function() { return env.tty.getButtonState ? env.tty.getButtonState(1) : 0; },
-      0xC063: function() { return env.tty.getButtonState ? env.tty.getButtonState(2) : 0; }
+      0xC063: function() { return env.tty.getButtonState ? env.tty.getButtonState(2) : 0; },
+
+      // Graphics State
+      0xC01A: function() { return (env.display && !env.display.getState().graphics) * 128; },
+      0xC01B: function() { return (env.display && !env.display.getState().full) * 128; },
+      0xC01C: function() { return (env.display && !env.display.getState().page1) * 128; },
+      0xC01D: function() { return (env.display && !env.display.getState().lores) * 128; },
+      0xC01E: function() { return (env.tty.isAltCharset && env.tty.isAltCharset()) * 128; },
+      0xC01F: function() { return (env.tty.isFirmwareActive && env.tty.isFirmwareActive()) * 128; }
     };
 
     poke_table = {

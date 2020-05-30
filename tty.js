@@ -239,6 +239,13 @@ function TTY(screenElement, keyboardElement) {
     init(active, 24, active ? 80 : 40);
   };
 
+  this.isFirmwareActive = function isFirmwareActive() {
+    return firmwareActive;
+  };
+
+  this.isAltCharset = function isAltCharset() {
+    return mousetext;
+  };
 
   function scrollUp() {
     var x, y, cell;

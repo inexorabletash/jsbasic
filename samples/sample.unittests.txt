@@ -403,9 +403,8 @@
 7001 IF NOT LR THEN PRINT "<skipping GR tests>" : GOTO 8000
 
 7010 T$ = "GR"
-: U = PEEK(36) : V = PEEK(37)
-: GR : S = (PEEK(37) = 23) : TEXT : POKE 36,U : POKE 37,V : GOSUB 1
-: GR : S = (PEEK(34) = 20) : TEXT : POKE 36,U : POKE 37,V : GOSUB 1
+: U = PEEK(36) : V = PEEK(37) : GR : S = (PEEK(37) = 23) : TEXT : POKE 36,U : POKE 37,V : GOSUB 1
+: U = PEEK(36) : V = PEEK(37) : GR : S = (PEEK(34) = 20) : TEXT : POKE 36,U : POKE 37,V : GOSUB 1
 
 7011 POKE 49232,0 : POKE 49234,0 : POKE 49238,0
 
@@ -659,7 +658,7 @@
 : DEF FN A$(X$) = X$ + X$ : S = (FN A$("ABC") = "ABCABC") : GOSUB 1
 
 15000 PRINT : PRINT "PEEK Compatibility Shims ";
-: PRINT "UNIT TESTS NOT YET IMPLEMENTED ";
+: PRINT "UNIT TESTS NOT FULLY IMPLEMENTED ";
 15001 X = PEEK(49152) : X = PEEK(-16384) : REM Read keyboard
 15002 X = PEEK(49168) : X = PEEK(-16368) : REM Clear keyboard strobe
 15003 X = PEEK(49200) : X = PEEK(-16336) : REM Toggle speaker (no-op)
@@ -672,6 +671,29 @@
 15010 REM **********************************************
 15010 REM Do as part of I/O follow-on module
 15010 REM **********************************************
+
+15020 T$ = "PEEK(49178) RdTEXT"
+: S = (PEEK(49178) > 127) : GOSUB 1
+: U = PEEK(36) : V = PEEK(37) : GR : S = (PEEK(49178) < 128) : TEXT : POKE 36,U : POKE 37,V : GOSUB 1
+
+15030 T$ = "PEEK(49179) RdMIXED"
+: HGR  : S = (PEEK(49179) > 127) : TEXT : GOSUB 1
+: HGR2 : S = (PEEK(49179) < 128) : TEXT : GOSUB 1
+
+15040 T$ = "PEEK(49180) RdPage2"
+: HGR2 : S = (PEEK(49180) > 127) : TEXT : GOSUB 1
+: HGR  : S = (PEEK(49180) < 128) : TEXT : GOSUB 1
+
+15050 T$ = "PEEK(49181) RdHiRes"
+: HGR : S = (PEEK(49181) > 127) : TEXT : GOSUB 1
+: U = PEEK(36) : V = PEEK(37) : GR : S = (PEEK(49181) < 128) : TEXT : POKE 36,U : POKE 37,V : GOSUB 1
+
+15060 T$ = "PEEK(49182) RdAltChar"
+: S = (PEEK(49182) < 128) : GOSUB 1
+: PRINT CHR$(15);CHR$(27); : S = (PEEK(49182) > 127) : PRINT CHR$(24);CHR$(14); : GOSUB 1
+
+15070 T$ = "PEEK(49183) Rd80Col"
+: S = (PEEK(49183) > 127) : GOSUB 1
 
 
 16000 PRINT : PRINT "Operators ";

@@ -304,6 +304,14 @@ can be literals (unquoted strings), strings, or numbers
         <li><code>PEEK(230)</code> &mdash; Hi-Res plotting page (32 = page 1, 64 = page 2)
         <li><code>PEEK(49152)</code> &mdash; Read Keyboard
         <li><code>PEEK(49168)</code> &mdash; Clear Keyboard strobe
+
+        <li><code>PEEK(49178)</code> &mdash; See if text mode (&gt; 127) or graphics mode (&lt; 128)
+        <li><code>PEEK(49179)</code> &mdash; See if mixed mode (&gt; 127) or full mode (&lt; 128)
+        <li><code>PEEK(49180)</code> &mdash; See if page2 (&gt; 127) or page1 (&lt; 128)
+        <li><code>PEEK(49181)</code> &mdash; See if hires mode (&gt; 127) or lores mode (&lt; 128)
+        <li><code>PEEK(49182)</code> &mdash; See if mousetext mode (&gt; 127)
+        <li><code>PEEK(49188)</code> &mdash; See if 80-column mode (&gt; 127)
+
         <li><code>PEEK(49200)</code> &mdash; Click Speaker (no-op)
         <li><code>PEEK(49248)</code> &mdash; Read Paddle Button #3 &mdash; <em>Use the PageDown key</em>
         <li><code>PEEK(49249)</code> &mdash; Read Paddle Button #0 &mdash; <em>Use the Home key</em>

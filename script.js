@@ -69,6 +69,9 @@
           hires2.show(false);
           tty.splitScreen(0);
         }
+      },
+      getState: function() {
+        return Object.assign({}, this.state);
       }
     };
     var pdl = [0, 0, 0, 0];
