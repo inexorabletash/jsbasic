@@ -1895,7 +1895,7 @@ this.basic = (function() {
                 trailing = false;
                 args.push('lib.comma()');
               } else if (test('reserved', kws.SPC) || test('reserved', kws.TAB)) {
-                trailing = true;
+                trailing = false;
                 keyword = match('reserved');
                 match("operator", "(");
                 expr = parseNumericExpression();

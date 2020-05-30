@@ -89,6 +89,9 @@ This is intended as a quick reference for the <a href="./">Applesoft BASIC in Ja
 <dl>
   <dt>PRINT <var>expr</var> [ [;,] <var>expr</var> ... ] [;]<dd>Output text. <code>;</code> concatenates,
       <code>,</code> advances to next tab stop. A trailing <code>;</code> suppresses line break.
+      <var>expr</var> can include <code>SPC(<var>aexpr</var>)</code> to advance by
+      multiple spaces, or <code>TAB(<var>aexpr</var>)</code> to advance by multiple tab stops.
+
   <dt>INPUT [<var>string</var> ;] <var>var</var> [, <var>var</var> ...]<dd>Read line of comma-delimited input, with optional prompt
   <dt>GET <var>var</var><dd>Read single key
   <dt>HOME<dd>Clear text display

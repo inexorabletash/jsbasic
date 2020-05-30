@@ -358,15 +358,15 @@
 
 4140 T$ = "SPC Operator" :
 : SX = PEEK(36) : SY = PEEK(37)
-: VTAB 23 : HTAB 1 : PRINT "abc";SPC(10); : T = PEEK(36)
-: VTAB 23 : HTAB 1 : PRINT SPC(40);
+: VTAB 23 : HTAB 1 : PRINT "abc";SPC(10) : T = PEEK(36)
+: VTAB 23 : HTAB 1 : PRINT SPC(40)
 : POKE 36, SX : POKE 37, SY
 : S = (T = 13) : GOSUB 1
 
 4150 T$ = "TAB Operator" :
 : SX = PEEK(36) : SY = PEEK(37)
-: VTAB 23 : HTAB 1 : PRINT "abc";TAB(10); : T = PEEK(36)
-: VTAB 23 : HTAB 1 : PRINT SPC(40);
+: VTAB 23 : HTAB 1 : PRINT "abc";TAB(10) : T = PEEK(36)
+: VTAB 23 : HTAB 1 : PRINT SPC(40)
 : POKE 36, SX : POKE 37, SY
 : S = (T = 9) : GOSUB 1
 
