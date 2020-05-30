@@ -402,9 +402,10 @@
 7000 PRINT : PRINT "Lo-Res Graphics ";
 7001 IF NOT LR THEN PRINT "<skipping GR tests>" : GOTO 8000
 
-7010 REM ************************************************************
-7010 REM Test GR as part of I/O (sets cursor to window bottom)
-7010 REM ************************************************************
+7010 T$ = "GR"
+: U = PEEK(36) : V = PEEK(37)
+: GR : S = (PEEK(37) = 23) : TEXT : POKE 36,U : POKE 37,V : GOSUB 1
+: GR : S = (PEEK(34) = 20) : TEXT : POKE 36,U : POKE 37,V : GOSUB 1
 
 7011 POKE 49232,0 : POKE 49234,0 : POKE 49238,0
 

@@ -849,6 +849,13 @@ this.basic = (function() {
         env.display.setState("lores", true, "full", false, "graphics", true);
         env.lores.clear();
 
+        if (env.tty.textWindow) {
+          env.tty.textWindow.left = 0;
+          env.tty.textWindow.width = env.tty.getScreenSize().width;
+          env.tty.textWindow.top = env.tty.getScreenSize().height - 4;
+          env.tty.textWindow.height = 4;
+        }
+
         env.tty.setCursorPosition(0, env.tty.getScreenSize().height);
       },
 
