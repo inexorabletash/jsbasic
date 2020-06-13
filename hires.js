@@ -28,22 +28,18 @@ function HiRes(element, width, height) {
 
   pixels.length = width * height;
 
-  // Colors c/o USENET:
-  // Date: Wed, 05 Sep 2007 01:04:20 +0200
-  // From: Linards Ticmanis <ticmanis@gmx.de>
-  // Newsgroups: comp.sys.apple2
-  // Subject: Re: Double hires mode color artifacts
-  // Message-ID: <46dde477$0$4527$9b4e6d93@newsspool3.arcor-online.net>
+  // From: Apple ][ Colors at MROB
+  // https://mrob.com/pub/xapple2/colors.html
 
   COLORS = [
-    '#000000', // Black 1
-    '#2fbc1a', // Green
-    '#d043e5', // Violet
-    '#ffffff', // White 1
-    '#000000', // Black 2
-    '#d06a1a', // Orange
-    '#2f95e5', // Medium Blue
-    '#ffffff'  // White 2
+    '#000000', // 0 = Black 1
+    '#14f53c', // 1 = Green
+    '#ff44fd', // 2 = Purple
+    '#ffffff', // 3 = White 1
+    '#000000', // 4 = Black 2
+    '#ff6a3c', // 5 = Orange
+    '#14cffd', // 6 = Medium Blue
+    '#ffffff'  // 7 = White 2
   ];
 
   this.clear = function(opt_color) {

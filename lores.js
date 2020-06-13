@@ -21,30 +21,27 @@ function LoRes(element, width, height) {
       pixels = [], // color values
       color = 0; // current color
 
-  // Colors c/o USENET:
-  // Date: Wed, 05 Sep 2007 01:04:20 +0200
-  // From: Linards Ticmanis <ticmanis@gmx.de>
-  // Newsgroups: comp.sys.apple2
-  // Subject: Re: Double hires mode color artifacts
-  // Message-ID: <46dde477$0$4527$9b4e6d93@newsspool3.arcor-online.net>
+
+  // From: Apple ][ Colors at MROB
+  // https://mrob.com/pub/xapple2/colors.html
 
   COLORS = [
-    '#000000', // Black
-    '#901740', // Deep Red
-    '#402ca5', // Dark Blue
-    '#d043e5', // Purple
-    '#006940', // Dark Green
-    '#808080', // Gray 1
-    '#2f95e5', // Medium Blue
-    '#bfabff', // Light Blue
-    '#402400', // Brown        // WAS #405400, error pointed out by MJM
-    '#d06a1a', // Orange
-    '#808080', // Gray 2
-    '#ff96bf', // Pink
-    '#2fbc1a', // Light Green
-    '#bfd35a', // Yellow
-    '#6fe8bf', // Aquamarine
-    '#ffffff'  // White
+    '#000000', //  0 = Black
+    '#e31e60', //  1 = Deep Red
+    '#604ebd', //  2 = Dark Blue
+    '#ff44fd', //  3 = Purple
+    '#00a360', //  4 = Dark Green
+    '#9c9c9c', //  5 = Gray 1
+    '#14cffd', //  6 = Medium Blue
+    '#d0c3ff', //  7 = Light Blue
+    '#607203', //  8 = Brown
+    '#ff6a3c', //  9 = Orange
+    '#9c9c9c', // 10 = Gray 2
+    '#ffa0d0', // 11 = Pink
+    '#14f53c', // 12 = Light Green
+    '#d0dd8d', // 13 = Yellow
+    '#72ffd0', // 14 = Aquamarine
+    '#ffffff'  // 15 = White
   ];
 
   function init() {
@@ -156,5 +153,3 @@ function LoRes(element, width, height) {
 
   init();
 }
-
-
