@@ -3,42 +3,40 @@
 101 rem Game design by Nicholas Merchant, age 10
 102 rem Programming mostly by his dad with Nicholas
 103 rem version 1.7, August 2011
-111 clear: home
+111 PR# 0:TEXT: home
 
 
-115 print " Nicdem25games":?
-:?" CATCH THE RAINDROP":?
-116 print " Version 1.7":
-:? " August 2011":?
+115 print " Nicdem25games":?:?" CATCH THE RAINDROP":?
+116 print " Version 1.7":? " August 2011":?
 117 rem print " Programmed by JRM":?
 118 rem print " Concept by Nicholas Merchant"
 
 121 ?:?"Game controls: ":?
 122 ?" Left arrow (move left)"
-123 ?" Right arrow (move right)"
+123 ?" Right arrow (move right)":?" Down arrow (stop movement)"
 124 ?" <SPACEBAR> (pause game)
 125 ?" Q (quit)."
 126 ?
 
 130 ?"Powerdrops:"
 131 ?" + = extra life"
+132 ?" E = expanded paddle":REM WAS NOT LISTED BECAUSE DISABLED
 133 ?" $ = 10 points"
 134 ?" s = slow down"
-135 ?
 140 ?: Input "Press <RETURN> to begin.";A$
 
-150 home
-151 let level = 1
-152 let lives = 3
+150 home:a = RND (-PEEK(79)*999 - PEEK(78)):REM RESEED RANDOM NUMBER AT START OF GAME
+151 let level = 1:score = 0
+152 let lives = 4:REM RENUMBER lives 4 TO 1 INSTEAD OF 3 TO 0
 155 let D$="*": rem default raindrop character
-156 let pwl = 2: rem length of paddle expansion when powerup is caught
+156 let pwl = 2:pdec = 0: rem length of paddle expansion when "E" powerup is caught
 
 170 let bottomofscreen = 17: rem variable for how far the rain falls
 180 let sp = 2000: rem sp is the variable that controls speed of rain
-189 REM draw the bottom of screen
-190 for a = 1 to 40: vtab bottomofscreen +1: htab a: ?"^";:next a
-196 vtab bottomofscreen +3:?" Nicdem25: Catch the raindrop"
-197 vtab 23:print "Score: "score" Level: "level" Lives: "lives;
+182 REM draw the bottom of screen
+184 vtab bottomofscreen +1:for a = 1 to 40:?"^";:next a
+186 vtab bottomofscreen +3:?" Nicdem25: Catch the raindrop"
+188 vtab 23:print "Score: "score" Level: "level" Lives: "lives;
 
 
 191 REM Initial paddle position variable: p1 is the horizontal offset
@@ -52,9 +50,9 @@
 201 rem subroutine: falling raindrop
 202 rem ++++++++++++++++++++++++++++
 
+220 REM LINES 135, 230, 316-317, 400-410, 515-600, 1212-1550 DELETED
 
-230 x = RND (-RND (1)): rem reseed random number
-240 let x = int(rnd(1)*30)+5
+240 let x = int(rnd(1)*31)+5:REM OLD MULTIPLIER 30 MADE x=35 IMPOSSIBLE
 241 rem assign a random x axis value for drop, 5<=x<=35
 
 250 for y = 1 to bottomofscreen - 1
@@ -70,19 +68,17 @@
 279 next y
 
 
-
 280 REM did you catch the raindrop?
 284 rem missed the drop
-285 if x < p1 or x > p1+PL then lives = lives -1:goto 320
+285 if x < p1 or x > p1+PL then lives = lives -1:goto 340
 
 290 rem caught the drop
 291 print chr$(7): REM make a sound for catching the drop
 292 let score = score + 1
-293 if D$ = "+" then let lives = lives + 1 
+293 if D$ = "+" then let lives = lives + 1
 294 if D$ = "E" then gosub 2000: rem expand paddle, set power timer
 295 if D$ = "s" then let sp=sp+350: rem s slows down drops
-296 if D$ = "$" then let score = score + 9:if score/10 <> int(score/10) then let level = level + 1
-
+296 if D$ = "$" then let score = score + 9: if score/10 <> int(score/10) then let level = level + 1
 
 
 300 rem check if score is a multiple of 10: if so, level up
@@ -95,32 +91,18 @@
 310 if score/10 = int(score/10) then gosub 800
 
 314 rem powertime counter: expanded paddle length lasts five raindrops
-315 rem let ptime = ptime - 1
-316 rem if ptime < 0 then let ptime = 0
-317 rem if ptime = 0 then let PL = OPL
-
-320 if lives = -1 then goto 9000:rem lost last life: go to end routine
+315 if ptime then ptime = ptime - pdec: if ptime < pdec then VTAB bott:HTAB p1:?SPC(1):HTAB p1 + PL:?" ":p1 = p1 + 1:PL = PL - pwl:pdec = pdec - 6 ^ ((PL - OPL) / pwl)
 
 340 vtab 23
 350 print "Score: "score" Level: "level" Lives: "lives" ";
 
-400 REM powerups: powerup 1 = expand, powerup 2 = extra life
-405 let powerup = 0
+360 if NOT lives goto 9000:rem lost last life: go to end routine
 
-410 n = RND (-RND (1)): rem reseed random number
-511 let n = rnd(1)
-515 if n < 0.15 then let powerup = 1
-520 if n >= 0.2 and n < 0.3 then let powerup = 2
-530 if n >= 0.3 and n < 0.4 then let powerup = 3
+420 let n = INT(RND(1)*10+.5):REM CONVERT RANDOM NUMBER TO INTEGERS 0-10 (NEW LINE #420 FROM #511)
+425 REM OLD LOGIC EXCLUDED "E" EXPANSION POWER-UP OWING TO BUGS THEREWITH (NOW FIXED)
+430 powerup = (n < (sp < 990) + 4) * n + NOT n:REM NEW IN-LINE FORMULATION, INCLUDING powerup FOR "E", "SLOW DOWN" ONLY WHEN FAST
+440 D$ = MID$("*+$Es",powerup + 1,1):GOTO 200:REM SET CHAR FROM STRING, GO BACK TO START NEW RAINDROP
 
-550 rem powerup characters
-560 if powerup = 0 then let D$ = "*"
-570 if powerup = 1 then let D$ = "+"
-580 if powerup = 2 then let D$ = "s"
-590 if powerup = 3 then let D$ = "$"
-
-
-600 goto 200:rem go back and start a new raindrop
 
 700 rem ++++++
 710 rem lives up subroutine
@@ -137,11 +119,11 @@
 890 return
 
 
-900 REM ++++++++++++++++++++++++++++++++++++++++
+900 REM ++++++++++++++++
 901 REM GET PLAYER INPUT
-902 REM ++++++++++++++++++++++++++++++++++++++++
+902 REM ++++++++++++++++
 903 IF PEEK (49152) > 127 THEN K$=CHR$(PEEK (49152)-128): REM SEE IF KEY(S) PRESSED
-904 IF K$ = "Q" THEN goto 9000 
+904 IF K$ = "Q" THEN goto 9000
 905 if K$ = " " then gosub 5000
 924 let oldpos = p1
 935 if K$ = CHR$(8) then let p1 = p1 - 1
@@ -150,44 +132,24 @@
 965 if p1 > 40-PL then let p1 = 40-PL
 979 POKE 49168,0: REM reset keyboard input address (clear keyboard strobe)
 
-
 999 REM +++++++++++
 1000 REM Draw paddle
 1001 rem +++++++++++
 
-1215 for b = 0 to PL
-1210 vtab bottomofscreen: htab p1 + b: ?"-";
-1211 next b
-
-1212 if oldpos < p1 then gosub 1220
-1214 if oldpos > p1 then gosub 1225
-
-1219 return
-
-1220 REM erase old left edge of paddle subroutine
-1221 vtab bottomofscreen: htab oldpos: ?" ";
-1224 return
-
-1225 REM erase old right edge of paddle subroutine
-1228 vtab bottomofscreen: htab oldpos + PL: ?" ";
-1230 return
-
-1500 rem erase expanded paddle when power time is up
-1510 for i = 1 to pwl
-1515 if oldpos + i > 40 then goto 1530
-1520 htab oldpos + i: ?" ";
-1530 next i
-1550 return
+1200 vtab bottomofscreen: b = oldpos < p1:htab p1 - b:?SPC(b)
+1205 for b = 0 to PL:?"-";
+1210 next b:?SPC(oldpos > p1):RETURN
 
 
 2000 REM increase paddle length; set power timer to five drops
 2010 let PL=PL+pwl
-2020 let ptime = 5
+2020 let ptime = ptime * 6 + 5:pdec = 6 ^ ((PL - OPL) / pwl - 1) + pdec:REM HANDLE MULTIPLE EXPANSION
+2025 p1 = p1 - (p1 > 1) - (p1 + PL = 40):REM REPOSITION PADDLE LEFTWARD AS NEEDED
 2030 return
 
-5000 rem pause 
+5000 rem pause
 5010 htab 4:vtab 4:input "Paused: press <RETURN> to resume";K$
-5020 htab 4:vtab 4:? " "
+5020 htab 4:vtab 4: CALL -868:?:REM ERASE PAUSE-MESSAGE LINE
 5040 let K$ = ""
 5050 return
 
