@@ -7,7 +7,7 @@
 6 REM
 
 10   REM  APPLE II SIMPLE PONG V4
-20   REM  PASTE INTO Joshua Bell s EMULATOR AT www.calormen.com/Applesoft/
+20   REM  PASTE INTO Joshua Bell s EMULATOR AT inexorabletash.github.io/jsbasic/
 25   REM  ++++++++++++++++++++++++++++++++++++++++
 30   REM  TITLE SCREEN + PROMPT FOR CONTROLS
 35   REM  ++++++++++++++++++++++++++++++++++++++++

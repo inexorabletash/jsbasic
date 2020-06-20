@@ -11,7 +11,7 @@
 11 REM something more exciting.
 12
 13 REM You can run this program via the URL below
-14 REM https://www.calormen.com/jsbasic/.
+14 REM https://inexorabletash.github.io/jsbasic/
 16 REM
 18 HOME
 19 HGR
