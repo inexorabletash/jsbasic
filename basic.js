@@ -333,7 +333,7 @@ this.basic = (function() {
   var parseDataInput = (function() {
 
     var regexWhitespace = /^[ \t]+/,
-        regexQuotedString = /^"([^"]*?)"/,
+        regexQuotedString = /^"([^"]*?)(?:"|(?=\n|\r|$))/,
         regexUnquotedString = /^[^:,\r\n]*/,
         regexComma = /^,/;
 

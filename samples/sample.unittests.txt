@@ -384,6 +384,8 @@
 
 6001 DATA 1,2,3
 6002 DATA "A","B","C"
+6003 DATA A,B,C
+6004 DATA "UNTERM,INATED
 
 6010 T$ = "READ"
 : RESTORE
@@ -391,6 +393,8 @@
 : READ T,U : S = (T=2 AND U=3) : GOSUB 1
 : READ A$ : S = (A$="A") : GOSUB 1
 : READ A$,B$ : S = (A$="B" AND B$="C") : GOSUB 1
+: READ A$,B$,C$ : S = (A$="A" AND B$="B" AND C$="C") : GOSUB 1
+: READ A$ : S = (A$="UNTERM,INATED") : GOSUB 1
 
 6020 T$ = "RESTORE" : RESTORE
 : READ T : S = (T=1) : GOSUB 1
