@@ -427,7 +427,11 @@ this.basic = (function() {
       // Text window
       0x0020: function(v) { if (env.tty.textWindow) { env.tty.textWindow.left = v; } },
       0x0021: function(v) { if (env.tty.textWindow) { env.tty.textWindow.width = v; } },
-      0x0022: function(v) { if (env.tty.textWindow) { env.tty.textWindow.top = v; } },
+      0x0022: function(v) { if (env.tty.textWindow) {
+        var bottom = env.tty.textWindow.top + env.tty.textWindow.height;
+        env.tty.textWindow.top = v;
+        env.tty.textWindow.height = bottom - env.tty.textWindow.top;
+      } },
       0x0023: function(v) { if (env.tty.textWindow) { env.tty.textWindow.height = v - env.tty.textWindow.top; } },
       0x0024: function(v) { env.tty.setCursorPosition(v, void 0); },
       0x0025: function(v) { env.tty.setCursorPosition(void 0, v); },
