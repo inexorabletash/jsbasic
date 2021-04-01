@@ -835,6 +835,7 @@ this.basic = (function() {
             height: env.tty.getScreenSize().height
           };
         }
+        env.tty.setCursorPosition(0, env.tty.getScreenSize().height - 1);
       },
 
       //////////////////////////////////////////////////////////////////////
