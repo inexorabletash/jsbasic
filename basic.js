@@ -601,11 +601,9 @@ this.basic = (function() {
         }
       },
 
-      'for': function FOR(varname, from, to, step) {
-        state.variables[varname] = from;
+      'for': function FOR(varname, to, step) {
         state.stack.push({
           index: varname,
-          from: from,
           to: to,
           step: step,
           for_next: state.stmt_index,
@@ -1827,12 +1825,11 @@ this.basic = (function() {
               throw parse_error("Syntax error: Expected floating point variable");
             }
             identifiers.variables[name] = true;
-
-            return slib('for',
-                            quote(name),
-                            match("operator", "=") && parseNumericExpression(),
-                            match("reserved", kws.TO) && parseNumericExpression(),
-                            test('reserved', kws.STEP, true) ? parseNumericExpression() : '1');
+            return 'state.variables[' + quote(name) + '] = ' +
+                  (match("operator", "=") && parseNumericExpression()) + ';' +
+                  slib('for', quote(name),
+                   match("reserved", kws.TO) && parseNumericExpression(),
+                   test('reserved', kws.STEP, true) ? parseNumericExpression() : '1');
 
           case kws.NEXT: // NEXT [i [,j ... ] ]
             args = [];
