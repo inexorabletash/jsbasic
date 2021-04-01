@@ -872,6 +872,7 @@ function TTY(screenElement, keyboardElement) {
 
 
   this.getKeyboardRegister = function getKeyboardRegister() {
+    self.focus();
     return keyboardRegister;
   };
 
