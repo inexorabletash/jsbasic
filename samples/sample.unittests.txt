@@ -139,6 +139,9 @@
 2163 T$ = "FOR STEP"
 : T = 0 : FOR I = 10 TO 1 : T = T + I : NEXT
 : S = (T = 10) : GOSUB 1
+2164 T$ = "FOR Initialization"
+: I = 20 : FOR I = 6 TO I + 4 : NEXT
+: S = (I = 11) : GOSUB 1
 
 2170 T$ = "NEXT"
 : T = 0 : FOR I = 1 TO 10 : FOR J = 1 TO 10 : FOR K = 1 TO 10 : T = T + 1 : NEXT J, I
@@ -449,7 +452,7 @@
 : VLIN I, 39-I AT 39 - I
 : NEXT
 
-7999 TEXT
+7999 U = PEEK(36) : V = PEEK(37) : TEXT : POKE 36,U : POKE 37,V
 8000 PRINT : PRINT "Hi-Res Graphics ";
 8001 IF NOT HR THEN PRINT "<skipping HGR test>" : GOTO 9000
 
@@ -505,7 +508,7 @@
 8233 HCOLOR= 6 : HPLOT W,H * (1-I) TO W * I,H
 8234 NEXT
 
-8999 TEXT
+8999 U = PEEK(36) : V = PEEK(37) : TEXT : POKE 36,U : POKE 37,V
 
 
 
@@ -684,15 +687,15 @@
 : U = PEEK(36) : V = PEEK(37) : GR : S = (PEEK(49178) < 128) : TEXT : POKE 36,U : POKE 37,V : GOSUB 1
 
 15030 T$ = "PEEK(49179) RdMIXED"
-: HGR  : S = (PEEK(49179) > 127) : TEXT : GOSUB 1
-: HGR2 : S = (PEEK(49179) < 128) : TEXT : GOSUB 1
+: HGR  : S = (PEEK(49179) > 127) : U = PEEK(36) : V = PEEK(37) : TEXT : POKE 36,U : POKE 37,V : GOSUB 1
+: HGR2 : S = (PEEK(49179) < 128) : U = PEEK(36) : V = PEEK(37) : TEXT : POKE 36,U : POKE 37,V : GOSUB 1
 
 15040 T$ = "PEEK(49180) RdPage2"
-: HGR2 : S = (PEEK(49180) > 127) : TEXT : GOSUB 1
-: HGR  : S = (PEEK(49180) < 128) : TEXT : GOSUB 1
+: HGR2 : S = (PEEK(49180) > 127) : U = PEEK(36) : V = PEEK(37) : TEXT : POKE 36,U : POKE 37,V : GOSUB 1
+: HGR  : S = (PEEK(49180) < 128) : U = PEEK(36) : V = PEEK(37) : TEXT : POKE 36,U : POKE 37,V : GOSUB 1
 
 15050 T$ = "PEEK(49181) RdHiRes"
-: HGR : S = (PEEK(49181) > 127) : TEXT : GOSUB 1
+: HGR : S = (PEEK(49181) > 127) : U = PEEK(36) : V = PEEK(37) : TEXT : POKE 36,U : POKE 37,V : GOSUB 1
 : U = PEEK(36) : V = PEEK(37) : GR : S = (PEEK(49181) < 128) : TEXT : POKE 36,U : POKE 37,V : GOSUB 1
 
 15060 T$ = "PEEK(49182) RdAltChar"
