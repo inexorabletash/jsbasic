@@ -200,16 +200,16 @@ can be literals (unquoted strings), strings, or numbers
         <li><code>POKE 37,<var>n</var></code> &mdash; Text cursor y
         <li><code>POKE 216,<var>n</var></code> &mdash; ONERR flag (<var>n</var> &lt; 128 disables ONERR handler)
         <li><code>POKE 230,<var>n</var></code> &mdash; Hi-Res plotting page (32 = page 1, 64 = page 2)
-        <li><code>POKE 49168,0</code> &mdash; clear keyboard strobe
-        <li><code>POKE 49200,0</code> &mdash; toggle speaker (no-op)
-        <li><code>POKE 49232,0</code> &mdash; graphics mode
-        <li><code>POKE 49233,0</code> &mdash; text mode
-        <li><code>POKE 49234,0</code> &mdash; full graphics mode
-        <li><code>POKE 49235,0</code> &mdash; mixed text/graphics mode
-        <li><code>POKE 49236,0</code> &mdash; display page 1
-        <li><code>POKE 49237,0</code> &mdash; display page 2
-        <li><code>POKE 49238,0</code> &mdash; lores graphics mode
-        <li><code>POKE 49239,0</code> &mdash; hires graphics mode
+        <li><code>POKE 49168,0</code> or <code>POKE -16368,0</code> &mdash; clear keyboard strobe
+        <li><code>POKE 49200,0</code> or <code>POKE -16336,0</code> &mdash; toggle speaker (no-op)
+        <li><code>POKE 49232,0</code> or <code>POKE -16304,0</code> &mdash; graphics mode
+        <li><code>POKE 49233,0</code> or <code>POKE -16303,0</code> &mdash; text mode
+        <li><code>POKE 49234,0</code> or <code>POKE -16302,0</code> &mdash; full graphics mode
+        <li><code>POKE 49235,0</code> or <code>POKE -16301,0</code> &mdash; mixed text/graphics mode
+        <li><code>POKE 49236,0</code> or <code>POKE -16300,0</code> &mdash; display page 1
+        <li><code>POKE 49237,0</code> or <code>POKE -16299,0</code> &mdash; display page 2
+        <li><code>POKE 49238,0</code> or <code>POKE -16298,0</code> &mdash; lores graphics mode
+        <li><code>POKE 49239,0</code> or <code>POKE -16297,0</code> &mdash; hires graphics mode
       </ul>
 
   <dt>CALL <var>aexpr</var><dd>Call native routine
@@ -302,21 +302,21 @@ can be literals (unquoted strings), strings, or numbers
         <li><code>PEEK(78)</code> &amp; <code>PEEK(79)</code> &mdash; Random-Number Field
         <li><code>PEEK(222)</code> &mdash; Last error code
         <li><code>PEEK(230)</code> &mdash; Hi-Res plotting page (32 = page 1, 64 = page 2)
-        <li><code>PEEK(49152)</code> &mdash; Read Keyboard
-        <li><code>PEEK(49168)</code> &mdash; Clear Keyboard strobe
+        <li><code>PEEK(49152)</code> or <code>PEEK(-16384)</code> &mdash; Read Keyboard
+        <li><code>PEEK(49168)</code> or <code>PEEK(-16368)</code> &mdash; Clear Keyboard strobe
 
-        <li><code>PEEK(49178)</code> &mdash; See if text mode (&gt; 127) or graphics mode (&lt; 128)
-        <li><code>PEEK(49179)</code> &mdash; See if mixed mode (&gt; 127) or full mode (&lt; 128)
-        <li><code>PEEK(49180)</code> &mdash; See if page2 (&gt; 127) or page1 (&lt; 128)
-        <li><code>PEEK(49181)</code> &mdash; See if hires mode (&gt; 127) or lores mode (&lt; 128)
-        <li><code>PEEK(49182)</code> &mdash; See if mousetext mode (&gt; 127)
-        <li><code>PEEK(49183)</code> &mdash; See if 80-column mode (&gt; 127)
+        <li><code>PEEK(49178)</code> or <code>PEEK(-16358)</code> &mdash; See if text mode (&gt; 127) or graphics mode (&lt; 128)
+        <li><code>PEEK(49179)</code> or <code>PEEK(-16357)</code> &mdash; See if mixed mode (&gt; 127) or full mode (&lt; 128)
+        <li><code>PEEK(49180)</code> or <code>PEEK(-16356)</code> &mdash; See if page2 (&gt; 127) or page1 (&lt; 128)
+        <li><code>PEEK(49181)</code> or <code>PEEK(-16355)</code> &mdash; See if hires mode (&gt; 127) or lores mode (&lt; 128)
+        <li><code>PEEK(49182)</code> or <code>PEEK(-16354)</code> &mdash; See if mousetext mode (&gt; 127)
+        <li><code>PEEK(49183)</code> or <code>PEEK(-16353)</code> &mdash; See if 80-column mode (&gt; 127)
 
-        <li><code>PEEK(49200)</code> &mdash; Click Speaker (no-op)
-        <li><code>PEEK(49248)</code> &mdash; Read Paddle Button #3 &mdash; <em>Use the PageDown key</em>
-        <li><code>PEEK(49249)</code> &mdash; Read Paddle Button #0 &mdash; <em>Use the Home key</em>
-        <li><code>PEEK(49250)</code> &mdash; Read Paddle Button #1 &mdash; <em>Use the End key</em>
-        <li><code>PEEK(49251)</code> &mdash; Read Paddle Button #2 &mdash; <em>Use the PageUp or Shift key</em>
+        <li><code>PEEK(49200)</code> or <code>PEEK(-16336)</code> &mdash; Click Speaker (no-op)
+        <li><code>PEEK(49248)</code> or <code>PEEK(-16288)</code> &mdash; Read Paddle Button #3 &mdash; <em>Use the PageDown key</em>
+        <li><code>PEEK(49249)</code> or <code>PEEK(-16287)</code> &mdash; Read Paddle Button #0 &mdash; <em>Use the Home key</em>
+        <li><code>PEEK(49250)</code> or <code>PEEK(-16286)</code> &mdash; Read Paddle Button #1 &mdash; <em>Use the End key</em>
+        <li><code>PEEK(49251)</code> or <code>PEEK(-16285)</code> &mdash; Read Paddle Button #2 &mdash; <em>Use the PageUp or Shift key</em>
       </ul>
 </dl>
 </section>
@@ -458,7 +458,7 @@ otherwise the <em>Home</em> and <em>End</em> keys respectively.
 <p>
 Since the <em>Tab</em> key is necessary for keyboard access to browser functions and
 the rest of the web page, it is not available. Otherwise, special keys can be detected
-using <code>GET</code> (blocking) or <code>PEEK(49152)</code> (non-blocking):
+using <code>GET</code> (blocking) or <code>PEEK(49152)</code> or <code>PEEK(-16384)</code> (non-blocking):
 </p>
 
 <table style="margin-left: 3em;">
