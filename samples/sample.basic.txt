@@ -15,10 +15,10 @@
 75 PRINT "(14) Lores Drawing with Joystick"
 80 PRINT "(15) Lores Colors"
 85 PRINT "(16) Mandelbrot Set"
-85 PRINT "(17) Light Cycles"
+86 PRINT "(17) Light Cycles"
 90 PRINT "(18) Hires Demo"
 92 PRINT "(19) DOS WRITE/APPEND"
-94 PRINT "(20) ONERR ... RESUME"
+93 PRINT "(20) ONERR ... RESUME"
 94 PRINT "(21) CHR$ Tests"
 95 PRINT: INPUT "Enter option: "; A : PRINT : HOME : ON A GOTO 100,200,300,400,500,600,700,800,1900,1000,1100,1200,2000,2100,2200,2300,2400,2500,2600,2700,2800
 98 HOME
@@ -34,16 +34,16 @@
 190 PRINT "POP" : POP : PRINT "RETURN" : RETURN
 
 200 REM Basic input/output, expression, IF/THEN tests
-205 PRINT "at line 200" 
+205 PRINT "at line 200"
 210 INPUT "Pick a number: "; A
 215 PRINT A
-220 IF (A) THEN PRINT "TRUE" 
+220 IF (A) THEN PRINT "TRUE"
 230 IF (NOT A) THEN PRINT "FALSE"
 240 PRINT : PRINT "Press any key: " : GET A$ : GOTO 5
 
 300 REM Fibbonacci
 310 LA = 0 : CU = 1
-320 NX = LA + CU : PRINT NX 
+320 NX = LA + CU : PRINT NX
 330 LA = CU : CU = NX
 340 GOTO 320
 
@@ -52,7 +52,7 @@
 410 N = INT( RND(1) * 100 ) + 1
 420 INPUT "Your guess? "; G
 430 IF G = N THEN PRINT "Got it!" : PRINT : PRINT "Press any key: " : GET A$ : GOTO 5
-430 IF G < N THEN PRINT "Too low" : GOTO 420
+431 IF G < N THEN PRINT "Too low" : GOTO 420
 440 IF G > N THEN PRINT "Too high" : GOTO 420
 
 500 REM Guess your number
@@ -61,8 +61,8 @@
 530 PRINT "I guess ";G;" - enter 1 for too high, -1 for too low, 0 for got it"
 540 INPUT R
 550 IF R = 0 THEN PRINT "I guessed right!" : PRINT : PRINT "Press any key: " : GET A$ : GOTO 5
-540 IF R < 0 THEN MN = G + 1 : GOTO 560
-550 IF R > 0 THEN MX = G - 1 : GOTO 560
+551 IF R < 0 THEN MN = G + 1
+    552 IF R > 0 THEN MX = G - 1
 560 IF MX = MN THEN PRINT "It must be "; MX; " - I guess you win." : END
 570 G = INT( ( MX + MN ) / 2 ) : GOTO 530
 
@@ -106,7 +106,7 @@
 820 PRINT : PRINT "Press any key: " : GET A$ : GOTO 5
 
 900 REM Cellular automata
-901 PRINT "Wolfram's CA rules" : PRINT "Try 110, 111, 118, 121, 126" : PRINT 
+901 PRINT "Wolfram's CA rules" : PRINT "Try 110, 111, 118, 121, 126" : PRINT
 902 INPUT "Rule: "; R : PRINT
 904 DIM VT(8) : FOR I = 0 TO 7 : VT(I) = NOT( R / 2 = INT( R / 2 ) ) : R = INT(R / 2) : NEXT
 910 S$ = "                  #                  "
@@ -127,7 +127,7 @@
 1030 INPUT "Noun: "; NN$
 1040 INPUT "Place: "; P$
 1050 S$ = "One day, " + N$ + " " + V$ + " to " + P$ + " to see the " + NN$ + "."
-1060 PRINT S$ : PRINT 
+1060 PRINT S$ : PRINT
 1070 PRINT : PRINT "Press any key: " : GET A$ : GOTO 5
 
 1100 REM Lissajous Figures
@@ -154,10 +154,10 @@
 
 1900 REM Cellular automata
 1901 HOME
-1902 PRINT "Wolfram's CA rules" : PRINT "Try 110, 111, 118, 121, 126" : PRINT 
+1902 PRINT "Wolfram's CA rules" : PRINT "Try 110, 111, 118, 121, 126" : PRINT
 1903 INPUT "Rule: "; R : PRINT
 1904 DIM VT(8) : FOR I = 0 TO 7 : VT(I) = NOT( R / 2 = INT( R / 2 ) ) : R = INT(R / 2) : NEXT
-1910 DIM C(30) : DIM N(30) : N(15) = 1 
+1910 DIM C(30) : DIM N(30) : N(15) = 1
 1912 FOR I = 0 TO 30 : C(I) = N(I) : PRINT C(I); : NEXT : PRINT
 1916 FOR I = 2 TO 30 - 1
 1918 V = 4 * C(I-1) + 2 * C(I) + 1 * C(I+1)
@@ -166,12 +166,12 @@
 1940 GOTO 1912
 
 2000 REM DOS Sequential Text File
-2005 PRINT "First, knowing it has 4 lines..." : PRINT 
+2005 PRINT "First, knowing it has 4 lines..." : PRINT
 2010 PRINT CHR$(4)"OPEN JABBERWOCKY"
 2015 PRINT CHR$(4)"READ JABBERWOCKY"
 2020 FOR I = 1 TO 4 : INPUT A$ : PRINT A$ : NEXT
 2025 PRINT CHR$(4)"CLOSE"
-2030 PRINT : PRINT "Now with ONERR..." : PRINT 
+2030 PRINT : PRINT "Now with ONERR..." : PRINT
 2035 PRINT CHR$(4)"OPEN JABBERWOCKY"
 2040 PRINT CHR$(4)"READ JABBERWOCKY"
 2045 ONERR GOTO 2055
@@ -228,7 +228,7 @@
 2470 X = X + DX : Y = Y + DY
 2480 IF SCRN(X,Y) <> 0 THEN HTAB 1 : VTAB 23 : PRINT "Crashed! Press any key to continue: " :  POKE 49168,0 : GET A$ : GOTO 5
 2490 HTAB 1 : VTAB 21 : SC = SC + 10 : PRINT "Score: "; SC
-2490 FOR I = 0 TO 500 : NEXT : GOTO 2450
+2491 FOR I = 0 TO 500 : NEXT : GOTO 2450
 
 2500 REM Hires Demo
 2510 HOME : HGR
@@ -260,7 +260,7 @@
 2665 PRINT CHR$(4)"CLOSE FOO"
 2670 PRINT : PRINT "Press any key to continue: " : GET A$ : GOTO 5
 
-2700 REM ONERR ... RESUME 
+2700 REM ONERR ... RESUME
 2710 PRINT "First, RESUME into an IF statement"
 2712 ONERR GOTO 2718
 2714 PRINT "Testing... " : X = 0 : IF 1 / X THEN PRINT "Succeeded!"
@@ -276,7 +276,7 @@
 2785 PRINT : PRINT "Oops, caught an error. Try again": INPUT "Y = ";Y : RESUME
 
 2800 REM CONTROL KEY TESTS
-2810 PR#0 : TEXT : HOME 
+2810 PR#0 : TEXT : HOME
 2820 HTAB 20 : VTAB 24 : PRINT "1"CHR$(10)"2";
 2830 HTAB 1 : VTAB 11 : PRINT CHR$(8)"3";
 2840 HTAB 1 : VTAB 1 : PRINT CHR$(8)"4";
@@ -286,6 +286,3 @@
 2854 HTAB 36 : VTAB 1 : PRINT "4-->";
 2860 VTAB 10 : HTAB 1 : PRINT "Press key to beep:"; : GET A$ : PRINT CHR$(7)
 2870 VTAB 11 : HTAB 1 : PRINT "Press any key:"; : GET A$ : GOTO 5
-
-
-
