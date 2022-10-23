@@ -1,0 +1,61 @@
+10  REM -----------------------
+ 11  REM Source: HELLO on disk: Dark the Disk Repair Kit (v2.2), Beyond Wolfenstein Editor.dsk
+
+ 12  REM Extracted and slightly modified by Moose
+
+ 13  REM -----------------------
+
+ 60  TEXT : HOME : GR :D$ =  CHR$ (13) +  CHR$ (4)
+
+ 70  COLOR= 12: VLIN 1,4 AT 24: VLIN 2,7 AT 23: VLIN 3,8 AT 22: VLIN 4,9 AT 21: VLIN 6,10 AT 20
+
+ 80  HLIN 13,16 AT 10: HLIN 24,27 AT 10: HLIN 12,18 AT 11: HLIN 22,28 AT 11: HLIN 11,29 AT 12: HLIN 11,29 AT 13
+
+ 90  COLOR= 13: FOR I = 14 TO 17: HLIN 10,30 AT I: NEXT I
+
+ 100  FOR I = 18 TO 25
+
+ 110  IF I = 19 THEN  COLOR= 9
+
+ 120  IF I = 24 THEN  COLOR= 1
+
+ 130  HLIN 9,31 AT I: NEXT I
+
+ 140  FOR I = 26 TO 30
+
+ 150  IF I = 29 THEN  COLOR= 3
+
+ 160  HLIN 10,30 AT I: NEXT I
+
+ 170  FOR I = 31 TO 33: HLIN 11,29 AT I: NEXT I
+
+ 180  COLOR= 2: FOR I = 34 TO 36: HLIN 12,28 AT I: NEXT I
+
+ 190  HLIN 13,27 AT 37: HLIN 14,19 AT 38: HLIN 21,26 AT 38: HLIN 15,18 AT 39: HLIN 22,25 AT 39
+
+ 200  VTAB 24: PRINT "   PRESS ANY KEY TO TAKE A 'BITE' ";: GET TZ$
+
+ 205  HOME
+
+ 210  FOR C = 1 TO 20:K =  PEEK ( - 16336): NEXT C
+
+ 220  COLOR= 0: HLIN 28,30 AT 14: HLIN 28,30 AT 15: HLIN 27,30 AT 16: HLIN 27,30 AT 17: HLIN 26,31 AT 18: HLIN 26,31 AT 19: HLIN 26,31 AT 20: HLIN 25,31 AT 21: HLIN 25,31 AT 22: HLIN 25,31 AT 23: HLIN 25,31 AT 24: HLIN 26,31 AT 25
+
+ 230  HLIN 26,30 AT 26: HLIN 26,30 AT 27: HLIN 27,30 AT 28: HLIN 27,30 AT 29: HLIN 29,30 AT 30
+
+ 240  FOR PAUSE = 1 TO 1000: NEXT PAUSE
+
+ 250  REM PRINT D$;"RUN MENU"
+
+ 260  TEXT : HOME
+
+ 270  PRINT: PRINT "HAVE A NICE DAY !   MOOSE :)
+
+ 910  REM -----------------------
+
+ 911  REM Source: HELLO on disk: Dark the Disk Repair Kit (v2.2), Beyond Wolfenstein Editor.dsk
+
+ 912  REM Extracted and slightly modified by Moose
+
+ 913  REM -----------------------
+
