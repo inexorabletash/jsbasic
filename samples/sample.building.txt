@@ -1,0 +1,61 @@
+0 clear : text : normal : home
+1 rem BUILDING GAME BY MELVIN ROSARIO
+2 rem Use Arrow keys to look around, Use wasd to move
+3 rem Press E to place a block and Q to remove one
+4 rem Use N and M to scroll through block type
+
+5 inverse : htab 3 : vtab 3 : print " BUILDING GAME " : normal : htab 3 : vtab 5 : print "press any key to start" : get unused$ : gr
+6 etp = 4 : ctp = 0
+7 if unused$="0" or unused$="U" then blk=5000
+8 if unused$><"U" then elevation=20
+9 if unused$="U" then elevation=10
+10 px=20 : py=1 : pr=0 : bkg=6 : for i = 0 to 39 : color=4 : vlin 1,38 at i : next i
+11 for i = 0 to 39 : color=bkg : vlin 1,elevation at i : color=13 : vlin elevation+3,38 at i
+12 rand=val(mid$(str$(rnd(-1*(peek(78)+256*peek(79)))*10),1,1))
+13 if unused$><"U" and rand = 8 and elevation < 34 then elevation=elevation+2 : goto 20
+14 if unused$><"U" and rand > 2 and elevation < 34 then elevation=elevation+1 : goto 20
+15 if unused$><"U" and rand = 1 then elevation=elevation-2 : goto 20
+16 if unused$><"U" and rand < 4 then elevation=elevation-1
+20 next i
+
+30 home : rand=val(mid$(str$(rnd(-1*(peek(78)+256*peek(79)))*10),1,1))
+40 gosub 350
+50 if pr=0 then print "facing left |"
+51 if pr=1 then print "facing right|"
+52 if pr=2 then print "facing up   |"
+53 if pr=3 then print "facing down |"
+100 if ctp=0 then ptb$ = "grass" : pldtp = 4
+101 if ctp=1 then ptb$ = "dirt" : pldtp = 13
+102 if ctp=2 then ptb$ = "brick" : pldtp = 11
+103 if ctp=3 then ptb$ = "platform" : pldtp = 2
+104 if ctp=4 then ptb$ = "glass" : pldtp = 15
+300 htab 15 : vtab 21 : print "blocks:" ; blks : print "block type: [" ; ctp ; "] " ; ptb$ : get btn$ : goto 30
+
+350 color=bkg: plot px, py
+351 if btn$="D" and px=39 and scrn(0,py) = bkg then px=0 : goto 500
+352 if btn$="A" and px=0 and scrn(39,py) = bkg then px=39 : goto 500
+401 if btn$=chr$(21) then pr=1
+402 if btn$=chr$(8) then pr=0
+403 if btn$=chr$(10) then pr=3
+404 if btn$=chr$(11) then pr=2
+405 if btn$="E" and pr=0 and px><0 and scrn(px-1,py) = bkg and blks>0 then color=pldtp: plot px-1,py : blks=blks-1
+406 if btn$="E" and pr=1 and px><39 and scrn(px+1,py) = bkg and blks>0  then color=pldtp: plot px+1,py : blks=blks-1
+407 if btn$="E" and pr=2 and scrn(px,py-1) = bkg and blks>0 then color=pldtp: plot px,py-1 : blks=blks-1
+408 if btn$="E" and pr=3 and scrn(px,py+1) = bkg and blks>0 then color=pldtp: plot px,py+1 : blks=blks-1
+409 if btn$="Q" and pr=1 and px><39 and scrn(px+1,py) >< bkg and scrn(px+1,py) >< 0 then color=bkg: plot px+1,py : blks=blks+1
+410 if btn$="Q" and pr=2 and scrn(px,py-1) >< bkg and scrn(px,py-1) >< 0 then color=bkg: plot px,py-1 : blks=blks+1
+411 if btn$="Q" and pr=3 and scrn(px,py+1) >< bkg and scrn(px,py+1) >< 0 then color=bkg: plot px,py+1 : blks=blks+1
+412 if btn$="Q" and pr=0 and px><0 and scrn(px-1,py) >< bkg and scrn(px-1,py) >< 0 then color=bkg: plot px-1,py : blks=blks+1
+413 if btn$="D" and px><39 and scrn(px+1,py) = bkg then px=px+1 : goto 415
+414 if btn$="D" and px><39 and scrn(px+1,py) >< bkg and scrn(px+1,py-1) = bkg then px=px+1 : py=py-1
+415 if btn$="S" and scrn(px,py+1) = 2 and scrn(px,py+2) = bkg then py=py+2
+418 if btn$="A" and px><0 and scrn(px-1,py) = bkg then px=px-1 : goto 420
+419 if btn$="A" and px><0 and scrn(px-1,py) >< bkg and scrn(px-1,py-1) = bkg then px=px-1 : py=py-1
+420 if btn$="M" then ctp = ctp + 1
+421 if btn$="N" then ctp = ctp - 1
+489 if ctp > etp then ctp = 0
+490 if ctp < 0 then ctp = etp
+497 if btn$="W" and py><0 and scrn(px,py-1) = 2 and scrn(px,py-2) = bkg then py=py-2 : goto 500
+498 if scrn(px,py+1) = bkg then py=py+1 : goto 500
+499 if btn$="W" and scrn(px,py-1) = bkg then py=py-1
+500 color=0: plot px, py : return
