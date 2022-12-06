@@ -1141,7 +1141,7 @@ this.basic = (function() {
         if (n < 1 || n > 255) {
           runtime_error(ERRORS.ILLEGAL_QUANTITY);
         }
-        if (n2 < 1 || n2 > 255) {
+        if (n2 < 0 || n2 > 255) {
           runtime_error(ERRORS.ILLEGAL_QUANTITY);
         }
         return n2 === (void 0) ? s.substring(n - 1) : s.substring(n - 1, n + n2 - 1);

@@ -592,19 +592,51 @@
 : S = (LEN("") = 0) : GOSUB 1
 
 11020 T$ = "LEFT$()"
-: S = (LEFT$("ABC",0) = "") : GOSUB 1
 : S = (LEFT$("ABC",2) = "AB") : GOSUB 1
 : S = (LEFT$("ABC",4) = "ABC") : GOSUB 1
+: ONERR GOTO 11022
+11021 T = 1
+: T = (LEFT$("A",0) = "NOPE")
+11022 S = (T=1) : GOSUB 1 : POKE 216,0
+: ONERR GOTO 11024
+11023 T = 1
+: T = (LEFT$("A",256) = "NOPE")
+11024 S = (T=1) : POKE 216,0 : GOSUB 1
 
 11030 T$ = "MID$()"
 : S = (MID$("ABCD",2,2) = "BC") : GOSUB 1
 : S = (MID$("ABCD",3)   = "CD") : GOSUB 1
 : S = (MID$("ABCD",4,3) = "D") : GOSUB 1
+: S = (MID$("ABCD",5,4) = "") : GOSUB 1
+: ONERR GOTO 11032
+11031 T = 1
+: T = (MID$("A",0) = "NOPE")
+11032 S = (T=1) : GOSUB 1 : POKE 216,0
+: ONERR GOTO 11034
+11033 T = 1
+: T = (MID$("A",256) = "NOPE")
+11034 S = (T=1) : POKE 216,0 : GOSUB 1
+: S = (MID$("A",1,0) = "") : GOSUB 1
+: ONERR GOTO 11036
+11035 T = 1
+: T = (MID$("A",1,-1) = "NOPE")
+11036 S = (T=1) : POKE 216,0 : GOSUB 1
+: ONERR GOTO 11038
+11037 T = 1
+: T = (MID$("A",1,256) = "NOPE")
+11038 S = (T=1) : POKE 216,0 : GOSUB 1
 
 11040 T$ = "RIGHT$()"
-: S = (RIGHT$("ABC",0) = "") : GOSUB 1
 : S = (RIGHT$("ABC",2) = "BC") : GOSUB 1
 : S = (RIGHT$("ABC",4) = "ABC") : GOSUB 1
+: ONERR GOTO 11042
+11041 T = 1
+: T = (RIGHT$("A",0) = "NOPE")
+11042 S = (T=1) : GOSUB 1 : POKE 216,0
+: ONERR GOTO 11044
+11043 T = 1
+: T = (RIGHT$("A",256) = "NOPE")
+11044 S = (T=1) : POKE 216,0 : GOSUB 1
 
 
 12000 PRINT : PRINT "Type Conversion Functions ";
