@@ -1131,9 +1131,27 @@ this.basic = (function() {
         return state.prng.last;
       }, 'number', 'number');
 
-      funlib[kws.LEFT$] = funcsign(function LEFT$(s, n) { return s.substring(0, n); }, 'string', 'string', 'number');
-      funlib[kws.MID$] = funcsign(function MID$(s, n, n2) { return n2 === (void 0) ? s.substring(n - 1) : s.substring(n - 1, n + n2 - 1); }, 'string', 'string', 'number', 'number?');
-      funlib[kws.RIGHT$] = funcsign(function RIGHT$(s, n) { return s.length < n ? s : s.substring(s.length - n); }, 'string', 'string', 'number');
+      funlib[kws.LEFT$] = funcsign(function LEFT$(s, n) {
+        if (n < 1 || n > 255) {
+          runtime_error(ERRORS.ILLEGAL_QUANTITY);
+        }
+        return s.substring(0, n);
+      }, 'string', 'string', 'number');
+      funlib[kws.MID$] = funcsign(function MID$(s, n, n2) {
+        if (n < 1 || n > 255) {
+          runtime_error(ERRORS.ILLEGAL_QUANTITY);
+        }
+        if (n2 < 1 || n2 > 255) {
+          runtime_error(ERRORS.ILLEGAL_QUANTITY);
+        }
+        return n2 === (void 0) ? s.substring(n - 1) : s.substring(n - 1, n + n2 - 1);
+      }, 'string', 'string', 'number', 'number?');
+      funlib[kws.RIGHT$] = funcsign(function RIGHT$(s, n) {
+        if (n < 1 || n > 255) {
+          runtime_error(ERRORS.ILLEGAL_QUANTITY);
+        }
+        return s.length < n ? s : s.substring(s.length - n);
+      }, 'string', 'string', 'number');
 
       funlib[kws.POS] = funcsign(function POS(n) { return env.tty.getCursorPosition().x; }, 'number', 'number');
       funlib[kws.SCRN] = funcsign(function SCRN(x, y) {
