@@ -87,7 +87,10 @@ function HiRes(element, width, height) {
         err = dx - dy,
         e2;
 
-    while (true) {
+    last_x = x;
+    last_y = y;
+
+    for (;;) {
       this.plot(x0, y0);
 
       if (x0 === x1 && y0 === y1) { return; }
@@ -101,9 +104,6 @@ function HiRes(element, width, height) {
         y0 += sy;
       }
     }
-    last_x = x;
-    last_y = y;
-
   };
 
   this.getPixel = function(x, y) {

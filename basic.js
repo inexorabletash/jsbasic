@@ -1233,7 +1233,7 @@ this.basic = (function() {
       (function(source) {
         function munge(kw) {
           // Escape special characters
-          function escape(c) { return (/[\[\]\\\^\$\.\|\?\*\+\(\)]/).test(c) ? '\\' + c : c; }
+          function escape(c) { return (/[[\]\\^$.|?*+()]/).test(c) ? '\\' + c : c; }
           // Allow linear whitespace between characters
           //return kw.split('').map(escape).join('[ \\t]*');
 
@@ -1268,9 +1268,9 @@ this.basic = (function() {
         var regexReservedWords = new RegExp("^(" + RESERVED_WORDS.map(munge).join("|") + ")", "i"),
             regexIdentifier = /^([A-Za-z][A-Za-z0-9]?)[A-Za-z0-9]*(\$|%)?/,
             regexStringLiteral = /^"([^"]*?)(?:"|(?=\n|\r|$))/,
-            regexNumberLiteral = /^[0-9]*\.?[0-9]+(?:[eE]\s*[\-+]?\s*[0-9]+)?/,
+            regexNumberLiteral = /^[0-9]*\.?[0-9]+(?:[eE]\s*[-+]?\s*[0-9]+)?/,
             regexHexLiteral = /^\$[0-9A-Fa-f]+/,
-            regexOperator = /^[;=<>+\-*\/\^(),]/,
+            regexOperator = /^[;=<>+\-*/^(),]/,
 
             regexLineNumber = /^[0-9]+/,
             regexSeparator = /^:/,

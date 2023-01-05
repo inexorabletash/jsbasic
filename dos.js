@@ -151,18 +151,13 @@ function DOS(tty) {
     if (file === null) {
       // Not cached - do a synchronous XmlHttpRequest for the file here
       req = new XMLHttpRequest();
-      try {
-        url = "vfs/" + encodeURIComponent(filename.replace(/\./g, '_')) + ".txt";
-        async = false;
-        req.open("GET", url, async);
-        req.send(null);
-        if (req.status === 200 || req.status === 0) { // 0 for file:// protocol
-          file = req.responseText.replace(/\r\n/g, "\r");
-          vfs_set(filename, file);
-        }
-      } catch (e) {
-        // File doesn't exist - APPEND/READ will fail
-        throw e;
+      url = "vfs/" + encodeURIComponent(filename.replace(/\./g, '_')) + ".txt";
+      async = false;
+      req.open("GET", url, async);
+      req.send(null);
+      if (req.status === 200 || req.status === 0) { // 0 for file:// protocol
+        file = req.responseText.replace(/\r\n/g, "\r");
+        vfs_set(filename, file);
       }
     }
 
@@ -179,7 +174,7 @@ function DOS(tty) {
     // Normal open logic
     open(filename, recordlength);
 
-    if (!buffers.hasOwnProperty(filename)) {
+    if (!Object.prototype.hasOwnProperty.call(buffers, filename)) {
       doserror(DOSErrors.FILE_NOT_FOUND);
     }
 
@@ -196,7 +191,7 @@ function DOS(tty) {
     // If not specified, close all buffers
     if (!filename) {
       for (fn in buffers) {
-        if (buffers.hasOwnProperty(fn)) {
+        if (Object.prototype.hasOwnProperty.call(buffers, fn)) {
           close(fn);
         }
       }
