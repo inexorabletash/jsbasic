@@ -1,166 +1,492 @@
-10 home
-11 let k=0
-12 let lives=5
-13 let key$="NO"
-14 let kx=29 :let ky=27
-15 let s=0
-16 let e=0
-17 print chr$(7) :home :print "SCORE:";score :print "LIVES:";lives :print "KEY OBTAINED?";key$
-18 let levelt=1
-19 let j=1
-20 gr
-21 color=6
-22 for q=1 to 39
-23 hlin 0,39 at k :let k=k+1
-24 next q
-25 color=10
-26 vlin 0,38 at 39
-27 color=13 :for sun=1 to 7
-28 hlin 1,4 at j :let j=j+1
-29 next sun
-30 color=13
-40 let cx=25 :let cy=19
-50 rem becketts new gravity improved (no bugs so far)
-60 plot cx,cy
-61 color=1 :plot kx,ky
-70 let X=12: let Y=23
-80 let score=0
-90 print "SCORE:";score
-91 print "LIVES:";lives
-92 print "KEY OBTAINED?";key$
-100 rem level plotter
-110 color=12
-120 dim z0(39,39)
-130 read x1,y1
-140 if x1=0 and y1=0 goto 300
-150 z0(x1,y1)=1
-160 plot x1,y1
-161 color=5
-162 plot x1,(y1+1) :color=12
-170 goto 130
-200 rem character printer
-210 color=2
-300 color=2
-310 plot x,y
-350 rem get key command
-450 let c$="":get c$
-451 if x<0 then let x=0
-452 if x>39 and levelt=1 then let x=39
-400 if X=25 and Y=19 and s=0 then htab(18):vtab(12):let score=score+1 :home :htab 1:vtab 23 :print "SCORE:";score :print "LIVES:" ;lives :print "KEY OBTAINED?";key$:let s=1 : gosub 100000 :goto 450
-401 if X=29 and Y=27 and e=0 then home :htab 1:vtab 23 :let key$="YES" :print "SCORE:";score :print "LIVES:" ;lives :print "KEY OBTAINED?";key$ :let e=1: gosub 200000 :goto 450
-402 if lives<1 then print "YOU LOSE!" :end
-500 if c$="W" goto 900
-600 if c$="A" then  color=6 :plot x,y : let X=X-1 :color=2 :plot x,y :if z0(X,Y+1)=0 then goto 1200:if z0(X,Y+1)=1 then goto 300
-700 if c$="D" then color=6 :plot x,y :let X=X+1 :color=2 : plot x,y :if z0(X,Y+1)=0 then goto 1200:if z0(X,Y+1)=1 then goto 300
-800 goto 400
-900 for i=1 to 6: plot x,y
-910 gosub 3000
-920 color=6 :plot x,y :let Y=Y-1
-1010 for r=1 to 125
-1020 color=2 :plot x,y
-1080 next r
-1100 gosub 10000
-1190 next i
-1200 plot x,y
-1240 color=6 :plot x,y :let Y=Y+1
-1310 for o=1 to 75
-1320 color=2 :plot x,y
-1390 next o
-1400 gosub 10000
-1410 gosub 2000
-1420 goto 1200
-1440 goto 400
-10000 let k=PEEK(49152)
-10100 if k=196 and x<38 then color=6 :plot x,y :X=X+1
-10200 if k=193 and x>1 then color=6 :plot x,y :X=X-1
-10210 if z0(x,y)=1 and k=196 then let x=x-1 :plot x,y 
-10220 if z0(x,y)=1 and k=193 then let x=x+1 :plot x,y 
-10222 if z0(x,y+1)=1 and k=196 then let x=x-1 :plot x,y 
-10223 if z0(x,y+1)=1 and k=193 then let x=x+1 :plot x,y 
-10224 if z0(x,y-1)=1 and k=196 then let x=x-1 :plot x,y 
-10225 if z0(x,y-1)=1 and k=193 then let x=x+1 :plot x,y 
-10280 let k=PEEK(49168)
-10290 color=2 :plot x,y
-10300 return
+1 text:home:gosub 500
+2 lvl=1 :home
+3 let k=0
+4 let lives=5
+5 let key$="NO"
+6 let kx=29 :let ky=27
+7 let s=0
+8 let e=0
+9 print chr$(7) :home :print "SCORE:";score :print "LIVES:";lives :print "KEY OBTAINED?";key$
+10 let levelt=1
+11 let j=1
+12 gr
+13 color=6
+14 for q=1 to 39
+15 hlin 0,39 at k :let k=k+1
+16 next q
+17 color=10
+18 vlin 0,38 at 39
+19 color=13 :for sun=1 to 7
+20 hlin 18,21 at j :let j=j+1
+21 next sun
+22 color=13
+23 let cx=25 :let cy=19
+24 rem becketts new gravity improved (no bugs so far)
+25 plot cx,cy
+26 color=9 :plot kx,ky
+27 let X=12: let Y=23
+28 let score=0
+29 print "SCORE:";score
+30 print "LIVES:";lives
+31 print "KEY OBTAINED?";key$
+32 rem level plotter
+33 color=12
+34 dim z0(39,39)
+35 read x1,y1
+36 if x1=0 and y1=0 goto 44
+37 z0(x1,y1)=1
+38 plot x1,y1
+39 color=5
+40 plot x1,(y1+1) :color=12
+41 goto 35
+42 rem character printer
+43 color=2
+44 color=2
+45 plot x,y
+46 rem get key command
+47 if X=25 and Y=19 and s=0 then htab(18):vtab(12):let score=score+1 :home :htab 1:vtab 23 :print "SCORE:";score :print "LIVES:" ;lives :print "KEY OBTAINED?";key$:let s=1 : gosub 95 :goto 50
+48 if X=29 and Y=27 and e=0 then home :htab 1:vtab 23 :let key$="YES" :print "SCORE:";score :print "LIVES:" ;lives :print "KEY OBTAINED?";key$ :let e=1: gosub 113 :goto 50
+49 if lives<1 then text: home: htab (17):vtab(12):flash:print "YOU LOSE!":normal:end
+50 color=2 :plot x,y :let c$="":get c$
+51 if x<0 then let x=0
+52 if x>39 and levelt=1 then let x=39
+53 if c$="W" goto 57
+54 if c$="A" then  color=6 :plot x,y : let X=X-1 :color=2 :plot x,y :if z0(X,Y+1)=0 then goto 65:if z0(X,Y+1)=1 then goto 44
+55 if c$="D" then color=6 :plot x,y :let X=X+1 :color=2 : plot x,y :if z0(X,Y+1)=0 then goto 65:if z0(X,Y+1)=1 then goto 44
+56 goto 47
+57 for i=1 to 6: plot x,y
+58 gosub 77
+59 color=6 :plot x,y :let Y=Y-1
+60 for r=1 to 125
+61 color=2 :plot x,y
+62 next r
+63 gosub 79
+64 next i
+65 plot x,y
+66 color=6 :plot x,y :let Y=Y+1
+67 for o=1 to 75
+68 color=2 :plot x,y
+69 next o
+70 gosub 79
+71 gosub 74
+72 goto 65
+73 goto 47
+74 if z0(X,Y+1)=1 goto 47
+75 if y=38 then color=6: plot x,y :let X=12: let Y=23 :color=2 :plot x,y :let lives=lives-1 :print chr$(7):home :print "SCORE:";score :print "LIVES:";lives :print "KEY OBTAINED?";key$ :goto 47
+76 return
+77 if z0(X,Y-2)=1 goto 65
+78 return
+79 let k=PEEK(49152)
+80 if k=196 and x<38 then color=6 :plot x,y :X=X+1
+81 if k=193 and x>1 then color=6 :plot x,y :X=X-1
+82 if z0(x,y)=1 and k=196 then let x=x-1 :plot x,y
+83 if z0(x,y)=1 and k=193 then let x=x+1 :plot x,y
+84 if z0(x,y+1)=1 and k=196 then let x=x-1 :plot x,y
+85 if z0(x,y+1)=1 and k=193 then let x=x+1 :plot x,y
+86 if z0(x,y-1)=1 and k=196 then let x=x-1 :plot x,y
+87 if z0(x,y-1)=1 and k=193 then let x=x+1 :plot x,y
+88 let k=PEEK(49168)
+89 color=2 :plot x,y
+90 return
+91 rem map data saver
+92 data 1,24,2,24,3,24,4,24,5,24,6,24,7,24,8,24,9,24,10,24,11,24,12,24,13,24,14,24,15,24,16,24,17,24,18,24
+93 data 20,28,21,28,22,28,23,28,24,28,25,28,26,28,27,28,28,28,29,28,30,28,31,28,32,28,33,28,34,28,35,28,36,28,37,28
+94 data 20,20,21,20,22,20,23,20,24,20,25,20,26,20,27,20,0,0
+95 print chr$(7) :home :print "SCORE:";score :print "LIVES:";lives :print "KEY OBTAINED?";key$:for w=1 to 6
+96 let cy=cy-1
+97 color=13 :plot cx,cy
+98 for t=1 to 65
+99 plot cx,cy
+100 next t
+101 color=6 :plot cx,cy
+102 next w
+103 print chr$(7) :home :print "SCORE:";score :print "LIVES:";lives :print "KEY OBTAINED?";key$:for w=1 to 4
+104 let cy=cy+1
+105 color=13 :plot cx,cy
+106 for t=1 to 65
+107 plot cx,cy
+108 next t
+109 color=6 :plot cx,cy
+110 next w
+111 color=2 :plot x,y
+112 return
+113 for w=1 to 6
+114 let ky=ky-1
+115 color=9 :plot kx,ky
+116 for t=1 to 65
+117 plot kx,ky
+118 next t
+119 color=6 :plot kx,ky
+120 next w
+121 print chr$(7) :home :print "SCORE:";score :print "LIVES:";lives :print "KEY OBTAINED?";key$:for w=1 to 4
+122 let ky=ky+1
+123 color=9 :plot kx,ky
+124 for t=1 to 65
+125 plot kx,ky
+126 next t
+127 color=6 :plot kx,ky
+128 next w
+129 color=2 :plot x,y :print chr$(7) :home :print "SCORE:";score :print "LIVES:";lives :print "KEY OBTAINED?";key$
+130 color=6 :vlin 19,20 at 39 :for e=1 to 300
+131 vlin 18, 21 at 39 :next e :for e=1 to 300
+132 vlin 17,22 at 39 :next e :for e=1 to 300
+133 vlin 16,23 at 39:next e :for e=1 to 300
+134 vlin 15,24 at 39:next e :for e=1 to 300
+135 vlin 14,25 at 39 :next e :for e=1 to 300
+136 vlin 13,26 at 39 :next e
+137 color=2 :vlin 19,20 at 39 :for e=1 to 325
+138 color=3 :plot 39,18 :plot39,21 :next e :for e=1 to 325
+139 color=2 :plot 39,17 :plot39,22 :next e :for e=1 to 325
+140 color=3 :plot 39,16 :plot39,23:next e :for e=1 to 325
+141 color=2 :plot 39,15:plot39,24:next e :for e=1 to 325
+142 color=3 :plot 39,14 :plot39,25 :next e
+143 for a=1 to 500
+144 color=2: plot x,y
+145 next a
+146 for ab=1 to 7
+147 color=6 :plot x,y :let y=y-1
+148 for sus=1 to 85
+149 color=2 :plot x,y
+150 next sus
+151 next ab
+152 for wa=1 to 25
+153 color=2 :plot x,y
+154 next wa
+155 for abc=1 to 10
+156 color=6 :plotx,y :let x=x+1
+157 for sus=1 to 85
+158 color=2 :plot x,y
+159 next sus
+160 next abc
+161 let lvl=2
+162 home
+163 let k=0
+164 let key$="NO"
+165 if lvl=2 then goto 320
+166 if lvl=1 then let kx=29 :let ky=27
+167 let s=0
+168 let e=0
+169 print chr$(7) :home :print "SCORE:";score :print "LIVES:";lives :print "KEY OBTAINED?";key$
+170 let levelt=1
+171 let j=31
+172 gr
+173 color=1
+174 for q=1 to 39
+175 hlin 0,39 at k :let k=k+1
+176 next q
+177 color=10
+178 vlin 0,38 at 39
+179 color=13 :for sun=1 to 7
+180 hlin 18,21 at j :let j=j+1
+181 next sun
+182 color=13
+183 let cx=22 :let cy=26
+184 rem becketts new gravity improved (no bugs so far)
+185 plot cx,cy
+186 color=9 :plot kx,ky
+187 let X=3: let Y=19
+188 print "SCORE:";score
+189 print "LIVES:";lives
+190 print "KEY OBTAINED?";key$
+191 rem level plotter
+192 color=12
+193 dim z1(39,39)
+194 read x2,y2
+195 if x2=0 and y2=0 goto 203
+196 z1(x2,y2)=1
+197 plot x2,y2
+198 color=5
+199 plot x2,(y2+1) :color=12
+200 goto 194
+201 rem character printer
+202 color=2
+203 color=2
+204 plot x,y
+205 rem get key command
+206 if X=22 and Y=26 and s=0 then htab(18):vtab(12):let score=score+1 :home :htab 1:vtab 23 :print "SCORE:";score :print "LIVES:" ;lives :print "KEY OBTAINED?";key$:let s=1 : gosub 259 :goto 209
+207 if X=kx and Y=ky and e=0 then home :htab 1:vtab 23 :let key$="YES" :print "SCORE:";score :print "LIVES:" ;lives :print "KEY OBTAINED?";key$ :let e=1: gosub 277 :goto 209
+208 if lives<1 then text: home: htab (17):vtab(12):flash:print "YOU LOSE!":normal:end
+209 let c$="":get c$
+210 if x<0 then let x=0
+211 if x>39 and levelt=1 then let x=39
+212 if c$="W" goto 216
+213 if c$="A" then  color=1 :plot x,y : let X=X-1 :color=2 :plot x,y :if z1(X,Y+1)=0 then goto 224:if z1(X,Y+1)=1 then goto 203
+214 if c$="D" then color=1 :plot x,y :let X=X+1 :color=2 : plot x,y :if z1(X,Y+1)=0 then goto 224:if z1(X,Y+1)=1 then goto 203
+215 goto 206
+216 for i=1 to 6: plot x,y
+217 gosub 236
+218 color=1 :plot x,y :let Y=Y-1
+219 for r=1 to 125
+220 color=2 :plot x,y
+221 next r
+222 gosub 238
+223 next i
+224 plot x,y
+225 color=1 :plot x,y :let Y=Y+1
+226 for o=1 to 75
+227 color=2 :plot x,y
+228 next o
+229 gosub 238
+230 gosub 233
+231 goto 224
+232 goto 206
+233 if z1(X,Y+1)=1 goto 206
+234 if y=38 then color=1: plot x,y :let X=1: let Y=19 :color=2 :plot x,y :let lives=lives-1 :print chr$(7):home :print "SCORE:";score :print "LIVES:";lives :print "KEY OBTAINED?";key$ :goto 206
+235 return
+236 if z1(X,Y-2)=1 goto 224
+237 return
+238 let k=PEEK(49152)
+239 if k=196 and x<38 then color=1 :plot x,y :X=X+1
+240 if k=193 and x>1 then color=1 :plot x,y :X=X-1
+241 if z1(x,y)=1 and k=196 then let x=x-1 :plot x,y
+242 if z1(x,y)=1 and k=193 then let x=x+1 :plot x,y
+243 if z1(x,y+1)=1 and k=196 then let x=x-1 :plot x,y
+244 if z1(x,y+1)=1 and k=193 then let x=x+1 :plot x,y
+245 if z1(x,y-1)=1 and k=196 then let x=x-1 :plot x,y
+246 if z1(x,y-1)=1 and k=193 then let x=x+1 :plot x,y
+247 let k=PEEK(49168)
+248 color=2 :plot x,y
+249 return 
+250 rem map data saver
+251 rem old data 1,24,2,24,3,24,4,24,5,24,6,24,7,24,8,24,9,24,10,24,11,24,12,24,13,24,14,24,15,24,16,24,17,24,18,24
+252 rem old data 20,28,21,28,22,28,23,28,24,28,25,28,26,28,27,28,28,28,29,28,30,28,31,28,32,28,33,28,34,28,35,28,36,28,37,28
+253 rem old data 20,20,21,20,22,20,23,20,24,20,25,20,26,20,27,20,0,0
+254 data 1,20,2,20,3,20,4,20,5,20,6,20
+255 data 8,18,9,18,10,18,11,18,12,18
+256 data 14,22,15,22,16,22,17,22,18,22,19,22,20,22,21,22
+257 data 23,20,24,20,25,20,26,20,27,20,28,20,29,20,30,20,31,20,32,20,33,20,34,20,35,20,36,20,37,20
+258 data 8,27,9,27,10,27,11,27,12,27,13,27,14,27,15,27,16,27,17,27,18,27,19,27,20,27,21,27,22,27,23,27,24,27,25,27,26,27,27,27,28,27,29,27,30,27,0,0
+259 print chr$(7) :home :print "SCORE:";score :print "LIVES:";lives :print "KEY OBTAINED?";key$:for w=1 to 6
+260 let cy=cy-1
+261 color=13 :plot cx,cy
+262 for t=1 to 65
+263 plot cx,cy
+264 next t
+265 color=1 :plot cx,cy
+266 next w
+267 print chr$(7) :home :print "SCORE:";score :print "LIVES:";lives :print "KEY OBTAINED?";key$:for w=1 to 4
+268 let cy=cy+1
+269 color=13 :plot cx,cy
+270 for t=1 to 65
+271 plot cx,cy
+272 next t
+273 color=1 :plot cx,cy
+274 next w
+275 color=2 :plot x,y
+276 return
+277 for w=1 to 6
+278 let ky=ky-1
+279 color=9 :plot kx,ky
+280 for t=1 to 65
+281 plot kx,ky
+282 next t
+283 color=1 :plot kx,ky
+284 next w
+285 print chr$(7) :home :print "SCORE:";score :print "LIVES:";lives :print "KEY OBTAINED?";key$:for w=1 to 4
+286 let ky=ky+1
+287 color=9 :plot kx,ky
+288 for t=1 to 65
+289 plot kx,ky
+290 next t
+291 color=1 :plot kx,ky
+292 next w
+293 color=2 :plot x,y :print chr$(7) :home :print "SCORE:";score :print "LIVES:";lives :print "KEY OBTAINED?";key$
+294 color=1 :vlin 19,20 at 39 :for e=1 to 300
+295 vlin 18, 21 at 39 :next e :for e=1 to 300
+296 vlin 17,22 at 39 :next e :for e=1 to 300
+297 vlin 16,23 at 39:next e :for e=1 to 300
+298 vlin 15,24 at 39:next e :for e=1 to 300
+299 vlin 14,25 at 39 :next e :for e=1 to 300
+300 vlin 13,26 at 39 :next e
+301 color=2 :vlin 19,20 at 39 :for e=1 to 325
+302 color=3 :plot 39,18 :plot39,21 :next e :for e=1 to 325
+303 color=2 :plot 39,17 :plot39,22 :next e :for e=1 to 325
+304 color=3 :plot 39,16 :plot39,23:next e :for e=1 to 325
+305 color=2 :plot 39,15:plot39,24:next e :for e=1 to 325
+306 color=3 :plot 39,14 :plot39,25 :next e
+307 for a=1 to 500
+308 color=2: plot x,y
+309 next a
+310 for wa=1 to 25
+311 color=2 :plot x,y
+312 next wa
+313 for abc=1 to 3
+314 color=1 :plotx,y :let x=x+1
+315 for sus=1 to 85
+316 color=2 :plot x,y
+317 next sus
+318 next abc
+319 goto 321
+320 kx=36 :let ky=19: goto 167
+321 home
+322 let k=0
+323 let key$="NO"
+324 if lvl=2 then goto 483
+325 if lvl=1 then let kx=29 :let ky=27
+326 let s=0
+327 let e=0
+328 print chr$(7) :home :print "SCORE:";score :print "LIVES:";lives :print "KEY OBTAINED?";key$
+329 let levelt=1
+330 let j=1
+331 gr
+332 color=0
+333 for q=1 to 39
+334 hlin 0,39 at k :let k=k+1
+335 next q
+336 color=10
+337 vlin 0,38 at 39
+338 color=7 :for sun=1 to 7
+339 hlin 18,21 at j :let j=j+1
+340 next sun
+341 color=13
+342 let cx=28 :let cy=26
+343 rem becketts new gravity improved (no bugs so far)
+344 plot cx,cy
+345 color=9 :plot kx,ky
+346 let X=1: let Y=19
+347 print "SCORE:";score
+348 print "LIVES:";lives
+349 print "KEY OBTAINED?";key$
+350 rem level plotter
+351 color=12
+352 dim z2(39,39)
+353 read x3,y3
+354 if x3=0 and y3=0 goto 362
+355 z2(x3,y3)=1
+356 plot x3,y3
+357 color=5
+358 plot x3,(y3+1) :color=12
+359 goto 353
+360 rem character printer
+361 color=2
+362 color=2
+363 plot x,y
+364 rem get key command
+365 if X=cx and Y=cy and s=0 then htab(18):vtab(12):let score=score+1 :home :htab 1:vtab 23 :print "SCORE:";score :print "LIVES:" ;lives :print "KEY OBTAINED?";key$:let s=1 : gosub 422 :goto 368
+366 if X=kx and Y=ky and e=0 then home :htab 1:vtab 23 :let key$="YES" :print "SCORE:";score :print "LIVES:" ;lives :print "KEY OBTAINED?";key$ :let e=1: gosub 440 :goto 368
+367 if lives<1 then text: home: htab (17):vtab(12):flash:print "YOU LOSE!":normal:end
+368 let c$="":get c$
+369 if x<0 then let x=0
+370 if x>39 and levelt=1 then let x=39
+371 if c$="W" goto 375
+372 if c$="A" then  color=0 :plot x,y : let X=X-1 :color=2 :plot x,y :if z2(X,Y+1)=0 then goto 383:if z2(X,Y+1)=1 then goto 362
+373 if c$="D" then color=0 :plot x,y :let X=X+1 :color=2 : plot x,y :if z2(X,Y+1)=0 then goto 383:if z2(X,Y+1)=1 then goto 362
+374 goto 365
+375 for i=1 to 6: plot x,y
+376 gosub 395
+377 color=0 :plot x,y :let Y=Y-1
+378 for r=1 to 125
+379 color=2 :plot x,y
+380 next r
+381 gosub 397
+382 next i
+383 plot x,y
+384 color=0 :plot x,y :let Y=Y+1
+385 for o=1 to 75
+386 color=2 :plot x,y
+387 next o
+388 gosub 397
+389 gosub 392
+390 goto 383
+391 goto 365
+392 if z2(X,Y+1)=1 goto 365
+393 if y=38 then color=0: plot x,y :let X=1: let Y=19 :color=2 :plot x,y :let lives=lives-1 :print chr$(7):home :print "SCORE:";score :print "LIVES:";lives :print "KEY OBTAINED?";key$ :goto 365
+394 return
+395 if z2(X,Y-2)=1 goto 383
+396 return
+397 let k=PEEK(49152)
+398 if k=196 and x<38 then color=0 :plot x,y :X=X+1
+399 if k=193 and x>1 then color=0 :plot x,y :X=X-1
+400 if z2(x,y)=1 and k=196 then let x=x-1 :plot x,y
+401 if z2(x,y)=1 and k=193 then let x=x+1 :plot x,y
+402 if z2(x,y+1)=1 and k=196 then let x=x-1 :plot x,y
+403 if z2(x,y+1)=1 and k=193 then let x=x+1 :plot x,y
+404 if z2(x,y-1)=1 and k=196 then let x=x-1 :plot x,y
+405 if z2(x,y-1)=1 and k=193 then let x=x+1 :plot x,y
+406 let k=PEEK(49168)
+407 color=2 :plot x,y
+408 return
+409 rem map data saver
+410 rem old data 1,24,2,24,3,24,4,24,5,24,6,24,7,24,8,24,9,24,10,24,11,24,12,24,13,24,14,24,15,24,16,24,17,24,18,24
+411 rem old data 20,28,21,28,22,28,23,28,24,28,25,28,26,28,27,28,28,28,29,28,30,28,31,28,32,28,33,28,34,28,35,28,36,28,37,28
+412 rem old data 20,20,21,20,22,20,23,20,24,20,25,20,26,20,27,20,0,0
+413 rem old data 1,20,2,20,3,20,4,20,5,20,6,20
+414 rem old data 8,18,9,18,10,18,11,18,12,18
+415 rem old data 14,22,15,22,16,22,17,22,18,22,19,22,20,22,21,22
+416 rem old data 23,20,24,20,25,20,26,20,27,20,28,20,29,20,30,20,31,20,32,20,33,20,34,20,35,20,36,20,37,20
+417 rem old data 8,27,9,27,10,27,11,27,12,27,13,27,14,27,15,27,16,27,17,27,18,27,19,27,20,27,21,27,22,27,23,27,24,27,25,27,26,27,27,27,28,27,29,27,30,27,0,0
+418 data 1,22,2,22,3,22,4,22,5,22,6,22,7,22,8,22,9,22,10,22,11,22,12,22,13,22,14,22
+419 data 18,24,19,24,20,24,21,24,22,24,23,24,24,24,25,24
+420 data 26,20,27,20,30,20,31,20,32,20,33,20,34,20,35,20,36,20,37,20,38,20
+421 data 26,27,27,27,28,27,29,27,0,0
+422 print chr$(7) :home :print "SCORE:";score :print "LIVES:";lives :print "KEY OBTAINED?";key$:for w=1 to 6
+423 let cy=cy-1
+424 color=13 :plot cx,cy
+425 for t=1 to 65
+426 plot cx,cy
+427 next t
+428 color=0 :plot cx,cy
+429 next w
+430 print chr$(7) :home :print "SCORE:";score :print "LIVES:";lives :print "KEY OBTAINED?";key$:for w=1 to 6
+431 let cy=cy+1
+432 color=13 :plot cx,cy
+433 for t=1 to 65
+434 plot cx,cy
+435 next t
+436 color=0 :plot cx,cy
+437 next w
+438 color=2 :plot x,y
+439 return
+440 for w=1 to 6
+441 let ky=ky-1
+442 color=9 :plot kx,ky
+443 for t=1 to 65
+444 plot kx,ky
+445 next t
+446 color=0 :plot kx,ky
+447 next w
+448 print chr$(7) :home :print "SCORE:";score :print "LIVES:";lives :print "KEY OBTAINED?";key$:for w=1 to 4
+449 let ky=ky+1
+450 color=9 :plot kx,ky
+451 for t=1 to 65
+452 plot kx,ky
+453 next t
+454 color=0 :plot kx,ky
+455 next w
+456 color=2 :plot x,y :print chr$(7) :home :print "SCORE:";score :print "LIVES:";lives :print "KEY OBTAINED?";key$
+457 color=0 :vlin 19,20 at 39 :for e=1 to 300
+458 vlin 18, 21 at 39 :next e :for e=1 to 300
+459 vlin 17,22 at 39 :next e :for e=1 to 300
+460 vlin 16,23 at 39:next e :for e=1 to 300
+461 vlin 15,24 at 39:next e :for e=1 to 300
+462 vlin 14,25 at 39 :next e :for e=1 to 300
+463 vlin 13,26 at 39 :next e
+464 color=2 :vlin 19,20 at 39 :for e=1 to 325
+465 color=3 :plot 39,18 :plot39,21 :next e :for e=1 to 325
+466 color=2 :plot 39,17 :plot39,22 :next e :for e=1 to 325
+467 color=3 :plot 39,16 :plot39,23:next e :for e=1 to 325
+468 color=2 :plot 39,15:plot39,24:next e :for e=1 to 325
+469 color=3 :plot 39,14 :plot39,25 :next e
+470 for a=1 to 500
+471 color=2: plot x,y
+472 next a
+473 for wa=1 to 25
+474 color=2 :plot x,y
+475 next wa
+476 for abc=1 to 3
+477 color=0 :plotx,y :let x=x+1
+478 for sus=1 to 85
+479 color=2 :plot x,y
+480 next sus
+481 next abc
+482 goto 484
+483 kx=36 :let ky=19: goto 326
+484 text: home: htab (17):vtab(12):flash:print "YOU WIN!":normal:end
 
-2000 if z0(X,Y+1)=1 goto 400
-2001 if y=38 then color=6: plot x,y :let X=12: let Y=23 :color=2 :plot x,y :let lives=lives-1 :print chr$(7):home :print "SCORE:";score :print "LIVES:";lives :print "KEY OBTAINED?";key$ :goto 400
-2010 return
 
-3000 if z0(X,Y-2)=1 goto 1200
-3024 return
- 
- 
- 
-99999 rem map data saver
-20000 data 1,24,2,24,3,24,4,24,5,24,6,24,7,24,8,24,9,24,10,24,11,24,12,24,13,24,14,24,15,24,16,24,17,24,18,24
-20005 data 20,28,21,28,22,28,23,28,24,28,25,28,26,28,27,28,28,28,29,28,30,28,31,28,32,28,33,28,34,28,35,28,36,28,37,28
-20010 data 20,20,21,20,22,20,23,20,24,20,25,20,26,20,27,20,0,0
-100000 print chr$(7) :home :print "SCORE:";score :print "LIVES:";lives :print "KEY OBTAINED?";key$:for w=1 to 6
-100001 let cy=cy-1
-100002 color=13 :plot cx,cy
-100003 for t=1 to 65
-100004 plot cx,cy
-100005 next t
-100006 color=6 :plot cx,cy
-100007 next w
-100008 print chr$(7) :home :print "SCORE:";score :print "LIVES:";lives :print "KEY OBTAINED?";key$:for w=1 to 4
-100009 let cy=cy+1 
-100010 color=13 :plot cx,cy
-100011 for t=1 to 65
-100012 plot cx,cy
-100013 next t
-100014 color=6 :plot cx,cy
-100015 next w
-100016 color=2 :plot x,y
-100017 return
-200000 for w=1 to 6
-200001 let ky=ky-1
-200002 color=1 :plot kx,ky
-200003 for t=1 to 65
-200004 plot kx,ky
-200005 next t
-200006 color=6 :plot kx,ky
-200007 next w
-200008 print chr$(7) :home :print "SCORE:";score :print "LIVES:";lives :print "KEY OBTAINED?";key$:for w=1 to 4
-200009 let ky=ky+1
-200010 color=1 :plot kx,ky
-200011 for t=1 to 65
-200012 plot kx,ky
-200013 next t
-200014 color=6 :plot kx,ky
-200015 next w
-200016 color=2 :plot x,y :print chr$(7) :home :print "SCORE:";score :print "LIVES:";lives :print "KEY OBTAINED?";key$
-200017 color=6 :vlin 19,20 at 39 :for e=1 to 300
-200018 vlin 18, 21 at 39 :next e :for e=1 to 300
-200019 vlin 17,22 at 39 :next e :for e=1 to 300
-200020 vlin 16,23 at 39:next e :for e=1 to 300
-200021 vlin 15,24 at 39:next e :for e=1 to 300
-200022 vlin 14,25 at 39 :next e :for e=1 to 300
-200023 vlin 13,26 at 39 :next e 
-200024 color=2 :vlin 19,20 at 39 :for e=1 to 325
-200025 color=3 :plot 39,18 :plot39,21 :next e :for e=1 to 325
-200026 color=2 :plot 39,17 :plot39,22 :next e :for e=1 to 325
-200027 color=3 :plot 39,16 :plot39,23:next e :for e=1 to 325
-200028 color=2 :plot 39,15:plot39,24:next e :for e=1 to 325
-200029 color=3 :plot 39,14 :plot39,25 :next e
-200030 for a=1 to 500
-200040 color=2: plot x,y
-200050 next a
-200060 for ab=1 to 7
-200070 color=6 :plot x,y :let y=y-1
-200080 for sus=1 to 85
-200090 color=2 :plot x,y
-200100 next sus
-200110 next ab
-200111 for wa=1 to 25
-200112 color=2 :plot x,y
-200113 next wa
-200120 for abc=1 to 10
-200130 color=6 :plotx,y :let x=x+1
-200140 for sus=1 to 85
-200150 color=2 :plot x,y
-200160 next sus
-200170 next abc
-
-
+500 print "To jump press the W key. To move left and right press the A and D keys."
+501 print "This game was created by Brendan Ghareeb and Beckett Bylsma, with help from a few others."
+502 print "press S to begin."
+503 get start$
+504 if start$="S" then return
+505 goto 503
