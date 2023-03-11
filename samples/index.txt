@@ -1,0 +1,103 @@
+# ____________________________________________
+# Tests & Demos
+
+sample.basic      Feature Demos
+sample.unittests  Unit Tests
+sample.keyboard   Keyboard Test
+sample.charset    Charset Test
+
+# ____________________________________________
+# Games
+
+simple.pong              SIMPLE.PONG
+sample.adventure         Text Adventure (Floyd McWilliams)
+sample.pacman            (Not Really) ASCII Pac-Man (Michael Kemp)
+sample.puzzler           Puzzler (Gregg Buntin)
+sample.hangman           Hangman (Mike Gleason)
+sample.raindrops         Catch the Raindrop (Nicholas Merchant)
+sample.jot               JOT (Mike Gleason)
+sample.miniindy          Mini Indy (Gregg Buntin)
+sample.doordetector      Door Detector (Jeff)
+sample.columns           Columns (Arthur Allen)
+sample.tetris            Tetris (Arthur Allen)
+sample.dicegame          Colorful Dice (Gregory Lewis)
+sample.aritm             Aritm - Mental calculation (Mikael O. Bonnier)
+sample.unfinishedmaze    Unfinished Maze (Alexander G. Tozzi)
+sample.dragonsmaze       Dragon's Maze (Russell Hokanson)
+sample.blackhole         Black Hole Maze (S.M.Compton c/o Melody Ayres-Griffiths)
+sample.chase             Chase (Dominik Heidler)
+sample.spaceattack       Space Attack! (Alan Ratliff)
+sample.building          Building (Melvin Rosario)
+sample.artillery         Artillery (Michael "Moose" O'Malley)
+sample.platformer        Platformer (Beckett Bylsma & Brendan Ghareeb)
+
+# ____________________________________________
+# Graphics
+
+sample.rodscolorpattern  Rod's Color Pattern
+sample.hacker            Hacker Logo (markwstock)
+sample.loreswalk         Random LoRes (John Melesky)
+sample.hireswalk         Random HiRes (John Melesky)
+sample.sierpinski        Sierpinski Triangles (Kevin Miller)
+sample.stringart         String Art (Chris Heric)
+sample.paint             Drawing Program (Brian Broker)
+sample.scribble          Scribble (William Simms)
+sample.connections       Connections (Gregg Buntin)
+sample.squiggle          Squiggle (Gregg Buntin)
+sample.boys_surface      Boy's Surface (Lukas Innig)
+sample.gaussian          Gaussian Distribution 2D (John Russ)
+sample.bitmaps           Bitmap Images (Brian Broker)
+sample.mandelbrot        Mandelbrot Set (c/o Gregory Lewis)
+sample.mandelbrot2       Mandelbrot Set in Color
+sample.steve             Steve (Nicola Foggi)
+sample.logo              Apple Logo (Brendan Robert)
+sample.loresdrawing      Graphics Drawing (Gregg Buntin)
+sample.calculatedimage   Calculated Image (Gregg Buntin)
+sample.xmastree          Christmas Tree (Gregg Buntin and Rich Orde)
+sample.snowflakes        Snowflakes (Kevin Riordan)
+sample.ninjaturtle       Ninja Turtle (Chris Whong)
+
+sample.3dhat             3D Hat (Micro, the 6502 magazine, may 1981 c/o Golden Child)
+sample.dbconverge        Double-Buffered Value Convergence (Golden Child)
+sample.dbpendulum        Double-Buffered Physics Pendulum Simulation (Golden Child)
+sample.dbvectorship      Double-Buffered Asteroids Ship Demo (Golden Child)
+sample.dbvectortext      Double-Buffered Vector Font (Golden Child)
+sample.stellar7          STELLAR 7 Rotate 3d Objects (Golden Child)
+sample.functiongraphing  Function Graphing (Golden Child)
+sample.codabar           Codabar Generator (Golden Child)
+
+sample.coloredserpinski  Colored Serpinski Triangles (Gregory Lewis)
+sample.radar             Radar (Josiah Keller)
+sample.moire             Moiré (Sylvie Breaud)
+sample.jobs              Steve Jobs (Nick McMillen / CJBaird)
+sample.dye               Will You Dye (Brett Edwards)
+sample.pretzel           Pretzel (Zee)
+sample.3drectangle       3D Rectangle (Tomo Wa)
+sample.enterprise        Original Series Enterprise (Gil Keidar)
+sample.colorrings        Colored Rings (Miika Oja)
+sample.bite              Apple Bite (Michael "Moose" O'Malley)
+
+# ____________________________________________
+# Other
+
+sample.primes            Prime Sieve (Kevin Miller)
+sample.february          February Surprise (Antti Pirskanen)
+sample.hellosine         Hello World Sine Wave (Jamie Beu)
+sample.bodymass          Body Mass Index Calculator (Tim Dwyer)
+sample.quine             Quine (Nikolay Mirin)
+sample.10print           10 PRINT MAZE (translated by Rich Hanes)
+sample.primecheck        Prime Check (Tony Hill)
+sample.vdt               Velocity/Distance/Time (feman1977)
+sample.protonelectron    Proton/Electron Mass Ratio (Mark Rohrbaugh)
+sample.onelinetrain      One Liner Train (Chris ten Den)
+sample.piglatin          Pig Latin Translator (Gregg Buntin)
+sample.nuclear           Nuclear Power Plant (Stephen R. Berggren c/o Kevin Riggle)
+sample.factors           Prime Factors (Cristiano Trabuio)
+
+# ____________________________________________
+# Traveller RPG Utilities
+
+TRADER C            TRADER
+sample.sectorgen    Traveller Sector Generator
+sample.zhorelay     Zhodani Relay Station Placement
+sample.readsector   Read Sector File
