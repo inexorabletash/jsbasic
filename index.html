@@ -64,19 +64,24 @@ By <a target=_blank href="mailto:inexorabletash@gmail.com">Joshua Bell</a>
       })
       .then(text => {
         const select = document.querySelector('#lb_files');
+        let group;
         text.split(/\r?\n/g).forEach(line => {
           line = line.replace(/^\s+|\s+$/, '');
           if (!line.length) return;
           if (line.startsWith('#')) {
             line = line.replace(/^#\s+/, '');
-            select.appendChild(Object.assign(
-              document.createElement('option'),
-              {disabled: true, innerText: line }));
+            if (line.startsWith('___')) {
+              select.appendChild(document.createElement('hr'));
+            } else {
+              group = Object.assign(document.createElement('optgroup'),
+                                    {label: line});
+              select.appendChild(group);
+            }
           } else {
             const match = line.match(/^(\S+)\s+(.*)$/);
-            select.appendChild(Object.assign(
+            group.appendChild(Object.assign(
               document.createElement('option'),
-              {value: match[1], innerText: '\xA0\xA0' + match[2]}));
+              {value: match[1], innerText: match[2]}));
           }
         });
       });
