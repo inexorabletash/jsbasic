@@ -1,4 +1,4 @@
-1 text:home:gosub 500
+1 text:home:PR# 3 : gosub 500
 2 lvl=1 :home
 3 let k=0
 4 let lives=5
@@ -246,7 +246,7 @@
 246 if z1(x,y-1)=1 and k=193 then let x=x+1 :plot x,y
 247 let k=PEEK(49168)
 248 color=2 :plot x,y
-249 return 
+249 return
 250 rem map data saver
 251 rem old data 1,24,2,24,3,24,4,24,5,24,6,24,7,24,8,24,9,24,10,24,11,24,12,24,13,24,14,24,15,24,16,24,17,24,18,24
 252 rem old data 20,28,21,28,22,28,23,28,24,28,25,28,26,28,27,28,28,28,29,28,30,28,31,28,32,28,33,28,34,28,35,28,36,28,37,28
@@ -481,7 +481,7 @@
 481 next abc
 482 goto 484
 483 kx=36 :let ky=19: goto 326
-484 text: home: htab (17):vtab(12):flash:print "YOU WIN!":normal:end
+484 text: home: PR# 0 : htab (17):vtab(12):flash:print "YOU WIN!":normal:end
 
 
 500 print "To jump press the W key. To move left and right press the A and D keys."
