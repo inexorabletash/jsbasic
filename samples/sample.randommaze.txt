@@ -1,0 +1,30 @@
+ 1 TEXT :PR# 3:PRINT :PRINT CHR$ (17);:POKE 230,2 ^ ( PEEK (49183) > 127) * 32:PRINT CHR$ (21);:IF PEEK (230) < 40 THEN POKE 32 + 73,0:POKE 33 + 73,64:CLEAR :CALL 64500 - 63498
+ 2 Z = PEEK (230) > 40:A = Z:E = 32 + 43589 * NOT Z:DEF FN X(V) = (V - 2) * NOT NOT V:DEF FN P(K) = INT (Z%(X,K) / 4):DEF FN N(V) = 1 - V * 2:DEF FN D(K) = Z%(X,Y) * K + FN P(Y) * 4 * FN N(K)
+ 3 DEF FN Y(V) = (V - 1) * (V < 3):DEF FN Q(K) = Z%(X,K) > 23:DEF FN V(K) = FN P(Y) + V * K - FN Q(Y) * (4 - K) - 4:N = PEEK (E) / 4:DIM Z%(70,48):POKE E,0:IF N - INT (N) > .4 THEN N = PEEK (E + 11):GOTO 15
+ 4 INPUT "SEED#, OR 0:NEW,1:STRINGS:";N: IF N - 1 GOTO 15
+ 10 IF LEN (Z$(3)) - 230 THEN PRINT "STRINGS ABSENT" CHR$ (7): GOTO 4
+ 15 HGR :POKE 49234,0:HCOLOR= 1:FOR X = 3 TO 279 STEP 4:HPLOT X,0 TO X,188:IF X < 194 THEN Y = X - 3:HPLOT 3,Y TO 279,Y
+ 20 NEXT : HCOLOR= 0: FOR X = 1 TO 69:Z%(X,0) = 16:Z%(X,48) = 16:IF X < 48 THEN Z%(0,X) = 16:Z%(70,X) = 16
+ 30 NEXT : ON N = 1 GOTO 160: IF NOT N THEN N = - PEEK (79) * 391 - PEEK (78)
+ 40 X=RND(N):K=INT(RND(1)*2795)+129:X=INT(K/43):Y=K-X*43+3:Z%(X,Y)=16:J=4:FOR U=1 TO 3242:V$="":L=0:FOR V=0 TO 3:IF Z%(FN X(V)+X,FN Y(V)+Y)<16 THEN V$=V$+STR$(V):L=J=V OR L
+ 50 NEXT :V = LEN (V$):IF NOT V THEN U = U - 1:V = FN D(1):X = X - FN X(V):J = 4:Y = Y - FN Y(V):NEXT 
+ 60 IF V > 1 THEN V$ = V$ + STR$ (J):V = INT ( RND (1) * (V + L)) + 1
+ 70 V = VAL ( MID$ (V$,V,1)):J = V: GOSUB 260:Z%(X + P,Y + Q) = V + 16:L = V < 2:K = P * L + X:L = Q * L + Y:Z%(K,L) = Z%(K,L) + 4 + 4 * NOT P:X = X + P:Y = Y + Q:NEXT
+ 80 Z = 3:Z%(0,1) = 20:Z%(69,47) = 24:HCOLOR= 0:HPLOT 276,188 TO 278,188:X = 0:Y = 1:HPLOT 3,1 TO 3,3:HCOLOR= 3:FOR V = 1 TO 3:HPLOT 0,V TO 2,V:NEXT :FOR U = 0 TO 1:K = PEEK (49152):IF K < 128 THEN U = 0:NEXT
+ 90 POKE 49168,0:P = (K = 149) - (K = 136 AND X > 1):Q = (K = 138) - (K = 139)
+ 95 IF Q AND X OR P THEN L=P+Q<0:V=INT(Z%(P*L+X,Q*L+Y)/(4+4*NOT P))/2:IF INT(V)<V THEN K=(P>0)*2+Q+1:E=ABS(Z-K)=2:F=NOT P=NOT FN Y(Z):Z=SGN(1.5-Z):FOR L=0 TO 3:V=7:GOSUB 270:V=4:GOSUB 270:NEXT:X=X+P:Y=Y+Q:Z=FN D(1):IF NOT E THEN Z%(X,Y)=FN D(0)+K:Z=K
+ 100 U = K = 155 OR Y = 48: NEXT : IF A = N THEN END
+ 110 IF Y = 48 THEN GET V$: IF ASC(V$) = 10 GOTO 110
+ 120 POKE 49235,0: VTAB 22: IF N - 1 THEN PRINT N" SHOW STRINGS? ";:GET V$:PRINT V$
+ 130 IF N = 1 OR V$ = "N" THEN END
+ 140 TEXT : PRINT CHR$ (4) "PR#3": PRINT SPC(1): FOR Y = 1 TO 47:L = (Y - 1) / 10: K = INT (L): IF L = K THEN PRINT : PRINT : PRINT " " K + 5 "Z$(" K ")=" CHR$ (34);
+ 150 FOR L = 1 TO 67 STEP 3:V = 0:FOR X = L TO L + 2:V = FN V(4): NEXT : PRINT CHR$ (V + 59);: NEXT : NEXT : PRINT : END
+ 160 Z = 1:C = 0:FOR Y = 1 TO 47:X = 0:FOR Z = Z TO Z + 22:U = ASC ( MID$ (Z$((Y - 1) / 10),Z,1)) - 59: FOR D = 1 TO 3:X = X + 1:IF U > 31 THEN V = 2:GOSUB 256:U = U - 32
+ 170 IF U > 15 THEN V = 3: GOSUB 256:U = U - 16
+ 180 U = U * 4: NEXT : NEXT
+ 190 C = (C + 1) * (C < 9):Z = Z ^ NOT NOT C: NEXT : GOTO 80
+ 256 Z%(X,Y) = Z%(X,Y) - V * 4 + 16
+ 260 P = FN X(V):Q = FN Y(V):K = 1 + NOT Q:L = 1 + NOT P:E = X * 4 + 1:F = Y * 4 - 2: HPLOT FN N(V < 3) * K + E, FN N(V < > 2) * L + F TO FN N(V = 1) * K + E, FN N( NOT V) * L + F: RETURN
+ 270 HCOLOR= V:J = V = 7:V = V + L - 5:U = V * P + X * 4 + 1:V = V * Q + Y * 4 - 2: IF F AND NOT L OR J OR E THEN HPLOT U - Q,V - P TO U + Q,V + P:RETURN
+ 280 C = Z * NOT P:D = Z * NOT Q: FOR J = -1 TO 2 STEP 0:IF (L = 1 AND F) = J THEN HCOLOR= 5
+ 290 HPLOT C * J + U,D * J + V:J = (J < 1) + FN N(J > 0) + J: NEXT : RETURN
