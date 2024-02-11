@@ -587,15 +587,15 @@ function DOS(tty) {
     tty.writeString(prompt); // TODO: Correct? Newline?
     var tmp = clockbuf;
     clockbuf = '';
-    callback(tmp);
+    setTimeout(function() { callback(tmp); }, 0);
   }
   function clock_readChar(callback) {
     if (!clockbuf.length) {
-      callback('\r');
+      setTimeout(function() { callback('\r'); }, 0);
     } else {
       var c = clockbuf.substring(0, 1);
       clockbuf = clockbuf.slice(1);
-      callback(c);
+      setTimeout(function() { callback(c); }, 0);
     }
   }
 }
