@@ -442,6 +442,9 @@ function DOS(tty) {
         tty.writeString(prompt + string + "\r");
       }
 
+      // Suppress BASIC parsing of colons
+      string = Object.assign(new String(string), {ignoreColons: true});
+
       // Non-blocking return
       setTimeout(function() { callback(string); }, 0);
     } else {
@@ -527,7 +530,7 @@ function DOS(tty) {
     var MONTHS = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN',
                   'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
     function spad2(s) {
-      return ('00' + String(s)).slice(-2);
+      return ('  ' + String(s)).slice(-2);
     }
     function zpad2(s) {
       return ('00' + String(s)).slice(-2);
@@ -544,7 +547,7 @@ function DOS(tty) {
       clockbuf =
         DAYS[now.getDay()] + ' ' +
         MONTHS[now.getMonth()] + ' ' +
-        now.getDate() + ' ' +
+        spad2(now.getDate()) + ' ' +
         spad2((now.getHours() === 0 ? 12 : now.getHours() > 12 ? now.getHours() - 12 : now.getHours())) + ':' +
         zpad2(now.getMinutes()) + ':' +
         zpad2(now.getSeconds()) + ' ' +
@@ -555,7 +558,7 @@ function DOS(tty) {
       clockbuf =
         DAYS[now.getDay()] + ' ' +
         MONTHS[now.getMonth()] + ' ' +
-        now.getDate() + ' ' +
+        spad2(now.getDate()) + ' ' +
         spad2(now.getHours()) + ':' +
         zpad2(now.getMinutes()) + ':' +
         zpad2(now.getSeconds()) + ' ' +
@@ -587,6 +590,10 @@ function DOS(tty) {
     tty.writeString(prompt); // TODO: Correct? Newline?
     var tmp = clockbuf;
     clockbuf = '';
+
+    // Suppress BASIC parsing of colons
+    tmp = Object.assign(new String(tmp), {ignoreColons: true});
+
     setTimeout(function() { callback(tmp); }, 0);
   }
   function clock_readChar(callback) {
