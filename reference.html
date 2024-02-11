@@ -169,7 +169,6 @@ can be literals (unquoted strings), strings, or numbers
 <h3>Native Platform Interaction <var>- NOT IMPLEMENTED</var></h3>
 <dl>
   <dt>HIMEM: <var>aexpr</var><dd>Set upper address of variable memory
-  <dt>IN# <var>aexpr</var><dd>Direct input from slot
   <dt>LOMEM: <var>aexpr</var><dd>Set lower address of variable memory
   <dt>WAIT <var>aexpr</var>, <var>aexpr</var> [, <var>aexpr</var>]<dd>Wait until memory location masked by second argument equals third argument (or zero)
 </dl>
@@ -234,6 +233,13 @@ can be literals (unquoted strings), strings, or numbers
       <ul>
         <li><code>PR#0</code> &mdash; set 40 column mode
         <li><code>PR#3</code> &mdash; set 80 column mode
+        <li><code>PR#4</code> &mdash; write to Thunderclock
+      </ul>
+
+  <dt>IN# <var>aexpr</var><dd>Direct output to slot
+      <ul>
+        <li><code>IN#0</code> &mdash; read input from keyboard or DOS
+        <li><code>IN#4</code> &mdash; read from Thunderclock
       </ul>
 
 </dl>

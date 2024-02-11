@@ -236,7 +236,8 @@ function TTY(screenElement, keyboardElement) {
   };
 
   this.setFirmwareActive = function setFirmwareActive(active) {
-    init(active, 24, active ? 80 : 40);
+    if (active !== firmwareActive)
+      init(active, 24, active ? 80 : 40);
   };
 
   this.isFirmwareActive = function isFirmwareActive() {

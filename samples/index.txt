@@ -93,6 +93,7 @@ sample.onelinetrain      One Liner Train (Chris ten Den)
 sample.piglatin          Pig Latin Translator (Gregg Buntin)
 sample.nuclear           Nuclear Power Plant (Stephen R. Berggren c/o Kevin Riggle)
 sample.factors           Prime Factors (Cristiano Trabuio)
+sample.thunderclock      Thunderclock (incomplete)
 
 # ____________________________________________
 # Traveller RPG Utilities
