@@ -30,7 +30,7 @@ sample.spaceattack       Space Attack! (Alan Ratliff)
 sample.building          Building (Melvin Rosario)
 sample.artillery         Artillery (Michael "Moose" O'Malley)
 sample.platformer        Platformer (Beckett Bylsma & Brendan Ghareeb)
-sample.randommaze        Maze Generator (Alan Rat)
+sample.randommaze        Maze Generator (Alan Ratliff)
 
 # ____________________________________________
 # Graphics
