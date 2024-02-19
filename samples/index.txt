@@ -95,7 +95,12 @@ sample.onelinetrain      One Liner Train (Chris ten Den)
 sample.piglatin          Pig Latin Translator (Gregg Buntin)
 sample.nuclear           Nuclear Power Plant (Stephen R. Berggren c/o Kevin Riggle)
 sample.factors           Prime Factors (Cristiano Trabuio)
+
+# ____________________________________________
+# Feature Demos
+
 sample.thunderclock      Thunderclock
+sample.stringfns         STRING$ and SPACE$ Demo (Alan Ratliff)
 
 # ____________________________________________
 # Traveller RPG Utilities
