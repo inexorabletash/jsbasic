@@ -76,6 +76,7 @@ sample.dye               Will You Dye (Brett Edwards)
 sample.pretzel           Pretzel (Zee)
 sample.3drectangle       3D Rectangle (Tomo Wa)
 sample.enterprise        Original Series Enterprise (Gil Keidar)
+sample.enterprise2       Original Series Enterprise (Alan Ratliff)
 sample.colorrings        Colored Rings (Miika Oja)
 sample.bite              Apple Bite (Michael "Moose" O'Malley)
 
