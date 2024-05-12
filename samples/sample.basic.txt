@@ -1,7 +1,8 @@
 5 PR#3 : TEXT : HOME
+6 A = RND(-(PEEK(78) + PEEK(79)*256)) : REM Seed PRNG
 10 PRINT "(1) GOSUB/RETURN/POP"
 15 PRINT "(2) Basic I/O, IF/THEN"
-20 PRINT "(3) Fibbonacci Sequence"
+20 PRINT "(3) Fibonacci Sequence"
 25 PRINT "(4) Guess my number"
 30 PRINT "(5) Guess your number"
 35 PRINT "(6) Approximate Pi"
@@ -20,7 +21,7 @@
 92 PRINT "(19) DOS WRITE/APPEND"
 93 PRINT "(20) ONERR ... RESUME"
 94 PRINT "(21) CHR$ Tests"
-95 PRINT: INPUT "Enter option: "; A : PRINT : HOME : ON A GOTO 100,200,300,400,500,600,700,800,1900,1000,1100,1200,2000,2100,2200,2300,2400,2500,2600,2700,2800
+95 PRINT: INPUT "Enter option: "; A : PRINT : HOME : ON A GOTO 100,200,300,400,500,600,700,800,900,1000,1100,1200,2000,2100,2200,2300,2400,2500,2600,2700,2800
 98 HOME
 99 END
 
@@ -41,7 +42,7 @@
 230 IF (NOT A) THEN PRINT "FALSE"
 240 PRINT : PRINT "Press any key: " : GET A$ : GOTO 5
 
-300 REM Fibbonacci
+300 REM Fibonacci
 310 LA = 0 : CU = 1
 320 NX = LA + CU : PRINT NX
 330 LA = CU : CU = NX
@@ -106,7 +107,7 @@
 820 PRINT : PRINT "Press any key: " : GET A$ : GOTO 5
 
 900 REM Cellular automata
-901 PRINT "Wolfram's CA rules" : PRINT "Try 110, 111, 118, 121, 126" : PRINT
+901 PRINT "Wolfram's CA rules" : PRINT "Try 26, 110, 111, 118, 121, 126" : PRINT
 902 INPUT "Rule: "; R : PRINT
 904 DIM VT(8) : FOR I = 0 TO 7 : VT(I) = NOT( R / 2 = INT( R / 2 ) ) : R = INT(R / 2) : NEXT
 910 S$ = "                  #                  "
@@ -122,13 +123,13 @@
 960 GOTO 912
 
 1000 REM Madlibs
-1010 INPUT "Name: "; N$
+1010 INPUT "Name: "; NM$
 1020 INPUT "Verb: "; V$
-1030 INPUT "Noun: "; NN$
-1040 INPUT "Place: "; P$
-1050 S$ = "One day, " + N$ + " " + V$ + " to " + P$ + " to see the " + NN$ + "."
-1060 PRINT S$ : PRINT
-1070 PRINT : PRINT "Press any key: " : GET A$ : GOTO 5
+1030 INPUT "Noun: "; N$
+1040 INPUT "Adjective: ";A$
+1050 INPUT "Place: "; P$ : PRINT
+1060 PRINT "One day, "; NM$; " will "; V$; " to "; P$; " to see the "; A$; " "; N$; "."
+1070 PRINT : PRINT : PRINT "Press any key: "; : GET A$ : GOTO 5
 
 1100 REM Lissajous Figures
 1105 REM POKE 49168,0 : REM Clear keyboard strobe
@@ -152,19 +153,6 @@
 1250 VTAB 24 : HTAB 10 : PRINT "Press Any Key To Continue"; : GET A$
 1290 GOTO 5
 
-1900 REM Cellular automata
-1901 HOME
-1902 PRINT "Wolfram's CA rules" : PRINT "Try 110, 111, 118, 121, 126" : PRINT
-1903 INPUT "Rule: "; R : PRINT
-1904 DIM VT(8) : FOR I = 0 TO 7 : VT(I) = NOT( R / 2 = INT( R / 2 ) ) : R = INT(R / 2) : NEXT
-1910 DIM C(30) : DIM N(30) : N(15) = 1
-1912 FOR I = 0 TO 30 : C(I) = N(I) : PRINT C(I); : NEXT : PRINT
-1916 FOR I = 2 TO 30 - 1
-1918 V = 4 * C(I-1) + 2 * C(I) + 1 * C(I+1)
-1920 N(I) = VT(V)
-1930 NEXT I
-1940 GOTO 1912
-
 2000 REM DOS Sequential Text File
 2005 PRINT "First, knowing it has 4 lines..." : PRINT
 2010 PRINT CHR$(4)"OPEN JABBERWOCKY"
@@ -180,16 +168,17 @@
 2090 PRINT : PRINT "Press any key to continue: " : GET A$ : GOTO 5
 
 2100 REM Lores Drawing
-2110 GR
+2110 GR : VTAB 23 : HTAB 15
+2112 PRINT "Press a key to return to menu";
 2115 OX = -1 : OY = -1
 2116 C = 0
 2120 X = INT( PDL(0) / 256 * 40 )
 2130 Y = INT( PDL(1) / 256 * 48 )
-2135 HTAB 1 : VTAB 23 : PRINT X ; "   " ; Y ; "    "
-2140 REM IF ( OX <> X OR OY <> Y )  AND OX <> -1 AND OY <> -1 THEN COLOR= 0 : PLOT OX, OY
+2135 HTAB 1 : PRINT X ; TAB(6) ; Y ; TAB(11)
+2140 REM IF ( OX <> X OR OY <> Y ) AND OX <> -1 AND OY <> -1 THEN COLOR= 0 : PLOT OX, OY
 2150 COLOR= C : PLOT X, Y
 2160 OX = X : OY = Y : C = C + 1 : IF C > 15 THEN C = 0
-2170 GOTO 2120
+2170 ON PEEK(49152) < 128 GOTO 2120 : POKE 49168,0 : GOTO 5
 
 2200 REM Color Chart
 2210 GR

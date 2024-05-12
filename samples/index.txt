@@ -30,6 +30,7 @@ sample.spaceattack       Space Attack! (Alan Ratliff)
 sample.building          Building (Melvin Rosario)
 sample.artillery         Artillery (Michael "Moose" O'Malley)
 sample.platformer        Platformer (Beckett Bylsma & Brendan Ghareeb)
+sample.randommaze        Maze Generator (Alan Ratliff)
 
 # ____________________________________________
 # Graphics
@@ -39,6 +40,7 @@ sample.hacker            Hacker Logo (markwstock)
 sample.loreswalk         Random LoRes (John Melesky)
 sample.hireswalk         Random HiRes (John Melesky)
 sample.sierpinski        Sierpinski Triangles (Kevin Miller)
+sample.sierpinski2       Sierpinski Triangles (Helen Edgar)
 sample.stringart         String Art (Chris Heric)
 sample.paint             Drawing Program (Brian Broker)
 sample.scribble          Scribble (William Simms)
@@ -74,6 +76,7 @@ sample.dye               Will You Dye (Brett Edwards)
 sample.pretzel           Pretzel (Zee)
 sample.3drectangle       3D Rectangle (Tomo Wa)
 sample.enterprise        Original Series Enterprise (Gil Keidar)
+sample.enterprise2       Original Series Enterprise (Alan Ratliff)
 sample.colorrings        Colored Rings (Miika Oja)
 sample.bite              Apple Bite (Michael "Moose" O'Malley)
 
@@ -93,6 +96,12 @@ sample.onelinetrain      One Liner Train (Chris ten Den)
 sample.piglatin          Pig Latin Translator (Gregg Buntin)
 sample.nuclear           Nuclear Power Plant (Stephen R. Berggren c/o Kevin Riggle)
 sample.factors           Prime Factors (Cristiano Trabuio)
+
+# ____________________________________________
+# Feature Demos
+
+sample.thunderclock      Thunderclock
+sample.stringfns         STRING$ and SPACE$ Demo (Alan Ratliff)
 
 # ____________________________________________
 # Traveller RPG Utilities

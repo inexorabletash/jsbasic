@@ -1,18 +1,18 @@
-90 home
+90 text: pr#0: home
 95 print "Enter a number to find its factors!"
-97 print
-100 input a
-110 print
-120 let f=0
-140 if A/2=int(A/2) then let A=A/2: print "2x";: let f=1: goto 140
-145 let i=3
-150 let e=int(sqr(a)) + 2
-155 let f=0
-160 for n=i to e step 2
-180 if a/n=int(a/n) then print n;"x";: let a=a/n: let i=n: let n=e: let f=1
-200 next n
+97 print "(Zero to quit.)"
+100 print: input a: a=abs(a)
+110 print: if not a then print "Bye!";: end
+120 s=2: e=1
+130 n=0: for i=s to e step 2
+150 f=a/i
+160 if int(f)=f then let a=f: n=n+1: goto 150
+170 if n then print i;: s=i: i=e
+180 next
+190 if n>1 then print "^"; n;
+200 if n and a>1 then print " x ";
 210 rem print a;" "; n;" "; i;" "; e;" ";f
-220 if a>n and f<>0 then goto 155
-230 print a
-235 print
-240 goto 100
+220 s=(s>2)+s+1: n=(s>3)*2+not n
+230 if n<3 and a>1 then e=sqr(a): goto 130
+240 if n=1 or a>1 then print a;
+250 print: goto 100

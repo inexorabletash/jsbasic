@@ -1,0 +1,11 @@
+5  REM FN STRING$/SPACE$ function demo by Alan Ratliff (C) 2021
+10 DEF FN S2$(Y$) = MID$(FN V1$("51")+FN V1$("102")+FN V1$("153")+FN V1$("204")+Y$,1,VAL(T$))
+20 DEF FN V1$(X$) = MID$(Y$,1,(VAL(T$)>VAL(X$))*51) : DEF FN S3$(T$) = FN S2$(Z$+Z$+Z$+Z$+Z$+Z$+Z$+U$+U$)
+30 DEF FN S4$(U$) = FN S5$(U$+U$+U$+U$+U$+U$+U$) : DEF FN S5$(Z$) = FN S3$(MID$(X3$,VAL(X4$)*2+1))
+40 DEF FN S6$(X4$) = FN S4$(MID$(" "+X3$,VAL(X4$)+1,1)) : DEF FN ST$(X3$) = FN S6$(STR$(MID$(X3$,2,1)=";"))
+
+50 TEXT : PR#0 : HOME : ?"Demo of FN ST$() that acts like SPACE$()or STRING$() in other BASICs!":?
+60 ?"The entry you type will be the argument for FN ST$() to make the desired result."
+70 ?"TYPE A CHARACTER YOU WANT TO REPLICATE": ?"+SEMICOLON+NUMBER OF CHARACTERS [<=255].IF YOU WANT SPACES, TYPE JUST THE NUMBERTO EXIT, JUST PRESS <ENTER>":?
+80 INPUT "==>";S$ : IF S$>"" THEN PRINT CHR$(34) FN ST$(S$) CHR$(34) CHR$(8) : GOTO 80
+90 PRINT "THANKS! -- BYE";

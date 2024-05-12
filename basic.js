@@ -335,9 +335,10 @@ this.basic = (function() {
     var regexWhitespace = /^[ \t]+/,
         regexQuotedString = /^"([^"]*?)(?:"|(?=\n|\r|$))/,
         regexUnquotedString = /^[^:,\r\n]*/,
+        regexUnquotedStringIgnoreColons = /^[^,\r\n]*/,
         regexComma = /^,/;
 
-    return function parseDataInput(stream, items) {
+    return function parseDataInput(stream, items, ignoreColons) {
 
       do {
         stream.match(regexWhitespace);
@@ -345,7 +346,7 @@ this.basic = (function() {
         if (stream.match(regexQuotedString)) {
           // quoted string
           items.push(stream.lastMatch[1]);
-        } else if (stream.match(regexUnquotedString)) {
+        } else if (stream.match(ignoreColons ? regexUnquotedStringIgnoreColons : regexUnquotedString)) {
           // unquoted string
           items.push(stream.lastMatch[0]);
         }
@@ -760,7 +761,7 @@ this.basic = (function() {
           var parts = [],
               stream = new Stream(entry);
 
-          parseDataInput(stream, parts);
+          parseDataInput(stream, parts, entry.ignoreColons);
 
           while (varlist.length && parts.length) {
             try {

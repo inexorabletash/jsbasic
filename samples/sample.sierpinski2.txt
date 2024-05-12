@@ -1,0 +1,17 @@
+10 Hgr
+15 Hcolor = 3
+20 let xa=140 : let ya=0
+30 let xb=0 : let yb = 159
+40 let xc=279 : let yc = 159
+50 Hplot xa,ya : Hplot xb,yb : Hplot xc,yc
+60 let x=INT(rnd(1)*40) : LET Y = INT(RND(1)*40)
+70 HPLOT X,Y
+80 D=(INT(RND(1)*3)) + 1
+85 PRINT D
+90 ON D GOTO 100,200,300
+100 X=INT((X + XA)/2) : Y=INT((Y + YA)/2)
+110 GOTO 70
+200 X=INT((X + XB)/2) : Y=INT((Y + YB)/2)
+210 GOTO 70
+300 X=INT((X + XC)/2) : Y=INT((Y + YC)/2)
+310 GOTO 70

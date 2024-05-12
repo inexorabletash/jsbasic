@@ -39,6 +39,11 @@ function DOS(tty) {
       tty_readChar,
       tty_writeChar,
 
+      // Hooked I/O routines
+      hooked_readLine,
+      hooked_readChar,
+      hooked_writeChar,
+
       // character output state
       commandBuffer = "",
       commandMode = false,
@@ -358,8 +363,25 @@ function DOS(tty) {
       args = parseArgs(m[2]);
       if (slot === 0) {
         if (tty.setFirmwareActive) { tty.setFirmwareActive(false); }
+        hooked_writeChar = tty_writeChar;
       } else if (slot === 3) {
         if (tty.setFirmwareActive) { tty.setFirmwareActive(true); }
+        hooked_writeChar = tty_writeChar;
+      } else if (slot === 4) {
+        hooked_writeChar = clock_writeChar;
+      } else {
+        doserror(DOSErrors.RANGE_ERROR);
+      }
+    } else if ((m = command.match(/^IN#\s*([\x20-\x2B\x2D-\x7E]+)(,[\x20-\x7E]*)?/))) {
+      // IN# slot                        Direct input to slot
+      slot = Number(m[1]);
+      args = parseArgs(m[2]);
+      if (slot === 0 || slot === 3) {
+        hooked_readLine = tty_readLine;
+        hooked_readChar = tty_readChar;
+      } else if (slot === 4) {
+        hooked_readLine = clock_readLine;
+        hooked_readChar = clock_readChar;
       } else {
         doserror(DOSErrors.RANGE_ERROR);
       }
@@ -381,7 +403,15 @@ function DOS(tty) {
   tty_readChar = tty.readChar;
   tty_writeChar = tty.writeChar;
 
-  tty.readLine = function dos_readLine(callback, prompt) {
+  hooked_readLine = tty_readLine;
+  hooked_readChar = tty_readChar;
+  hooked_writeChar = tty_writeChar;
+
+  tty.readLine = dos_readLine;
+  tty.readChar = dos_readChar;
+  tty.writeChar = dos_writeChar;
+
+  function dos_readLine(callback, prompt) {
 
     var string = "", c, data, len, fp, buffer;
     if (mode === "r") {
@@ -412,15 +442,17 @@ function DOS(tty) {
         tty.writeString(prompt + string + "\r");
       }
 
+      // Suppress BASIC parsing of colons
+      string = Object.assign(new String(string), {ignoreColons: true});
+
       // Non-blocking return
       setTimeout(function() { callback(string); }, 0);
     } else {
-      tty_readLine(callback, prompt);
+      hooked_readLine(callback, prompt);
     }
+  }
 
-  };
-
-  tty.readChar = function dos_readChar(callback) {
+  function dos_readChar(callback) {
 
     var character = "";
     if (mode === "r") {
@@ -432,17 +464,17 @@ function DOS(tty) {
       activebuffer.filepointer += 1;
 
       if (monico & MON_I && tty) {
-        tty_writeChar(character);
+        hooked_writeChar(character);
       }
 
       // Non-blocking return
       setTimeout(function() { callback(character); }, 0);
     } else {
-      tty_readChar(callback);
+      hooked_readChar(callback);
     }
-  };
+  }
 
-  tty.writeChar = function dos_writeChar(c) {
+  function dos_writeChar(c) {
 
     if (commandMode) {
       if (c === "\r") {
@@ -463,7 +495,7 @@ function DOS(tty) {
       var buf, d;
 
       if (monico & MON_O) {
-        tty_writeChar(c);
+        hooked_writeChar(c);
       }
 
       buf = activebuffer;
@@ -484,8 +516,93 @@ function DOS(tty) {
 
       buf.filepointer += 1;
     } else {
-      tty_writeChar(c);
+      hooked_writeChar(c);
+    }
+  }
+
+  //----------------------------------------------------------------------
+  // Clock routine - vaguely ThunderClock compatible
+  //----------------------------------------------------------------------
+
+  var clockbuf = '';
+  function clock_writeChar(c) {
+    var DAYS = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+    var MONTHS = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN',
+                  'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+    function spad2(s) {
+      return ('  ' + String(s)).slice(-2);
+    }
+    function zpad2(s) {
+      return ('00' + String(s)).slice(-2);
+    }
+    function zpad3(s) {
+      return ('000' + String(s)).slice(-3);
     }
 
-  }; // writeChar
+    var now = new Date();
+    switch (c) {
+    default:
+    case '%': // AM/PM ASCII string mode - e.g. "TUE MAY 12 4:32:55 PM"
+    case '>': // AM/PM ASCII string mode - e.g. "TUE MAY 12 4:32:55 PM"
+      clockbuf =
+        DAYS[now.getDay()] + ' ' +
+        MONTHS[now.getMonth()] + ' ' +
+        spad2(now.getDate()) + ' ' +
+        spad2((now.getHours() === 0 ? 12 : now.getHours() > 12 ? now.getHours() - 12 : now.getHours())) + ':' +
+        zpad2(now.getMinutes()) + ':' +
+        zpad2(now.getSeconds()) + ' ' +
+        (now.getHours() < 12 ? 'AM' : 'PM');
+      break;
+    case '&': // 24 hour ASCII string - e.g. "TUE MAY 12 16:32:55"
+    case '<': // 24 hour ASCII string - e.g. "TUE MAY 12 16:32:55"
+      clockbuf =
+        DAYS[now.getDay()] + ' ' +
+        MONTHS[now.getMonth()] + ' ' +
+        spad2(now.getDate()) + ' ' +
+        spad2(now.getHours()) + ':' +
+        zpad2(now.getMinutes()) + ':' +
+        zpad2(now.getSeconds()) + ' ' +
+        (now.getHours() < 12 ? 'AM' : 'PM');
+      break;
+    case ' ': // Mountain Computer Apple Clock Format - e.g. "05/12 16;32;55.000"
+      clockbuf =
+        zpad2(now.getMonth()+1) + '/' +
+        zpad2(now.getDate()) + ' ' +
+        zpad2(now.getHours()) + ';' +
+        zpad2(now.getMinutes()) + ';' +
+        zpad2(now.getSeconds()) + '.' +
+        zpad3(now.getMilliseconds());
+      break;
+    case '#': // Numeric format, e.g. MO,DW,DT,HR,MN,SEC
+      clockbuf = [
+        now.getMonth()+1,
+        now.getDay(),
+        now.getDate(),
+        now.getHours(),
+        now.getMinutes(),
+        now.getSeconds()
+      ].join(',');
+      break;
+    }
+    clockbuf += '\r';
+  }
+  function clock_readLine(callback, prompt) {
+    tty.writeString(prompt); // TODO: Correct? Newline?
+    var tmp = clockbuf;
+    clockbuf = '';
+
+    // Suppress BASIC parsing of colons
+    tmp = Object.assign(new String(tmp), {ignoreColons: true});
+
+    setTimeout(function() { callback(tmp); }, 0);
+  }
+  function clock_readChar(callback) {
+    if (!clockbuf.length) {
+      setTimeout(function() { callback('\r'); }, 0);
+    } else {
+      var c = clockbuf.substring(0, 1);
+      clockbuf = clockbuf.slice(1);
+      setTimeout(function() { callback(c); }, 0);
+    }
+  }
 }

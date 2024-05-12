@@ -44,7 +44,7 @@ CodeMirror.defineMode('basic', function(config, parserConfig) {
     "HPLOT": STATEMENT,
     "HTAB": STATEMENT,
     "IF": STATEMENT,
-    "IN#": UNSUPPORTED,
+    "IN#": STATEMENT,
     "INPUT": STATEMENT,
     "INT": FUNCTION,
     "INVERSE": STATEMENT,

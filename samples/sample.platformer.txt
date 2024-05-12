@@ -21,7 +21,7 @@
 21 next sun
 22 color=13
 23 let cx=25 :let cy=19
-24 rem becketts new gravity improved (no bugs so far)
+24 rem Beckett's Stuff (no bugs so far)
 25 plot cx,cy
 26 color=9 :plot kx,ky
 27 let X=12: let Y=23
@@ -29,7 +29,7 @@
 29 print "SCORE:";score
 30 print "LIVES:";lives
 31 print "KEY OBTAINED?";key$
-32 rem level plotter
+32 rem Level Plotter
 33 color=12
 34 dim z0(39,39)
 35 read x1,y1
@@ -39,11 +39,11 @@
 39 color=5
 40 plot x1,(y1+1) :color=12
 41 goto 35
-42 rem character printer
+42 rem Init Character Plotter
 43 color=2
 44 color=2
 45 plot x,y
-46 rem get key command
+46 rem get-key and other functions
 47 if X=25 and Y=19 and s=0 then htab(18):vtab(12):let score=score+1 :home :htab 1:vtab 23 :print "SCORE:";score :print "LIVES:" ;lives :print "KEY OBTAINED?";key$:let s=1 : gosub 95 :goto 50
 48 if X=29 and Y=27 and e=0 then home :htab 1:vtab 23 :let key$="YES" :print "SCORE:";score :print "LIVES:" ;lives :print "KEY OBTAINED?";key$ :let e=1: gosub 113 :goto 50
 49 if lives<1 then text: home: htab (17):vtab(12):flash:print "YOU LOSE!":normal:end
@@ -88,7 +88,7 @@
 88 let k=PEEK(49168)
 89 color=2 :plot x,y
 90 return
-91 rem map data saver
+91 rem Map Data
 92 data 1,24,2,24,3,24,4,24,5,24,6,24,7,24,8,24,9,24,10,24,11,24,12,24,13,24,14,24,15,24,16,24,17,24,18,24
 93 data 20,28,21,28,22,28,23,28,24,28,25,28,26,28,27,28,28,28,29,28,30,28,31,28,32,28,33,28,34,28,35,28,36,28,37,28
 94 data 20,20,21,20,22,20,23,20,24,20,25,20,26,20,27,20,0,0
@@ -181,14 +181,14 @@
 181 next sun
 182 color=13
 183 let cx=22 :let cy=26
-184 rem becketts new gravity improved (no bugs so far)
+184 rem Beckett's Stuff (no bugs so far)
 185 plot cx,cy
 186 color=9 :plot kx,ky
 187 let X=3: let Y=19
 188 print "SCORE:";score
 189 print "LIVES:";lives
 190 print "KEY OBTAINED?";key$
-191 rem level plotter
+191 rem Level Plotter
 192 color=12
 193 dim z1(39,39)
 194 read x2,y2
@@ -198,11 +198,11 @@
 198 color=5
 199 plot x2,(y2+1) :color=12
 200 goto 194
-201 rem character printer
+201 rem Init character plotter
 202 color=2
 203 color=2
 204 plot x,y
-205 rem get key command
+205 rem get-key and other functions
 206 if X=22 and Y=26 and s=0 then htab(18):vtab(12):let score=score+1 :home :htab 1:vtab 23 :print "SCORE:";score :print "LIVES:" ;lives :print "KEY OBTAINED?";key$:let s=1 : gosub 259 :goto 209
 207 if X=kx and Y=ky and e=0 then home :htab 1:vtab 23 :let key$="YES" :print "SCORE:";score :print "LIVES:" ;lives :print "KEY OBTAINED?";key$ :let e=1: gosub 277 :goto 209
 208 if lives<1 then text: home: htab (17):vtab(12):flash:print "YOU LOSE!":normal:end
@@ -336,7 +336,7 @@
 340 next sun
 341 color=13
 342 let cx=28 :let cy=26
-343 rem becketts new gravity improved (no bugs so far)
+343 rem Beckett's Stuff (no bugs so far)
 344 plot cx,cy
 345 color=9 :plot kx,ky
 346 let X=1: let Y=19
@@ -353,11 +353,11 @@
 357 color=5
 358 plot x3,(y3+1) :color=12
 359 goto 353
-360 rem character printer
+360 rem Init character plotter
 361 color=2
 362 color=2
 363 plot x,y
-364 rem get key command
+364 rem get-key command and other functions
 365 if X=cx and Y=cy and s=0 then htab(18):vtab(12):let score=score+1 :home :htab 1:vtab 23 :print "SCORE:";score :print "LIVES:" ;lives :print "KEY OBTAINED?";key$:let s=1 : gosub 422 :goto 368
 366 if X=kx and Y=ky and e=0 then home :htab 1:vtab 23 :let key$="YES" :print "SCORE:";score :print "LIVES:" ;lives :print "KEY OBTAINED?";key$ :let e=1: gosub 440 :goto 368
 367 if lives<1 then text: home: htab (17):vtab(12):flash:print "YOU LOSE!":normal:end
@@ -469,8 +469,6 @@
 482 goto 484
 483 kx=36 :let ky=19: goto 326
 484 text: home: PR# 0 : htab (17):vtab(12):flash:print "YOU WIN!":normal:end
-
-
 500 print "To jump press the W key. To move left and right press the A and D keys."
 501 print "This game was created by Brendan Ghareeb and Beckett Bylsma, with help from a few others."
 502 print "press S to begin."
