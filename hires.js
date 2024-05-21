@@ -23,7 +23,7 @@ function HiRes(element, width, height) {
       last_x = 0,
       last_y = 0,
       pixels = [],
-      color = 0,
+      color = 7,
       context = element.getContext("2d");
 
   pixels.length = width * height;
