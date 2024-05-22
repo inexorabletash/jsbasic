@@ -11,6 +11,7 @@ sample.charset    Charset Test
 
 simple.pong              SIMPLE.PONG
 sample.adventure         Text Adventure (Floyd McWilliams)
+sample.dragon            The Horrible Rotten Dancing Dragon (Softline by Ken Rose)
 sample.pacman            (Not Really) ASCII Pac-Man (Michael Kemp)
 sample.puzzler           Puzzler (Gregg Buntin)
 sample.hangman           Hangman (Mike Gleason)
